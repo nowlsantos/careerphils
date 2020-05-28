@@ -1,17 +1,19 @@
+require('dotenv').config();
 const express = require('express');
-const dotenv = require('dotenv');
 const helmet = require('helmet');
 const morgan = require('morgan');
+const dbConnection = require('./config/db');
+const colors = require('colors');
+
+// Connect to database
+dbConnection();
 
 // Routes files
 const users = require('./routes/users');
 
-// Load env variables
-dotenv.config({path: './config/.env'});
-
 const app = express();
 
-if ( app.get('env') === 'development' ) {
+if ( process.env.NODE_ENV === 'development' ) {
     app.use(morgan('dev'));
     console.log('Morgan enabled');
 }
@@ -24,4 +26,12 @@ app.use('/api/users', users);
 
 const PORT = process.env.PORT || 3000;
 
-app.listen( PORT, console.log(`Server running in ${app.get('env')} mode on port ${PORT}`));
+const server = app.listen( PORT, console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`.inverse));
+
+// Handle unhandled promise rejection
+process.on('unhandledRejection', (err, promise) => {
+    console.log(`ERROR: ${err.message}`);
+
+    // Close server and process exit
+    server.close( () => process.exit(1) );
+})
