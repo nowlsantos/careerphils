@@ -1,33 +1,3 @@
-/* const ErrorHandler = require('../utils/errorResponse');
-
-const errorHandler = (err, req, res, next) => {
-    let error = { ...err };
-    let message = '';
-    console.log(err);
-    
-    // Mongoose bad objectID
-    if ( err.name === 'CastError' ) {
-        message = `Resource not found with an ID of ${err.value}`;
-    }
-
-    // Mongoose duplicate key
-    if ( err.code === 11000 ) {
-        message = 'Duplicate field value entered';
-    }
-
-    // Mongoose validation error
-    if ( err.name === 'ValidationError' ) {
-        message = Object.values(err.errors).message(value => value.message);
-    }
-
-    error = new ErrorHandler(message, 404);
-
-    res.status(error.statusCode || 500).json({
-        success: false,
-        error: error.message || 'Server Error'
-    })
-} */
-
 const AppError = require('../utils/appError');
 
 const handleCastError = err => {
@@ -48,6 +18,10 @@ const handleValidationError = err => {
     const message = `Invalid input data. ${errors.join('. ')}`;
     return new AppError(message, 400);
 }
+
+const handleJWTError = () => new AppError('Invalid Token. Please login again', 401);
+
+const handleJWTExpiredError = () => new AppError('Your token has expired. Please login again', 401);
 
 const sendProdError = (err, res) => {
     // Operational trusted error
@@ -90,6 +64,8 @@ const errorHandler = (err, req, res, next) => {
         if ( error.name === 'CastError' ) error = handleCastError(error);
         if ( err.code === 11000 ) error = handleDuplicateObjError(error);
         if ( err.name === 'ValidationError' ) error = handleValidationError(error);
+        if ( err.name === 'JsonWebTokenError' ) error = handleJWTError(error);
+        if ( err.name === 'TokenExpiredError' ) error = handleJWTExpiredError(error);
 
         sendProdError(error, res);
     }

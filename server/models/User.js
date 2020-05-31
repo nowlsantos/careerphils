@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 const UserSchema = new mongoose.Schema({
     name: {
@@ -22,28 +24,50 @@ const UserSchema = new mongoose.Schema({
         minlength: [6, 'Password should be at least 6 characters'],
         select: false
     },
-    /* passwordConfirm: {
-        type: String,
-        required: [true, 'Please confirm your password'],
-        validate: {
-            // This only works on Create and Save
-            validator: function(el) {
-                return el === this.password;
-            },
-            message: 'Passwords does not match'
-        }
-    }, */
     resetPasswordToken: String,
     resetPasswordExpire: Date,
+    passWordChangedAt: Date,
     role: {
         type: String,
-        enum: ['user', 'publisher'],
+        enum: ['user', 'admin', 'publisher'],
         default: 'user'
     },
+    photo: String,
     createdAt: {
         type: Date,
         default: Date.now
     }
 })
+
+// Encrypts password using bcrypt
+UserSchema.pre('save', async function(next) {
+    if ( !this.isModified('password') ) {
+        return next();
+    }
+
+    const salt = await bcrypt.genSalt(12);
+    this.password = await bcrypt.hash(this.password, salt);
+})
+
+// Sign JWT and return
+UserSchema.methods.getSignJwtToken = function() {
+    return jwt.sign({id: this._id}, process.env.JWT_SECRET, {
+        expiresIn: process.env.JWT_EXPIRES_IN
+    })
+}
+
+// Match user entered password to hashed password in database
+UserSchema.methods.matchPassword = async function(enteredPassword) {
+    return await bcrypt.compare(enteredPassword, this.password);
+}
+
+// Catch when password changed after issue
+UserSchema.methods.changePasswordIAT = function(jwtTimeStamp) {
+    if ( this.passWordChangedAt ) {
+        const timestamp = parseInt(this.passWordChangedAt.getTime() / 1000, 10);
+        return jwtTimeStamp < timestamp;
+    }
+    return false;
+}
 
 module.exports = mongoose.model('User', UserSchema);
