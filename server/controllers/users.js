@@ -41,6 +41,9 @@ exports.getUser = asyncHandler( async(req, res, next) => {
     @access     Private
 */ 
 exports.createUser = asyncHandler(async(req, res, next) => {
+    // Add profile to the req.body
+    req.body.profile = req.profile.id;
+
     const user = await User.create(req.body);
 
     res.status(201).json({

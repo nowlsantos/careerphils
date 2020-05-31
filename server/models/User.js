@@ -29,13 +29,17 @@ const UserSchema = new mongoose.Schema({
     passWordChangedAt: Date,
     role: {
         type: String,
-        enum: ['user', 'admin', 'publisher'],
+        enum: ['user', 'publisher'],
         default: 'user'
     },
     photo: String,
     createdAt: {
         type: Date,
         default: Date.now
+    },
+    profile: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Profile'
     }
 })
 
