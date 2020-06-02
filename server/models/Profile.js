@@ -13,11 +13,6 @@ const ProfileSchema = new mongoose.Schema({
     },
     mobile: Number,
     birthdate: Date,
-    gender: {
-        type: String,
-        enum: ['male', 'female'],
-        default: 'male'
-    },
     photo: String,
     createdAt: {
         type: Date,
@@ -27,7 +22,7 @@ const ProfileSchema = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: 'User',
         required: true
-    } 
+    }
 })
 
 module.exports = mongoose.model('Profile', ProfileSchema);

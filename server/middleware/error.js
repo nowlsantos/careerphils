@@ -1,7 +1,7 @@
 const AppError = require('../utils/appError');
 
 const handleCastError = err => {
-    const message = `Resource not found in ${err.path}: and ID of ${err.value}.`;
+    const message = 'Resource not found';
     return new AppError(message, 400);
 }
 

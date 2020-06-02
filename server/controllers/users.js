@@ -8,12 +8,12 @@ const AppError = require('../utils/appError');
     @access     Public
 */ 
 exports.getUsers = asyncHandler(async (req, res, next) => {
-    const users = await User.find();
+    const users = await User.find().populate('profiles');
     
     res.status(200).json({
         status: 'success',
         count: users.length,
-        data: { users }
+        data: users
     })
 });
 
@@ -31,7 +31,7 @@ exports.getUser = asyncHandler( async(req, res, next) => {
 
     res.status(200).json({
         status: 'success',
-        data: { user }
+        data: user
     })   
 });
 
@@ -48,7 +48,7 @@ exports.createUser = asyncHandler(async(req, res, next) => {
 
     res.status(201).json({
         status: 'success',
-        data: { user }
+        data: user
     })   
 });
 
@@ -69,7 +69,7 @@ exports.updateUser = asyncHandler( async(req, res, next) => {
 
     res.status(200).json({
         status: 'success',
-        data: { user }
+        data: user
     })
 });
 
@@ -79,11 +79,13 @@ exports.updateUser = asyncHandler( async(req, res, next) => {
     @access     private
 */ 
 exports.deleteUser = asyncHandler( async(req, res, next) => {
-    const user = await User.findByIdAndDelete(req.params.id);
+    const user = await User.findById(req.params.id);
 
     if ( !user ) {
         return next( new AppError(`No user was found with an id of ${req.params.id}`) );
     }
+
+    user.remove();
 
     res.status(204).json({
         status: true,
