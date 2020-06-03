@@ -53,14 +53,28 @@ const sendDevError = (err, res) => {
 }
 
 const errorHandler = (err, req, res, next) => {
+    let error = {...err};
+    
     err.statusCode = err.statusCode || 500;
     err.status = err.status || 'error';
 
-    if ( process.env.NODE_ENV === 'development' ) {
+    error.message = err.message;
+    
+    if ( err.name === 'CastError' ) error = handleCastError(error);
+    if ( err.code === 11000 ) error = handleDuplicateObjError(error);
+    if ( err.name === 'ValidationError' ) error = handleValidationError(error);
+    if ( err.name === 'JsonWebTokenError' ) error = handleJWTError(error);
+    if ( err.name === 'TokenExpiredError' ) error = handleJWTExpiredError(error);
+
+    sendProdError(error, res);
+
+    /* if ( process.env.NODE_ENV === 'development' ) {
         sendDevError(err, res);
     } 
     else if ( process.env.NODE_ENV === 'production' ) {
         let error = {...err};
+        error.message = err.message;
+
         if ( error.name === 'CastError' ) error = handleCastError(error);
         if ( err.code === 11000 ) error = handleDuplicateObjError(error);
         if ( err.name === 'ValidationError' ) error = handleValidationError(error);
@@ -68,7 +82,7 @@ const errorHandler = (err, req, res, next) => {
         if ( err.name === 'TokenExpiredError' ) error = handleJWTExpiredError(error);
 
         sendProdError(error, res);
-    }
+    } */
 }
 
 module.exports = errorHandler;
