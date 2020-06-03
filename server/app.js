@@ -1,13 +1,17 @@
 const express = require('express');
 const morgan = require('morgan');
 const helmet = require('helmet');
+const xss = require('xss-clean');
+const rateLimit = require('express-rate-limit');
+const hpp = require('hpp');
+const cors = require('cors');
 const users = require('./routes/users');
 const profiles = require('./routes/profiles');
 const auth = require('./routes/auth');
 const cookieParser = require('cookie-parser');
 const AppError = require('./utils/appError');
 const errorHandler = require('./middleware/error');
-//const mongoSanitize = require('express-mongo-sanitize');
+const mongoSanitize = require('express-mongo-sanitize');
 
 // Express app
 const app = express();
@@ -21,12 +25,30 @@ if ( process.env.NODE_ENV === 'development' ) {
 // Security Http headers
 app.use(helmet());
 
+// Prevent xss attack
+app.use(xss());
+
+// Rate limiting
+const limiter = rateLimit({
+  windowMs: 10 * 60 * 1000,
+  max: 100  
+})
+app.use(limiter);
+
+// Prevent http param pollution
+app.use(hpp());
+
+// Enable CORS
+app.use(cors());
+
 // Body parser
 app.use(express.json());
 
 // Cookie parser
 app.use(cookieParser());
-//app.use(mongoSanitize());
+
+// Sanitize data
+app.use(mongoSanitize());
 
 // Mount routers
 app.use('/api/auth', auth);
