@@ -8,13 +8,7 @@ const AppError = require('../utils/appError');
     @access     Public
 */ 
 exports.getUsers = asyncHandler(async (req, res, next) => {
-    const users = await User.find().populate('profiles');
-    
-    res.status(200).json({
-        status: 'success',
-        count: users.length,
-        data: users
-    })
+    res.status(200).json(res.apiFeatures);
 });
 
 /* 

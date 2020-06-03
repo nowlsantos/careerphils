@@ -14,6 +14,7 @@ const ProfileSchema = new mongoose.Schema({
     mobile: Number,
     birthdate: Date,
     photo: String,
+    jobtitle: String,
     createdAt: {
         type: Date,
         default: Date.now

@@ -10,24 +10,17 @@ const AppError = require('../utils/appError');
     @access     Public
 */ 
 exports.getProfiles = asyncHandler(async(req, res, next) => {
-    let query;
+    if ( req.params.userId ) {
+        const profiles = await Profile.find( {user: req.params.userId} );
 
-    if (req.params.userId ) {
-        query = Profile.find( {user: req.params.userId}) 
+        return res.status(200).json({
+            statuc: 'success',
+            data: profiles
+        })
     }
     else {
-        query = Profile.find().populate({
-            path: 'user',
-            select: 'mobile birthdate'
-        });
+        res.status(200).json(res.apiFeatures);
     }
-
-    const profiles = await query;
-
-    res.status(201).json({
-        status: 'success',
-        data: profiles
-    })
 })
 
 /* 
