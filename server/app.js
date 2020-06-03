@@ -12,14 +12,19 @@ const errorHandler = require('./middleware/error');
 // Express app
 const app = express();
 
+// Development logging
 if ( process.env.NODE_ENV === 'development' ) {
     app.use(morgan('dev'));
     console.log('Morgan enabled');
 }
 
-// Middlewares
+// Security Http headers
 app.use(helmet());
+
+// Body parser
 app.use(express.json());
+
+// Cookie parser
 app.use(cookieParser());
 //app.use(mongoSanitize());
 
