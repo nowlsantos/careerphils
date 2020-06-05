@@ -1,0 +1,39 @@
+:host {
+    display: block;
+}
+
+/* .sidenav-container {
+    background-color: var(--primary);
+    background: url('../assets/seavessel.jpg');
+    background-size: cover;
+} */
+
+.mat-sidenav-container {
+    position: relative;
+    position: relative;
+}
+
+.mat-drawer-container {
+    background-color: transparent;
+}
+  
+.mat-sidenav {
+    width: 50vw;
+    background: rgba(3, 77, 161, 0.8);
+    color: white;
+    padding-top: 1.2em;
+}
+
+.mat-sidenav .logo {
+    display: flex;
+    align-items: center;
+    padding: 1em;
+}
+
+.mat-sidenav .logo p {
+    margin-left: 0.5em;
+}
+
+.mat-sidenav .logo img {
+    height: 50px;
+}

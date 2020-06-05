@@ -1,0 +1,56 @@
+:host {
+    display: block;
+    width: 100vw;
+    height: 100vh;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mat-card {
+    display: flex;
+    max-width: 80%;
+    margin: 2em auto;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.img-container {
+    padding-right: 2em;
+}
+
+div.mat-card-header-text {
+    margin: 0;
+}
+
+.mat-card-title {
+    padding-top: 0.5em;
+    color: crimson;
+}
+
+.mat-form-field {
+    width: 100%;
+    padding-top: 1em;
+}
+
+.mat-card-actions {
+    padding-left: 0.3em;
+    margin-bottom: 0;
+}
+
+.cancel {
+    font-weight: 500;
+    color: blueviolet;
+    cursor: pointer;
+    text-decoration: none;
+    padding-left: 1em;
+}
+
+/* .mat-card > .mat-card-actions:last-child {
+    margin-bottom: 0;
+} */

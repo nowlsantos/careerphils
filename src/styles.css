@@ -1,1 +1,39 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* Variables */
+:root {
+    --primary: #55a6ee;
+    --secondary: #F9A603;
+    --darkblue: #2F496E;
+    --lightblue: lightblue;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* Reset */
+body, p, a, ul, li {
+    margin: 0;
+    padding: 0;
+}
+
+/* Base styles */
+body {
+    background-color: var(--primary);
+    background: url('./assets/seavessel.jpg');
+    background-size: cover;
+    font-family: Roboto, sans-serif; 
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+}
+
+li {
+    list-style-type: none;
+}

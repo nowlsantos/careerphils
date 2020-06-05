@@ -1,6 +1,6 @@
 const AppError = require('../utils/appError');
 
-const handleCastError = err => {
+const handleCastError = () => {
     const message = 'Resource not found';
     return new AppError(message, 400);
 }
@@ -22,6 +22,8 @@ const handleValidationError = err => {
 const handleJWTError = () => new AppError('Invalid Token. Please login again', 401);
 
 const handleJWTExpiredError = () => new AppError('Your token has expired. Please login again', 401);
+
+const handleServerError = () => new AppError('Something wend wrong', 500);
 
 const sendProdError = (err, res) => {
     // Operational trusted error
@@ -55,18 +57,42 @@ const sendDevError = (err, res) => {
 const errorHandler = (err, req, res, next) => {
     let error = {...err};
     
-    err.statusCode = err.statusCode || 500;
+    err.statusCode = err.statusCode;
     err.status = err.status || 'error';
 
     error.message = err.message;
     
-    if ( err.name === 'CastError' ) error = handleCastError(error);
-    if ( err.code === 11000 ) error = handleDuplicateObjError(error);
-    if ( err.name === 'ValidationError' ) error = handleValidationError(error);
-    if ( err.name === 'JsonWebTokenError' ) error = handleJWTError(error);
-    if ( err.name === 'TokenExpiredError' ) error = handleJWTExpiredError(error);
+    switch ( true ) {
+        case err.name === 'CastError':
+            error = handleCastError();
+            break;
 
-    sendProdError(error, res);
+        case err.code === 11000:
+            error = handleDuplicateObjError(error);
+            break;
+
+        case err.name === 'ValidationError':
+            error = handleValidationError(error);
+            break;
+
+        case err.name === 'JsonWebTokenError':
+            error = handleJWTError();
+            break;
+
+        case err.name === 'TokenExpiredError':
+            error = handleJWTExpiredError();
+            break;
+
+        default: 
+            error = handleServerError();
+    }
+    
+    res.status(err.statusCode).json({
+        success: err.status,
+        error: err,
+        message: err.message,
+        stack: err.stack
+    })
 
     /* if ( process.env.NODE_ENV === 'development' ) {
         sendDevError(err, res);
