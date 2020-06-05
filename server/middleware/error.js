@@ -47,7 +47,7 @@ const sendProdError = (err, res) => {
 
 const sendDevError = (err, res) => {
     res.status(err.statusCode).json({
-        success: err.status,
+        status: err.status,
         error: err,
         message: err.message,
         stack: err.stack
@@ -88,10 +88,10 @@ const errorHandler = (err, req, res, next) => {
     }
     
     res.status(err.statusCode).json({
-        success: err.status,
+        status: err.status,
         error: err,
         message: err.message,
-        stack: err.stack
+        // stack: err.stack
     })
 
     /* if ( process.env.NODE_ENV === 'development' ) {

@@ -13,11 +13,11 @@ export class ApiService {
     constructor(private http: HttpClient) { }
 
     register(user: User) {
-        return this.http.post(`${this.baseUrl}/register`, user);
+        return this.http.post(`${this.baseUrl}/auth/register`, user);
     }
 
     login(user: User) {
-        return this.http.post(`${this.baseUrl}/authentication`, user);
+        return this.http.post(`${this.baseUrl}/auth/login`, user);
     }
 
     getUser(id: string) {

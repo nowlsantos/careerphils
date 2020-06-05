@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ApiService } from 'src/app/services/api.service';
 import { AuthService } from 'src/app/services/auth.service';
@@ -19,6 +19,7 @@ export class RegisterComponent implements OnInit {
     returnUrl: string;
 
     constructor(private router: Router,
+                private route: ActivatedRoute,
                 private fb: FormBuilder,
                 private viewportService: ViewPortService,
                 private apiService: ApiService,
@@ -49,9 +50,8 @@ export class RegisterComponent implements OnInit {
 
         this.apiService.register(user).subscribe(res => {
             const token = JSON.stringify(res);
-            // console.log('token::', token);
             this.authService.setToken(token);
-            this.router.navigate(['../login']);
+            this.router.navigate(['../login'], { relativeTo: this.route });
         });
     }
 }
