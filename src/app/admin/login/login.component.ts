@@ -5,7 +5,7 @@ import { ViewPort } from 'src/app/services/models/viewport.model';
 import { ViewPortService } from 'src/app/services/viewport.service';
 import { User } from '../../services/models/user.model';
 import { ApiService } from 'src/app/services/api.service';
-import { TokenService } from 'src/app/services/token.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
     selector: 'app-login',
@@ -21,7 +21,7 @@ export class LoginComponent implements OnInit {
     constructor(private router: Router,
                 private viewportService: ViewPortService,
                 private apiService: ApiService,
-                private tokenService: TokenService,
+                private authService: AuthService,
                 private fb: FormBuilder) { }
 
     ngOnInit() {
@@ -50,7 +50,7 @@ export class LoginComponent implements OnInit {
         this.apiService.login(user)
             .subscribe(res => {
                     const token = JSON.stringify(res);
-                    this.tokenService.setToken(token);
+                    this.authService.setToken(token);
                     this.router.navigate(['/login']);
                 }
             );

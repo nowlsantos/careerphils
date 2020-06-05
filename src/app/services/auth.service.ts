@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 @Injectable({
     providedIn: 'root'
 })
-export class TokenService {
+export class AuthService {
 
     private storageKey = 'cp-jwt';
 

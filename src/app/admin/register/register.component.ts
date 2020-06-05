@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ApiService } from 'src/app/services/api.service';
-import { TokenService } from 'src/app/services/token.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { User } from '../../services/models/user.model';
 import { ViewPortService } from 'src/app/services/viewport.service';
 import { ViewPort } from 'src/app/services/models/viewport.model';
@@ -22,7 +22,7 @@ export class RegisterComponent implements OnInit {
                 private fb: FormBuilder,
                 private viewportService: ViewPortService,
                 private apiService: ApiService,
-                private tokenService: TokenService) { }
+                private authService: AuthService) { }
 
     ngOnInit() {
         this.viewportService.viewportLayout$.subscribe(viewport => {
@@ -50,7 +50,7 @@ export class RegisterComponent implements OnInit {
         this.apiService.register(user).subscribe(res => {
             const token = JSON.stringify(res);
             // console.log('token::', token);
-            this.tokenService.setToken(token);
+            this.authService.setToken(token);
             this.router.navigate(['../login']);
         });
     }
