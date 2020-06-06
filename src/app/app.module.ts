@@ -4,6 +4,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { SharedModule } from './shared/shared.module';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+
+import { InterceptorProviders } from './interceptors';
 
 import { AppComponent } from './app.component';
 import { NavigationComponent } from './navigation/navigation.component';
@@ -18,9 +21,10 @@ import { NavigationComponent } from './navigation/navigation.component';
         BrowserAnimationsModule,
         HttpClientModule,
         SharedModule,
+        MatSnackBarModule,
         AppRoutingModule,
     ],
-    providers: [],
+    providers: [ InterceptorProviders ],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

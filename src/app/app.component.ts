@@ -7,6 +7,11 @@ import { RouterOutlet } from '@angular/router';
 import { ViewPortService } from './services/viewport.service';
 import { SubSink } from 'subsink';
 import { routeAnimation } from './app.animation';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { ErrorService } from './services/error.service';
+import { LoginService } from './admin/services/login.service';
+import { ApiService } from './services/api.service';
+import { AuthService } from './services/auth.service';
 
 @Component({
     selector: 'app-root',
@@ -22,6 +27,9 @@ export class AppComponent implements OnInit, OnDestroy {
     @ViewChild(MatSidenavContainer, { static: false }) sidenavContainer: MatSidenavContainer;
     @ViewChild('sidenav', { static: false }) sidenav: MatSidenav;
 
+    hposition: MatSnackBarHorizontalPosition = 'center';
+    vposition: MatSnackBarVerticalPosition = 'top';
+
     private viewPort = new ViewPort();
     private layoutChanges$ = this.breakpointObserver.observe(
         [
@@ -36,17 +44,33 @@ export class AppComponent implements OnInit, OnDestroy {
     );
 
     constructor(private breakpointObserver: BreakpointObserver,
-                private viewportService: ViewPortService) { }
+                private viewportService: ViewPortService,
+                private errorService: ErrorService,
+                private loginService: LoginService,
+                private apiService: ApiService,
+                private authService: AuthService,
+                private snackBar: MatSnackBar) { }
 
     ngOnInit() {
         this.onLayoutChange();
 
-        /* this.subs.add(
-            this.loginService.login$.subscribe(isLogged => {
-                this.isLoggedIn = isLogged;
-                // console.log('LOGGED IN: ', this.isLoggedIn);
+        this.subs.add(
+            this.errorService.message$.subscribe(message => {
+                if ( message ) {
+                    this.openSnackbar(message);
+                    // console.log('APP ERROR::', message);
+                }
             })
-        ); */
+        );
+
+        this.subs.add(
+            this.loginService.login$.subscribe(loggedIn => {
+                if ( loggedIn ) {
+                    this.isLoggedIn = loggedIn;
+                    console.log('LOGGEDIN::', this.isLoggedIn);
+                }
+            })
+        );
     }
 
     ngOnDestroy() {
@@ -107,6 +131,20 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     closeSideNav() {
-        this.sidenav.close();
+        this.apiService.logout().subscribe( () => {
+            // console.log('SideNav Logout::');
+            this.authService.logout();
+            this.loginService.broadcastLogin(false);
+            // this.router.navigate(['/home']);
+            this.sidenav.close();
+        });
+    }
+
+    openSnackbar(message: string) {
+        this.snackBar.open(message, '', {
+            duration: 4000,
+            horizontalPosition: this.hposition,
+            verticalPosition: this.vposition
+        });
     }
 }

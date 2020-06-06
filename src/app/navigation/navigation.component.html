@@ -1,5 +1,5 @@
 <mat-toolbar color="primary" class="mat-elevation-z2">
-    <button *ngIf="isHandset" 
+    <button mat-button *ngIf="isHandset" 
             type="button" 
             aria-label="Toggle sidenav" 
             mat-icon-button (click)="open(true)">
@@ -19,7 +19,7 @@
                 </a>
             </li>
 
-            <ng-container *ngIf="!isHandset; else logout">
+            <ng-container *ngIf="!isLoggedIn; else logout">
                 <li>
                     <a  [routerLink]="['../admin/login']" 
                         routerLinkActive="active"
@@ -30,10 +30,7 @@
 
             <ng-template #logout>
                 <li>
-                    <a  [routerLink]="['/logout']" 
-                        routerLinkActive="active"
-                        [routerLinkActiveOptions]="{ exact: true }">Logout
-                    </a>
+                    <button mat-button (click)="onLogout()">Logout</button>
                 </li>
             </ng-template>
         </ng-container>

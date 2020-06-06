@@ -20,6 +20,14 @@ export class ApiService {
         return this.http.post(`${this.baseUrl}/auth/login`, user);
     }
 
+    logout() {
+        return this.http.get(`${this.baseUrl}/auth/logout`);
+    }
+
+    getMe() {
+        return this.http.get(`${this.baseUrl}/auth/me`);
+    }
+
     getUser(id: string) {
         return this.http.get(`${this.baseUrl}/users/${id}`);
     }

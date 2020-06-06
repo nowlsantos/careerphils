@@ -2,15 +2,19 @@
     display: block;
     width: 100vw;
     height: 100vh;
-
+    
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
+.form-container {
+    min-width: 40%;
+}
+
 .mat-card {
     display: flex;
-    max-width: 80%;
+    width: 75%;
     margin: 2em auto;
 }
 
@@ -21,7 +25,7 @@ form {
 }
 
 .img-container {
-    padding-left: 2em;
+    padding-left: 1.3em;
 }
 
 div.mat-card-header-text {
@@ -41,4 +45,12 @@ div.mat-card-header-text {
 .mat-card-actions {
     padding-left: 0.3em;
     margin-bottom: 0;
+}
+
+.cancel {
+    font-weight: 500;
+    color: blueviolet;
+    cursor: pointer;
+    text-decoration: none;
+    padding-left: 1em;
 }

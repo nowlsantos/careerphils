@@ -17,7 +17,8 @@ export class RegisterComponent implements OnInit {
     submitted = false;
     viewPort = new ViewPort();
     returnUrl: string;
-
+    hide = true;
+    
     constructor(private router: Router,
                 private route: ActivatedRoute,
                 private fb: FormBuilder,
@@ -31,14 +32,24 @@ export class RegisterComponent implements OnInit {
         });
 
         this.registerForm = this.fb.group({
-            email: ['', [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+')]],
+            // email: ['', [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+')]],
+            email: ['', [Validators.required, Validators.email]],
             password: ['', [Validators.required, Validators.minLength(6)]]
         });
     }
 
+    getErrorMessage() {
+        const email = this.registerForm.get('email');
+        if (email.hasError('required')) {
+            return 'You must enter a value';
+        }
+
+        return email.hasError('email') ? 'Not a valid email' : '';
+    }
+
     onSubmit() {
         this.submitted = true;
-        if ( this.registerForm.invalid ) {
+        if (this.registerForm.invalid) {
             return;
         }
 
