@@ -142,7 +142,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
     openSnackbar(message: string) {
         this.snackBar.open(message, '', {
-            duration: 4000,
+            duration: 3000,
             horizontalPosition: this.hposition,
             verticalPosition: this.vposition
         });

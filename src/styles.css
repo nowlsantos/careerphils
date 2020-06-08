@@ -22,12 +22,14 @@ body, p, a, ul, li {
 
 /* Base styles */
 body {
-    background-color: var(--primary);
-    background: url('./assets/seavessel.jpg');
-    background-size: cover;
-    font-family: Roboto, sans-serif; 
+    /* background-color: var(--primary);
+    background: url('./assets/seavessel.jpg') no-repeat center center/cover; */
+    background-color: darkslategrey;
+    font-family: 'Lato', sans-serif; 
+    font-weight: 300;
     font-size: 1rem;
     box-sizing: border-box;
+    line-height: 1.6;
 }
 
 a {

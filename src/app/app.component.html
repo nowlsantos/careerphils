@@ -24,7 +24,7 @@
         <app-navigation (opened)=sidenav.open()></app-navigation>
         <main [@routeAnimation]="getState(myOutlet)">
             <router-outlet #myOutlet="outlet">
-                <!-- <app-loader></app-loader> -->
+                <app-loader></app-loader>
             </router-outlet>
         </main>
     </mat-sidenav-content>

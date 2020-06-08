@@ -18,7 +18,7 @@ export class RegisterComponent implements OnInit {
     viewPort = new ViewPort();
     returnUrl: string;
     hide = true;
-    
+
     constructor(private router: Router,
                 private route: ActivatedRoute,
                 private fb: FormBuilder,
@@ -32,7 +32,6 @@ export class RegisterComponent implements OnInit {
         });
 
         this.registerForm = this.fb.group({
-            // email: ['', [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+')]],
             email: ['', [Validators.required, Validators.email]],
             password: ['', [Validators.required, Validators.minLength(6)]]
         });

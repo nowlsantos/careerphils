@@ -30,6 +30,7 @@ export class ErrorInterceptor implements HttpInterceptor {
         } else if (err instanceof HttpErrorResponse) {
             message = `${err.error.message}`;
         }
+
         const errorService = this.injector.get(ErrorService);
         errorService.setMessage(message);
 
