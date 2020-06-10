@@ -2,20 +2,40 @@
     display: block;
     width: 100vw;
     height: 100vh;
-    
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .form-container {
+    max-width: 1280px;
     min-width: 40%;
+    margin: 0 auto;
+    height: 93%;
+    top: 50px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+}
+
+.form-container::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    
+    background-image: linear-gradient(to top, rgba(138, 188, 252, 0.3), rgb(21, 49, 109));
+    -webkit-clip-path: polygon(50% 50%, 100% 30%, 100% 0, 0% 0, 0 30%);
+    clip-path: polygon(50% 50%, 100% 30%, 100% 0, 0% 0, 0 30%);
 }
 
 .mat-card {
     display: flex;
-    width: 75%;
     margin: 2em auto;
+    z-index: 2;
 }
 
 form {

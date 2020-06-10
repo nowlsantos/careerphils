@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { HomeMenuService } from '@services/home-menu.service';
+import { Observable } from 'rxjs';
+import { HomeMenu } from '@models/homemenu.model';
 
 @Component({
     selector: 'app-home',
@@ -6,10 +9,16 @@ import { Component, OnInit } from '@angular/core';
     styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+    menu$: Observable<HomeMenu[]>;
 
-    constructor() { }
+    constructor(private homeMenuService: HomeMenuService) { }
 
-    ngOnInit(): void {
+    ngOnInit() {
+        this.menu$ = this.homeMenuService.getHomeMenus();
+    }
+
+    onMenuClick(link: string) {
+        console.log('Link:', link);
     }
 
 }
