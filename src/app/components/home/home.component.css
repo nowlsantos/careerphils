@@ -1,0 +1,174 @@
+:host {
+    display: block;
+    width: 100vw;
+    height: 100vh;
+}
+
+.home-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    margin: 0 auto;
+    background: url('/assets/seavessel2.jpg') no-repeat;
+    background-position: top;
+    background-size: contain;
+    background-color: white;
+    
+    /* background-image: linear-gradient(to top, #00c6fb 0%, #005bea 100%); */
+    /* -webkit-clip-path: polygon(0 0, 100% 0, 100% 0%, 10% 100%);
+    clip-path: polygon(0 0, 100% 0, 100% 15%, 0% 65%); */
+
+    /* 
+    -webkit-clip-path: polygon(50% 50%, 100% 30%, 100% 0, 0% 0, 0 30%);
+    clip-path: polygon(50% 50%, 100% 30%, 100% 0, 0% 0, 0 30%); */
+}
+
+.container {
+    width: 1280px;
+    height: calc(100%-50px);
+    position: relative;
+    top: 50px;
+    display: grid;
+    margin: 0 auto;
+    background-color: white;
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.header h1 {
+    font-family: 'Lato', sans-serif;
+    font-weight: normal;
+    font-size: 2.5rem;
+    text-align: center;
+    color: white;
+    text-shadow: 1px 1px 2px #000000;
+}
+
+.header p {
+    color: orange;
+    max-width: 80%;
+    margin: 0 auto;
+    font-family: 'Lato', sans-serif;
+    font-weight: lighter;
+    text-align: center;
+    font-size: 1rem;
+}
+
+.card-holder {
+    width: 100%;
+    height: 100%;
+    grid-column: 1 / 6;
+    grid-row: 3 / 6;
+}
+
+.card {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(8, 15, 15, 0.3);
+}
+
+.all-cards {
+    width: 80%;
+    height: 70%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    align-items: center;
+    margin: 0 auto;
+}
+
+footer {
+    width: 1280px;
+    height: 5vh;
+    position: fixed;
+    bottom: 0;
+    background-color: slategray;
+}
+
+.grid {
+    width: 1280px;
+    height: 93%;
+    top: 50px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 80px minmax(auto, auto);
+    margin: 0 auto;
+    position: relative;
+    /* border: 1px solid green; */
+    background: url('/assets/seavessel2.jpg') no-repeat center top/contain;
+}
+
+.one {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    grid-column: 1 / 6;
+    grid-row: 1 / 4;
+    /* border: 1px solid blue; */
+    /* background-color: rgba(218, 233, 14, 0.3); */
+}
+
+.one::after {
+    content: "";
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 63%;
+    position: absolute;
+    background-image: linear-gradient(to top, rgba(138, 188, 252, 0.3), rgb(21, 49, 109));
+    z-index: 1;
+}
+
+.one h1 {
+    font-family: 'Lato', sans-serif;
+    font-weight: normal;
+    font-size: 2.5rem;
+    text-align: center;
+    color: white;
+    text-shadow: 1px 1px 1px #000000;
+    z-index: 2;
+}
+
+.two {
+    width: 100%;
+    height: 100%;
+    grid-column: 1 / 6;
+    grid-row: 3 / 6;
+    /* background-color: white; */
+    /* border: 1px solid red; */
+    z-index: 3;
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 1) 100%);
+    /* background-image: linear-gradient(to top black 0%, white 100%); */
+}
+
+.three {
+    width: 80%;
+    height: 70%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    align-items: center;
+    margin: 20px auto;
+}
+
+.ab {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    border: 1px solid grey;
+    /* background-color: rgba(8, 15, 15, 0.3); */
+}

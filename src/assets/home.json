@@ -1,0 +1,20 @@
+{
+    "home" : [
+        {
+            "title": "Our Story",
+            "icon": ""
+        },
+        {
+            "title": "Our Mission",
+            "icon": ""
+        },
+        {
+            "title": "Our People",
+            "icon": ""
+        },
+        {
+            "title": "Our Location",
+            "icon": ""
+        }
+    ]
+}

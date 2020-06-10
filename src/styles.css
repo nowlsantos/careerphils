@@ -4,8 +4,8 @@
 :root {
     --primary: #55a6ee;
     --secondary: #F9A603;
-    --darkblue: #2F496E;
-    --lightblue: lightblue;
+    --darkblue: #1754d3;
+    --lightblue: rgb(175, 235, 255);
 }
 
 html, body {
@@ -22,14 +22,11 @@ body, p, a, ul, li {
 
 /* Base styles */
 body {
-    /* background-color: var(--primary);
-    background: url('./assets/seavessel.jpg') no-repeat center center/cover; */
-    background-color: darkslategrey;
-    font-family: 'Lato', sans-serif; 
-    font-weight: 300;
-    font-size: 1rem;
-    box-sizing: border-box;
+    /* background: url('/assets/waves.png') no-repeat bottom center/contain;*/
+    background-image: linear-gradient(to top, #e4efe9 0%, #93a5cf 100%);
+    font-family: 'Lato', sans-serif;
     line-height: 1.6;
+    box-sizing: border-box;
 }
 
 a {

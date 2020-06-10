@@ -1,17 +1,15 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { routeAnimation } from './app.animation';
 import { map, share, tap } from 'rxjs/operators';
-import { ViewPort } from './services/models/viewport.model';
 import { MatSidenavContainer, MatSidenav } from '@angular/material/sidenav';
 import { RouterOutlet } from '@angular/router';
-import { ViewPortService } from './services/viewport.service';
 import { SubSink } from 'subsink';
-import { routeAnimation } from './app.animation';
-import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
-import { ErrorService } from './services/error.service';
-import { LoginService } from './admin/services/login.service';
-import { ApiService } from './services/api.service';
-import { AuthService } from './services/auth.service';
+import { ViewPort } from '@models/index';
+import { ApiService,
+         AuthService,
+         ViewPortService,
+         LoginService } from '@services/index';
 
 @Component({
     selector: 'app-root',
@@ -26,9 +24,6 @@ export class AppComponent implements OnInit, OnDestroy {
     private subs = new SubSink();
     @ViewChild(MatSidenavContainer, { static: false }) sidenavContainer: MatSidenavContainer;
     @ViewChild('sidenav', { static: false }) sidenav: MatSidenav;
-
-    hposition: MatSnackBarHorizontalPosition = 'center';
-    vposition: MatSnackBarVerticalPosition = 'top';
 
     private viewPort = new ViewPort();
     private layoutChanges$ = this.breakpointObserver.observe(
@@ -45,23 +40,12 @@ export class AppComponent implements OnInit, OnDestroy {
 
     constructor(private breakpointObserver: BreakpointObserver,
                 private viewportService: ViewPortService,
-                private errorService: ErrorService,
                 private loginService: LoginService,
                 private apiService: ApiService,
-                private authService: AuthService,
-                private snackBar: MatSnackBar) { }
+                private authService: AuthService) { }
 
     ngOnInit() {
         this.onLayoutChange();
-
-        this.subs.add(
-            this.errorService.message$.subscribe(message => {
-                if ( message ) {
-                    this.openSnackbar(message);
-                    // console.log('APP ERROR::', message);
-                }
-            })
-        );
 
         this.subs.add(
             this.loginService.login$.subscribe(loggedIn => {
@@ -137,14 +121,6 @@ export class AppComponent implements OnInit, OnDestroy {
             this.loginService.broadcastLogin(false);
             // this.router.navigate(['/home']);
             this.sidenav.close();
-        });
-    }
-
-    openSnackbar(message: string) {
-        this.snackBar.open(message, '', {
-            duration: 3000,
-            horizontalPosition: this.hposition,
-            verticalPosition: this.vposition
         });
     }
 }

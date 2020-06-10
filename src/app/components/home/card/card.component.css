@@ -1,0 +1,18 @@
+:host {
+    display: block;
+    width: 100vw;
+    height: 100vh;
+}
+
+/* .card-container {
+    width: 150px;
+    height: 200px;
+    background-color: tomato;
+} */
+
+/* .mat-card {
+    display: flex;
+    width: 20%;
+    height: 50%;
+    margin: 2em auto;
+} */

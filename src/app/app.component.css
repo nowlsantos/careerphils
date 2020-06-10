@@ -2,14 +2,7 @@
     display: block;
 }
 
-/* .sidenav-container {
-    background-color: var(--primary);
-    background: url('../assets/seavessel.jpg');
-    background-size: cover;
-} */
-
 .mat-sidenav-container {
-    position: relative;
     position: relative;
 }
 
@@ -36,4 +29,9 @@
 
 .mat-sidenav .logo img {
     height: 50px;
+}
+
+main {
+    position: relative;
+    /* padding-top: 40px; */
 }

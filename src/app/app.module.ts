@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
-import { SharedModule } from './shared/shared.module';
 
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -12,17 +11,19 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
 
-import { InterceptorProviders } from './interceptors';
+import { SharedModule } from '@shared/shared.module';
+import { InterceptorProviders } from '@interceptors/index';
 
 import { AppComponent } from './app.component';
-import { NavigationComponent } from './navigation/navigation.component';
-import { LoaderComponent } from './shared/loader/loader.component';
+import { NavigationComponent, LoaderComponent } from '@components/common/';
+import { ToastComponent } from '@common/toast/toast.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         NavigationComponent,
-        LoaderComponent
+        LoaderComponent,
+        ToastComponent
     ],
     imports: [
         BrowserModule,
