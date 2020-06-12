@@ -1,22 +1,22 @@
 [
     {
         "title": "Our Story",
-        "image": "../assets/menu_story.jpg",
+        "image": "../assets/home/menu_story.jpg",
         "link": "story"
     },
     {
         "title": "Our Mission",
-        "image": "../assets/menu_mission.jpg",
+        "image": "../assets/home/menu_mission.jpg",
         "link": "mission"
     },
     {
         "title": "Our People",
-        "image": "../assets/menu_people.jpg",
+        "image": "../assets/home/menu_people.jpg",
         "link": "people"
     },
     {
         "title": "Our Location",
-        "image": "../assets/menu_location.jpg",
+        "image": "../assets/home/menu_location.jpg",
         "link": "location"
     }
 ]

@@ -42,3 +42,5 @@ import { ToastComponent } from '@common/toast/toast.component';
     bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+// ng generate module orders --route orders --module app.module

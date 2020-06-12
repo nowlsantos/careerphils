@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-// import { MaterialModule } from './material.module';
 import { QuicklinkModule } from 'ngx-quicklink';
+// import { MaterialModule } from './material.module';
 
 @NgModule({
     declarations: [],
@@ -12,8 +12,8 @@ import { QuicklinkModule } from 'ngx-quicklink';
     ],
     exports: [
         CommonModule,
-        // MaterialModule,
         QuicklinkModule
+        // MaterialModule,
     ]
 })
 export class SharedModule { }

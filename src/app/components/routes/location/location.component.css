@@ -1,0 +1,83 @@
+:host {
+    display: block;
+}
+
+.location-container {
+    max-width: 1280px;
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+}
+
+.section-header {
+    width: 100%;
+    position: relative;
+    height: 32vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: teal;
+    
+    -webkit-clip-path: polygon(0 0, 100% 0, 100% calc(100% - 9vw), 0 100%);
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 9vw), 0 100%);
+}
+
+.section-header img {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+    object-position: 50% 25%;
+}
+
+.section-header::after {
+    content: "";
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-image: linear-gradient(to top, rgba(97, 148, 214, 0.3), rgb(21, 49, 109));
+    z-index: 1;
+}
+
+.section-header h1 {
+    position: absolute;
+    font-size: 4rem;
+    text-align: center;
+    width: 100%;
+    margin: 0 auto;
+    color: white;
+    text-shadow: 1px 1px 1px #000000;
+    z-index: 2;
+}
+
+.section-address {
+    height: 8vw;
+    margin-top: calc(0px - 9vw);
+    display: flex;
+    padding: 0 9vw;
+    padding-top: 10vw;
+}
+
+.address p {
+    font-size: 1rem;
+    line-height: 1.6;
+    text-align: center;
+}
+
+.section-map {
+    width: 100%;
+}
+
+#map {
+    width: 100%;
+    height: 40vw;
+    clip-path: polygon(0 9vw, 100% 0, 100% calc(100% - 9vw), 0 100%);
+    -webkit-clip-path: polygon(0 9vw, 100% 0, 100% calc(100% - 9vw), 0 100%);
+}

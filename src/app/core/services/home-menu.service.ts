@@ -10,6 +10,6 @@ export class HomeMenuService {
     constructor(private http: HttpClient) {}
 
     getHomeMenus(): Observable<HomeMenu[]> {
-        return this.http.get<HomeMenu[]>('../../assets/home-menu.json');
+        return this.http.get<HomeMenu[]>('../../assets/data/home-menu.json');
     }
 }

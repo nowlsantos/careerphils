@@ -21,10 +21,10 @@ export class AppComponent implements OnInit, OnDestroy {
     isHandset = false;
     isLoggedIn = false;
 
-    private subs = new SubSink();
     @ViewChild(MatSidenavContainer, { static: false }) sidenavContainer: MatSidenavContainer;
     @ViewChild('sidenav', { static: false }) sidenav: MatSidenav;
 
+    private subs = new SubSink();
     private viewPort = new ViewPort();
     private layoutChanges$ = this.breakpointObserver.observe(
         [

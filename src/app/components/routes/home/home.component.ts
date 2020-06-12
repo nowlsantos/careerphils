@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { HomeMenuService } from '@services/home-menu.service';
 import { Observable } from 'rxjs';
 import { HomeMenu } from '@models/homemenu.model';
@@ -11,14 +12,14 @@ import { HomeMenu } from '@models/homemenu.model';
 export class HomeComponent implements OnInit {
     menu$: Observable<HomeMenu[]>;
 
-    constructor(private homeMenuService: HomeMenuService) { }
+    constructor(private router: Router,
+                private homeMenuService: HomeMenuService) { }
 
     ngOnInit() {
         this.menu$ = this.homeMenuService.getHomeMenus();
     }
 
     onMenuClick(link: string) {
-        console.log('Link:', link);
+        this.router.navigate([`/${link}`]);
     }
-
 }
