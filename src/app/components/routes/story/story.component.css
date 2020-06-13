@@ -25,7 +25,6 @@
     
     -webkit-clip-path: polygon(0 0, 100% 0, 100% calc(100% - 9vw), 0 100%);
     clip-path: polygon(0 0, 100% 0, 100% calc(100% - 9vw), 0 100%);
-    /* background: url('/assets/story/story2.jpg') no-repeat center top/cover; */
 }
 
 .section-header img {
@@ -61,9 +60,10 @@
     height: 10vw;
     margin-top: calc(0px - 9vw);
     display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
     padding: 0 9vw;
     padding-top: 12vw;
-    /* padding-bottom: calc(1vw + 9vw); */
 }
 
 .section-description1 p {

@@ -35,6 +35,13 @@
             </a>
         </li>
 
+        <li>
+            <a  [routerLink]="['./user-profile']" 
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }">User Profile
+            </a>
+        </li>
+
         <ng-container *ngIf="!isHandset">
             <span class="nav-spacer"></span>
 

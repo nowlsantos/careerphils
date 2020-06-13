@@ -8,16 +8,16 @@ import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 export class LocationComponent implements AfterViewInit {
     @ViewChild('mapContainer', {static: false}) gmap: ElementRef;
 
-    readonly latitude = 14.539521;
-    readonly longitude = 121.011537;
-
     ngAfterViewInit() {
-        const coordinates = new google.maps.LatLng(this.latitude, this.longitude);
+        const latitude = 14.539521;
+        const longitude = 121.011537;
+
+        const coordinates = new google.maps.LatLng(latitude, longitude);
         const options = {
             zoom: 14,
             center: {
-                lat: this.latitude,
-                lng: this.longitude
+                lat: latitude,
+                lng: longitude
             },
             disableDoubleClickZoom: true,
             maxZoom: 16,
@@ -36,6 +36,7 @@ export class LocationComponent implements AfterViewInit {
                 text: 'Career Phils Shipmanagement Inc.'
             }
         });
+
         marker.setMap(googleMap);
     }
 }

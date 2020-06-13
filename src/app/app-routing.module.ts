@@ -45,6 +45,14 @@ const routes: Routes = [
             state: 'location'
         }
     },
+    {
+        path: 'user',
+        loadChildren: () => import('./components/user/user.module').then(m => m.UserModule),
+        data: {
+            preload: true,
+            state: 'location'
+        }
+    },
     // otherwise redirect to home
     { path: '**', redirectTo: '', pathMatch: 'full' }
 ];

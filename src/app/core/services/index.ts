@@ -7,3 +7,4 @@ export { LoginService } from './login.service';
 export { RegisterService } from './register.service';
 export { ViewPortService } from './viewport.service';
 export { HomeMenuService } from './home-menu.service';
+ 
