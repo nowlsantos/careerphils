@@ -1,5 +1,6 @@
 :host {
     display: block;
+    font-family: 'Lato', sans-serif;
 }
 
 .mat-toolbar {
@@ -57,7 +58,7 @@
 .mat-toolbar ul {
     display: flex;
     list-style: none;
-    font-size: 0.7em;
+    font-size: 0.75em;
     font-weight: bold;
     align-items: center;
 }
@@ -68,7 +69,6 @@
 
 .mat-toolbar ul li {
     padding: 0 1.5em;
-    font-family: 'Lato', sans-serif;
     font-weight: normal;
 }
 

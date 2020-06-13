@@ -8,10 +8,7 @@
                 <div class="card">
                     <img [src]="menu.image" alt="Photo of {{menu.image}}">
                     <h2>{{ menu.title }}</h2>
-                    <button mat-stroked-button 
-                            color="primary" 
-                            (click)="onMenuClick(menu.link)">Learn more
-                    </button>
+                    <button mat-button (click)="onMenuClick(menu.link)">Learn more</button>
                 </div>
             </ng-container>
         </div>

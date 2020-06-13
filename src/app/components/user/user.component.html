@@ -1,6 +1,99 @@
 <div class="user-container">
-    <div class="user-grid">
-        <aside class="aside"></aside>
-        <section class="section-user"></section>    
-    </div>
+    <aside class="aside">
+        <div class="aside-box">
+            <img src="../../../assets/user/man_profile.jpg" alt="Photo of User">
+            <ng-container *ngIf="!hasProfile; else showFullname">
+                <p>Your Full Name</p>
+            </ng-container>
+            <ng-template #showFullname>
+                <p>{{ fullname }}</p>
+            </ng-template>
+            
+            <hr>
+            <div class="aside-link">
+                <ul>
+                    <li *ngIf="hasProfile">
+                        <a  [routerLink]="['./people']" 
+                            routerLinkActive="active"
+                            [routerLinkActiveOptions]="{ exact: true }">Edit Profile
+                        </a>
+                    </li>
+                    <li>
+                        <a  [routerLink]="['./change-password']" 
+                            routerLinkActive="active"
+                            [routerLinkActiveOptions]="{ exact: true }">Change Password
+                        </a>
+                    </li>
+                    <li>
+                        <a  [routerLink]="['./upload-document']" 
+                            routerLinkActive="active"
+                            [routerLinkActiveOptions]="{ exact: true }">Upload Document
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </aside>
+
+    <section class="section-user">
+        <div class="user-profile mat-elevation-z2">
+            <div class="user-header">
+                <ng-container *ngIf="!hasProfile; else editProfile">
+                    <h1>Create Profile</h1>
+                </ng-container>
+                <ng-template #editProfile>
+                    <h1>Edit Profile</h1>
+                </ng-template>
+                <button *ngIf="!hasPhoto" mat-button (click)="uploadPhoto()">Upload your photo</button>
+            </div>
+
+            <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+                <mat-form-field appearance="fill">
+                    <mat-label>First Name</mat-label>
+                    <input matInput placeholder="First Name">
+                </mat-form-field>
+    
+                <mat-form-field appearance="fill">
+                    <mat-label>Last Name</mat-label>
+                    <input matInput placeholder="Last Name">
+                </mat-form-field>
+                
+                <mat-form-field appearance="fill">
+                    <mat-label>Email Address</mat-label>
+                    <input matInput placeholder="Email Address">
+                </mat-form-field>
+                
+                <mat-form-field appearance="fill">
+                    <mat-label>Phone number</mat-label>
+                    <!-- <example-tel-input required></example-tel-input> -->
+                    <input matInput placeholder="Phone">
+                    <mat-icon matSuffix>phone</mat-icon>
+                    <mat-hint>Include area code</mat-hint>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill">
+                    <mat-label>Location</mat-label>
+                    <input matInput placeholder="e.g San Juan, Metro Manila">
+                </mat-form-field>
+
+                <mat-form-field>
+                    <mat-label>Click the icon and choose your birth date --></mat-label>
+                    <input matInput [matDatepicker]="picker">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill">
+                    <mat-label>Designation/Position</mat-label>
+                    <input matInput placeholder="Chief Engineer">
+                </mat-form-field>
+
+                <mat-form-field appearance="fill">
+                    <mat-label>Gender</mat-label>
+                    <input matInput placeholder="Male / Female">
+                </mat-form-field>
+                <button mat-raised-button color="warn" type="submit">Save Profile</button>
+            </form>
+        </div>
+    </section>
 </div>
