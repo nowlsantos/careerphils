@@ -13,12 +13,14 @@ import { UserRoutingModule } from './user-routing.module';
 import { UserComponent } from './user.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { UploadDocumentComponent } from './upload-document/upload-document.component';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
     declarations: [
         UserComponent,
         ChangePasswordComponent,
-        UploadDocumentComponent
+        UploadDocumentComponent,
+        ProfileComponent
     ],
     imports: [
         CommonModule,

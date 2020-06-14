@@ -1,33 +1,39 @@
 :host {
     display: block;
-    font-family: 'Lato', sans-serif;
 }
 
-.section-password {
+.section-profile {
     display: flex;
     justify-content: center;
 }
 
-.user-password {
+.user-profile {
     position: relative;
-    width: 45%;
+    width: 40%;
     background-color: ghostwhite;
 }
 
-.password-header {
+.user-header {
     position: relative;
     margin: 20px;
     display: flex;
     justify-content: space-between;
 }
 
-.password-header h1 {
+.user-header h1 {
     margin: 0;
+    font-family: 'Lato', sans-serif;
 }
 
 form {
+    font-family: 'Lato', sans-serif;
+    font-weight: normal;
     position: relative;
     display: flex;
     flex-direction: column;
     margin: 20px;
+}
+
+.mat-form-field:nth-child(5) {
+    margin-top: 20px;
 }

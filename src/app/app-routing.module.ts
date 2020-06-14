@@ -12,7 +12,14 @@ const routes: Routes = [
             state: 'home'
         }
     },
-    { path: 'admin', loadChildren: () => import('@components/admin/admin.module').then( m => m.AdminModule ) },
+    {
+        path: 'admin',
+        loadChildren: () => import('@components/admin/admin.module').then( m => m.AdminModule ),
+        data: {
+            preload: true,
+            state: 'admin'
+        }
+    },
     {
         path: 'story',
         loadChildren: () => import('@components/routes/story/story.module').then(m => m.StoryModule),

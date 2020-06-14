@@ -1,6 +1,9 @@
 :host {
     display: block;
-    font-family: 'Lato', sans-serif;
+}
+
+.nav-container {
+    width: 100vw;
 }
 
 .mat-toolbar {
@@ -9,12 +12,11 @@
     left: 0;
     right: 0;
     z-index: 998;
-    max-width: 1280px;
     height: 50px;
+    /* max-width: 1280px; */
+    /* margin: 0 auto; */
     display: flex;
-    margin: 0 auto;
     justify-content: space-between;
-    /* background-color: transparent; */
     background-color: white;
 }
 
@@ -58,8 +60,6 @@
 .mat-toolbar ul {
     display: flex;
     list-style: none;
-    font-size: 0.75em;
-    font-weight: bold;
     align-items: center;
 }
 
@@ -69,6 +69,8 @@
 
 .mat-toolbar ul li {
     padding: 0 1.5em;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.75em;
     font-weight: normal;
 }
 
