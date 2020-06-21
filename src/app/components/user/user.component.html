@@ -1,38 +1,25 @@
 <div class="user-container">
     <aside class="aside">
         <div class="aside-box">
-            <img src="../../../assets/user/man_profile.jpg" alt="Photo of User">
-            <ng-container *ngIf="!hasProfile; else showFullname">
-                <p>Your Full Name</p>
-            </ng-container>
-            <ng-template #showFullname>
-                <p>{{ fullname }}</p>
-            </ng-template>
-            
-            <hr>
-            <div class="aside-link">
-                <ul>
-                    <ng-container *ngIf="hasProfile; profile">
-                        <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-                            <a [routerLink]="['./profile']">Edit Profile</a>
-                        </li>
-                    </ng-container>
-                    <ng-template #profile></ng-template>
-                        <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-                            <a [routerLink]="['./profile']">Create Profile</a>
-                        </li>
-                    <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-                        <a [routerLink]="['./change-password']">Change Password</a>
-                    </li>
-                    <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-                        <a [routerLink]="['./upload-document']">Upload Document</a>
-                    </li>
-                </ul>
-            </div>
+            <img src="{{ userPhoto }}" alt="Photo of User">
         </div>
+        <div class="file-upload">
+            <input type="file"
+                   #fileInput
+                   accept="image/*" 
+                   [ngStyle]="uploadDisplay"
+                   (change)="onFileSelected($event)">
+            <button mat-button (click)="fileInput.click()">Choose new photo</button>
+            <hr>
+        </div>
+        <app-change-password></app-change-password>
     </aside>
 
-    <div class="section-content">
-        <router-outlet></router-outlet>
-    </div>
+    <section class="section-profile">
+        <app-create-edit></app-create-edit>
+    </section>
+    
+    <section class="document">
+        <div class="upload"></div>
+    </section>
 </div>

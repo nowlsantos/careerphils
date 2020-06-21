@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 
 @Component({
     selector: 'app-change-password',
@@ -14,7 +14,9 @@ export class ChangePasswordComponent implements OnInit {
 
     ngOnInit() {
         this.passwordForm = this.fb.group({
-
+            currentpass: ['', Validators.required ],
+            newpass: ['', Validators.required],
+            confirmpass: ['', Validators.required]
         });
     }
 

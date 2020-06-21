@@ -22,7 +22,7 @@ body, p, a, ul, li {
 /* Base styles */
 body {
     background-color: #93a5cf;
-    background-image: linear-gradient(to top, #e4efe9 0%, #93a5cf 100%);
+    /* background-image: linear-gradient(to top, #e4efe9 0%, #93a5cf 100%); */
     font-family: 'Lato', sans-serif;
     font-weight: 300;
     line-height: 1.6;
@@ -35,4 +35,14 @@ a {
 
 li {
     list-style-type: none;
+}
+
+.snackbar-red-bg {
+    font-size: 1.2rem;
+    background-color: red;
+}
+
+.snackbar-green-bg {
+    font-size: 1.2rem;
+    background-color: green;
 }

@@ -55,13 +55,13 @@ exports.login = asyncHandler( async(req, res, next) => {
 */
 exports.logout = asyncHandler(async(req, res, next) => {
     res.cookie('token', 'none', {
-        expires: new Date(Date.now() + 10 * 1000)
+        expires: new Date(Date.now() + 10 * 1000),
+        httpOnly: true
     })
 
     res.status(200).json({
         status: 'success',
-        httpOnly: true,
-        data: null
+        data: {}
     })
 })
 
@@ -119,8 +119,11 @@ const sendTokenResponse = (user, statusCode, res) => {
         options.secure = true;
     }
 
-    res.status(statusCode).cookie('token', token, options).json({
-        status: 'success',
-        token
+    res.status(statusCode)
+       .cookie('token', token, options)
+       .json({
+            status: 'success',
+            data: user,
+            token
     })
 }

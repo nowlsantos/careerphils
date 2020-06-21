@@ -1,3 +1,4 @@
-export { ViewPort } from './viewport.model';
-export { User } from './user.model';
-export { HomeMenu } from './homemenu.model';
+export * from './viewport.model';
+export * from './user.model';
+export * from './homemenu.model';
+export * from './message.model';

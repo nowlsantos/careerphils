@@ -8,7 +8,7 @@ import {
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { ErrorService } from '../services/error.service';
+import { MessageService } from '@services/message.service';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
@@ -31,8 +31,11 @@ export class ErrorInterceptor implements HttpInterceptor {
             message = `${err.error.message}`;
         }
 
-        const errorService = this.injector.get(ErrorService);
-        errorService.setMessage(message);
+        const messageService = this.injector.get(MessageService);
+        messageService.sendMessage({
+            message,
+            error: true
+        });
 
         // throw the error to the component to handle the display
         return throwError(err);

@@ -10,7 +10,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
-import { MatTabsModule } from '@angular/material/tabs';
 
 import { SharedModule } from '@shared/shared.module';
 import { InterceptorProviders } from '@interceptors/index';
@@ -37,7 +36,6 @@ import { ToastComponent } from '@common/toast/toast.component';
         MatProgressSpinnerModule,
         MatSnackBarModule,
         MatButtonModule,
-        MatTabsModule,
         AppRoutingModule
     ],
     providers: [ InterceptorProviders ],

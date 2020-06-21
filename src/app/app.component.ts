@@ -51,7 +51,7 @@ export class AppComponent implements OnInit, OnDestroy {
             this.loginService.login$.subscribe(loggedIn => {
                 if ( loggedIn ) {
                     this.isLoggedIn = loggedIn;
-                    console.log('LOGGEDIN::', this.isLoggedIn);
+                    // console.log('LOGGEDIN::', this.isLoggedIn);
                 }
             })
         );

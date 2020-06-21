@@ -7,6 +7,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class StoryComponent implements OnInit {
 
+    story2Photo = '../../../../assets/story/story2.jpg';
+    story3Photo = '../../../../assets/story/story2.jpg';
+    
     constructor() { }
 
     ngOnInit() {}

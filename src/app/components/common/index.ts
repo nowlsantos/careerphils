@@ -1,3 +1,3 @@
-export { NavigationComponent } from './navigation/navigation.component';
-export { LoaderComponent } from './loader/loader.component';
-export { ToastComponent } from './toast/toast.component';
+export * from './navigation/navigation.component';
+export * from './loader/loader.component';
+export * from './toast/toast.component';

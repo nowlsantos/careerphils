@@ -52,7 +52,7 @@ exports.addProfile = asyncHandler(async(req, res, next) => {
 exports.getProfile = asyncHandler( async(req, res, next) => {
     const profile = await Profile.findById(req.params.id).populate({
         path: 'user',
-        select: 'mobile birthdate'
+        select: 'phone position'
     })
 
     if ( !profile ) {
@@ -104,6 +104,6 @@ exports.deleteProfile = asyncHandler( async(req, res, next) => {
 
     res.status(200).json({
         status: 'success',
-        data: null
+        data: {}
     })   
 });

@@ -1,39 +1,12 @@
 :host {
     display: block;
+        /* font-family: 'Lato', sans-serif; */
 }
 
 .section-profile {
-    display: flex;
-    justify-content: center;
-}
-
-.user-profile {
-    position: relative;
-    width: 40%;
-    background-color: ghostwhite;
-}
-
-.user-header {
-    position: relative;
-    margin: 20px;
-    display: flex;
-    justify-content: space-between;
-}
-
-.user-header h1 {
-    margin: 0;
-    font-family: 'Lato', sans-serif;
-}
-
-form {
-    font-family: 'Lato', sans-serif;
-    font-weight: normal;
     position: relative;
     display: flex;
     flex-direction: column;
-    margin: 20px;
-}
-
-.mat-form-field:nth-child(5) {
-    margin-top: 20px;
+    align-items: center;
+    justify-self: start;
 }

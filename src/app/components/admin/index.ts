@@ -1,3 +1,3 @@
-export { AdminComponent } from './admin.component';
-export { RegisterComponent } from './register/register.component';
-export { LoginComponent } from './login/login.component';
+export * from './admin.component';
+export * from './register/register.component';
+export * from './login/login.component';

@@ -11,10 +11,24 @@ const ProfileSchema = new mongoose.Schema({
         required: [true, 'Please add your last name'],
         trim: true,
     },
-    mobile: Number,
+    email: {
+        type: String,
+        required: [true, 'Please add an email'],
+        unique: true,
+        lowercase:  true,
+        match: [/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, 'Please add a valid email']
+    },
+    phone: {
+        type: String,
+        required: [20, 'Phone number can not be longer than 20 characters']
+    },
     birthdate: Date,
     photo: String,
-    jobtitle: String,
+    location: {
+        type: String,
+        required: [true, 'Please add an address or location']
+    },
+    position: String,
     createdAt: {
         type: Date,
         default: Date.now

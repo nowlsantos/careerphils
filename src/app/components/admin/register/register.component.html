@@ -1,7 +1,7 @@
 <div class="form-container">
     <mat-card class="mat-elevation-z2">
         <div class="img-container" *ngIf="!viewPort.isHandset">
-            <img src="../../../assets/admin/registration.jpg" alt="Registration Photo">
+            <img src="../../../../assets/admin/registration.jpg" alt="Registration Photo">
         </div>
         <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
             <mat-card-title>Register</mat-card-title>
@@ -33,7 +33,11 @@
             </mat-card-content>
     
             <mat-card-actions>
-                <button mat-raised-button color="warn" type="submit">Register</button>
+                <button [disabled]="!registerForm.valid"
+                    mat-raised-button 
+                    color="warn" 
+                    type="submit">Register
+                </button>
                 <span>
                     <a routerLink="../login" class="cancel btn btn-link">Cancel</a>
                 </span>

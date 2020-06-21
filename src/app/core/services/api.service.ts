@@ -41,6 +41,13 @@ export class ApiService {
     }
 
     delete(id: string) {
-        return this.http.delete<User>(`${this.baseUrl}/users/${id}`);
+        return this.http.delete(`${this.baseUrl}/users/${id}`);
+    }
+
+    uploadPhoto(formdata) {
+        return this.http.patch(`${this.baseUrl}/users/updateMe`, formdata, {
+            reportProgress: true,
+            observe: 'events'
+        });
     }
 }

@@ -12,7 +12,7 @@ const router = express.Router({ mergeParams: true });
 router.route('/')
     .get(apiFeatures(Profile, {
         path: 'user',
-        select: 'jobtitle'
+        select: 'position'
     }), getProfiles)
     .post(addProfile);
 

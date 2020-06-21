@@ -52,12 +52,20 @@ const routes: Routes = [
             state: 'location'
         }
     },
-    {
-        path: 'user',
+    /* {
+        path: 'users',
         loadChildren: () => import('./components/user/user.module').then(m => m.UserModule),
         data: {
             preload: true,
-            state: 'user'
+            state: 'users'
+        }
+    }, */
+    {
+        path: 'users/:id',
+        loadChildren: () => import('./components/user/user.module').then(m => m.UserModule),
+        data: {
+            preload: true,
+            state: 'users'
         }
     },
     // otherwise redirect to home

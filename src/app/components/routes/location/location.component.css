@@ -1,12 +1,9 @@
 :host {
     display: block;
-    font-family: 'Lato', sans-serif;
 }
 
 .location-container {
-    /* max-width: 1280px; */
     width: 100%;
-    /* margin: 0 auto; */
     position: relative;
     display: flex;
     flex-direction: column;
@@ -23,7 +20,6 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: teal;
     
     -webkit-clip-path: polygon(0 0, 100% 0, 100% calc(100% - 9vw), 0 100%);
     clip-path: polygon(0 0, 100% 0, 100% calc(100% - 9vw), 0 100%);
@@ -68,6 +64,7 @@
 }
 
 .address p {
+    font-family: 'Lato', sans-serif;
     font-size: 1rem;
     line-height: 1.6;
     text-align: center;

@@ -1,11 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, OnInit } from '@angular/core'
+import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { User, ViewPort } from '@models/index';
 import { ApiService,
          AuthService,
          ViewPortService,
-         LoginService } from '@services/index';
+         LoginService,
+         MessageService,
+         UserService
+        } from '@services/index';
+import { timer } from 'rxjs';
 
 @Component({
     selector: 'app-login',
@@ -14,19 +18,19 @@ import { ApiService,
 })
 export class LoginComponent implements OnInit {
 
-    loginForm: FormGroup;
-    submitted = false;
     viewPort = new ViewPort();
-    returnUrl: string;
+    submitted = false;
+    loginForm: FormGroup;
     hide = true;
 
     constructor(private router: Router,
-                private route: ActivatedRoute,
                 private viewportService: ViewPortService,
+                private fb: FormBuilder,
                 private apiService: ApiService,
                 private authService: AuthService,
                 private loginService: LoginService,
-                private fb: FormBuilder) { }
+                private userService: UserService,
+                private messageService: MessageService) { }
 
     ngOnInit() {
         this.viewportService.viewportLayout$.subscribe(viewport => {
@@ -37,10 +41,6 @@ export class LoginComponent implements OnInit {
             email: ['', [Validators.required, Validators.email]],
             password: ['', [Validators.required, Validators.minLength(6)]],
         });
-
-        /* tslint:disable:no-string-literal */
-        // get return url from route parameters or default to '/'
-        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     }
 
     getErrorMessage() {
@@ -66,10 +66,20 @@ export class LoginComponent implements OnInit {
 
         this.apiService.login(user)
             .subscribe(res => {
-                const token = JSON.stringify(res);
-                this.authService.setToken(token);
+                /* tslint:disable:no-string-literal */
+                const newUser = res['data'];
+                this.userService.broadcastUser(newUser);
+                this.messageService.sendMessage({
+                    message: 'Login Successful',
+                    error: false
+                });
+                this.authService.setToken(res['token']);
                 this.loginService.broadcastLogin(true);
-                this.router.navigate([this.returnUrl]);
+
+                const source = timer(2000);
+                source.subscribe( (_) => {
+                    this.router.navigate([`../users/${newUser.id}`]);
+                });
             }
         );
     }

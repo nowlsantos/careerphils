@@ -9,8 +9,7 @@ const UserSchema = new mongoose.Schema({
         required: [true, 'Please add an email'],
         unique: true,
         lowercase:  true,
-        match: [/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-        'Please add a valid email']
+        match: [/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, 'Please add a valid email']
     },
     password: {
         type: String,
@@ -27,7 +26,10 @@ const UserSchema = new mongoose.Schema({
         enum: ['user', 'admin'],
         default: 'user'
     },
-    photo: String,
+    photo: {
+        type: String,
+        default: 'default.jpg'
+    },
     createdAt: {
         type: Date,
         default: Date.now

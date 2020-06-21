@@ -1,4 +1,5 @@
-export { UserComponent } from './user.component';
-export { ProfileComponent } from './profile/profile.component';
-export { ChangePasswordComponent } from './change-password/change-password.component';
-export { UploadDocumentComponent } from './upload-document/upload-document.component';
+export * from './user.component';
+export * from './profile/profile.component';
+export * from './change-password/change-password.component';
+export * from './upload/upload.component';
+export * from './create-edit/create-edit.component';

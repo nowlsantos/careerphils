@@ -3,8 +3,9 @@ import { Router } from '@angular/router';
 import { ApiService,
          AuthService,
          LoginService,
-         ViewPortService } from '@services/index';
+         UserService} from '@services/index';
 import { SubSink } from 'subsink';
+import { User } from '@models/user.model';
 
 @Component({
     selector: 'app-navigation',
@@ -15,27 +16,32 @@ export class NavigationComponent implements OnInit, OnDestroy {
     private subs = new SubSink();
 
     @Output() opened = new EventEmitter<boolean>();
-    isLoggedIn = false;
+    user: User;
     isHandset = false;
-    displayName: string;
+    isLoggedIn = false;
+    cpLogo = '../../../../assets/logo/cplogo.png';
+    userPhoto: string;
 
     constructor(private router: Router,
-                private viewportService: ViewPortService,
                 private apiService: ApiService,
                 private authService: AuthService,
-                private loginService: LoginService) { }
+                private loginService: LoginService,
+                private userService: UserService) { }
 
     ngOnInit() {
-        /* this.subs.add(
-            this.viewportService.viewportLayout$.subscribe(handSet => {
-                this.isHandset = handSet.isHandset;
-            })
-        ); */
+        this.subs.add(
+            this.loginService.login$.subscribe(login => {
+                if ( login ) {
+                    this.isLoggedIn = login;
+                }
+            }));
 
         this.subs.add(
-            this.loginService.login$.subscribe(loggedIn => {
-                if ( loggedIn) {
-                    this.isLoggedIn = loggedIn;
+            this.userService.user$.subscribe(user => {
+                if ( user ) {
+                    this.user = user;
+                    !this.isLoggedIn ? this.userPhoto = `../../../assets/users/${user.photo}`
+                                     : this.userPhoto = `/assets/users/${user.photo}`;
                 }
             })
         );
@@ -45,13 +51,16 @@ export class NavigationComponent implements OnInit, OnDestroy {
         this.router.navigate(['/home']);
     }
 
+    onUserClick() {
+        this.router.navigate([`../users/${this.user.id}`]);
+    }
+
     onLogout() {
         this.apiService.logout().subscribe( () => {
-            console.log('Navigation Logout::');
             this.authService.logout();
+            this.user = null;
             this.isLoggedIn = false;
-            // this.loginService.broadcastLogin(false);
-            // this.router.navigate(['/home']);
+            this.router.navigate(['/home']);
         });
     }
 

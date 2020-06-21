@@ -1,63 +1,14 @@
 <nav class="nav-container">
-    <mat-toolbar color="primary" class="mat-elevation-z3">
+    <mat-toolbar color="primary" class="mat-elevation-z2">
         <button mat-button *ngIf="isHandset" 
                 type="button" 
                 aria-label="Toggle sidenav" 
                 mat-icon-button (click)="open(true)">
             <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
         </button>
-        <!-- <nav mat-tab-nav-bar>
-            <a mat-tab-link
-                [routerLink]="[ '/story']"
-                routerLinkActive #rla="routerLinkActive"
-                [active]="rla.isActive">Story
-            </a>
-            <a mat-tab-link
-                [routerLink]="[ '/mission']"
-                routerLinkActive #rla="routerLinkActive"
-                [active]="rla.isActive">Mission
-            </a>
-            <a mat-tab-link
-                [routerLink]="[ '/people']"
-                routerLinkActive #rla="routerLinkActive"
-                [active]="rla.isActive">People
-            </a>
-            <a mat-tab-link
-                [routerLink]="[ '/location']"
-                routerLinkActive #rla="routerLinkActive"
-                [active]="rla.isActive">Location
-            </a>
-            <a mat-tab-link
-                [routerLink]="[ '/user']"
-                routerLinkActive #rla="routerLinkActive"
-                [active]="rla.isActive">User Profile
-            </a>
-    
-            <ng-container *ngIf="!isHandset">
-                <span class="nav-spacer"></span>
-    
-                <a mat-tab-link
-                    [routerLink]="[ '../admin/register']"
-                    routerLinkActive #rla="routerLinkActive"
-                    [active]="rla.isActive">Register
-                </a>
-    
-                <ng-container *ngIf="!isLoggedIn; else logout">
-                    <a mat-tab-link
-                        [routerLink]="[ '../admin/login']"
-                        routerLinkActive #rla="routerLinkActive"
-                        [active]="rla.isActive">Login
-                    </a>
-                </ng-container>
-    
-                <ng-template #logout>
-                    <button mat-button (click)="onLogout()">Logout</button>
-                </ng-template>
-            </ng-container>
-        </nav> -->
         <ul>
             <div class="cp-logo" (click)=onLogoClick()>
-                <img src="../../assets/logo/cplogo.png" alt="CPLogo">
+                <img [src]="cpLogo" alt="CPLogo">
             </div>
     
             <li routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
@@ -73,26 +24,26 @@
                 <a [routerLink]="['./location']" >Location</a>
             </li>
             <li routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-                <a [routerLink]="['./user']" >User Profile</a>
+                <a [routerLink]="['./users']" >User Profile</a>
             </li>
     
             <ng-container *ngIf="!isHandset">
                 <span class="nav-spacer"></span>
-    
-                <li routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-                    <a [routerLink]="['../admin/register']">Register</a>
-                </li>
-    
-                <ng-container *ngIf="!isLoggedIn; else logout">
+                <ng-container *ngIf="!user; else logout">
+                    <li routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                        <a [routerLink]="['../admin/register']">Register</a>
+                    </li>
+
                     <li routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                         <a [routerLink]="['../admin/login']">Login</a>
                     </li>
                 </ng-container>
     
                 <ng-template #logout>
-                    <li>
-                        <button mat-button (click)="onLogout()">Logout</button>
-                    </li>
+                    <div class="image-avatar" (click)="onUserClick()">
+                        <img [src]="userPhoto" alt="User avatar">
+                    </div>
+                    <button mat-button (click)="onLogout()">LOGOUT</button>
                 </ng-template>
             </ng-container>
         </ul>
