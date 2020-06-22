@@ -12,7 +12,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
 
 import { SharedModule } from '@shared/shared.module';
-import { InterceptorProviders } from '@interceptors/index';
+import { InterceptorProviders } from '@services/interceptors/index';
 
 import { AppComponent } from './app.component';
 import { NavigationComponent, LoaderComponent } from '@components/common/';
