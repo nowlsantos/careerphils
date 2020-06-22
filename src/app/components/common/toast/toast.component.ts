@@ -1,12 +1,17 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
 import {
     MatSnackBar,
     MatSnackBarHorizontalPosition,
     MatSnackBarVerticalPosition
 } from '@angular/material/snack-bar';
-import { MessageService } from '@services/message.service';
+import { MessageService, ToasterService } from '@services/common/index';
 import { SubSink } from 'subsink';
+
+enum Sender {
+    Register = 'REGISTER',
+    Login = 'LOGIN',
+    Profile = 'PROFILE',
+}
 
 @Component({
     selector: 'app-toast',
@@ -17,14 +22,18 @@ export class ToastComponent implements OnInit, OnDestroy {
     private hposition: MatSnackBarHorizontalPosition = 'center';
     private vposition: MatSnackBarVerticalPosition = 'top';
     private subs = new SubSink();
+    private sender: string;
 
     constructor(private messageService: MessageService,
+                private toastService: ToasterService,
                 private snackBar: MatSnackBar) { }
 
     ngOnInit() {
         this.subs.add(
             this.messageService.message$.subscribe(result => {
                 if ( result ) {
+                    this.sender = result.sender;
+                    // console.log('TOAST SENDER::', this.sender);
                     this.openSnackbar(result.message, null, result.error);
                 }
             })
@@ -41,10 +50,25 @@ export class ToastComponent implements OnInit, OnDestroy {
             horizontalPosition: this.hposition,
             verticalPosition: this.vposition,
             panelClass: [error ? 'snackbar-red-bg' : 'snackbar-green-bg']
+        })
+        .afterDismissed()
+        .subscribe( () => {
+            console.log('Snackbar dismissed');
+            if ( !error ) {
+                switch ( this.sender ) {
+                    case Sender.Register:
+                        this.toastService.broadcastToast(Sender.Register);
+                        break;
+
+                    case Sender.Login:
+                        this.toastService.broadcastToast(Sender.Login);
+                        break;
+
+                    case Sender.Profile:
+                        this.toastService.broadcastToast(Sender.Profile);
+                        break;
+                }
+            }
         });
-        // .afterDismissed()
-        // .subscribe( (_) => {
-        //     console.log('Snackbar dismissed');
-        // });
     }
 }

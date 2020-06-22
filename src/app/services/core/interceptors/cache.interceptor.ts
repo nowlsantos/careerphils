@@ -7,7 +7,7 @@ import {
     HttpResponse
 } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { CacheService } from '../services/cache.service';
+import { CacheService } from '@services/common/cache.service';
 import { tap } from 'rxjs/operators';
 
 @Injectable()

@@ -1,3 +1,40 @@
 :host {
-  display: block;
+    display: block;
+    min-width: 40%;
+}
+
+.section-document {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 20px;
+    background-color: var(--formbg);
+}
+
+.document-header {
+    position: relative;
+    margin: 20px;
+}
+
+.document-header h3 {
+    margin: 0;
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    text-transform: uppercase;
+}
+
+.mat-list-item {
+    margin: 0;
+    font-family: "Lato", sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+.list-spacer {
+    flex: 1 1 auto;
+}
+
+h4 {
+    margin-top: 30px;
+    font-family: "Lato", sans-serif;
+    font-size: 0.8rem;
 }

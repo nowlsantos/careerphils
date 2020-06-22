@@ -1,1 +1,23 @@
-<p>document works!</p>
+<section class="section-document">
+    <div class="document-header">
+        <h3>Upload Document</h3>
+        <mat-divider></mat-divider>
+    </div>
+
+    <mat-list>
+        <mat-list-item *ngFor="let doc of documents">
+            {{ doc }}
+            <span class="list-spacer"></span>
+            <!-- <button mat-stroked-button color="primary">Upload</button> -->
+            <input type="file"
+               #fileInput
+               accept="image/*" 
+               [ngStyle]="uploadDisplay"
+               (change)="onFileSelected(fileInput.value)">
+            <button mat-stroked-button (click)="fileInput.click()">Upload</button>
+            <mat-divider></mat-divider>
+        </mat-list-item>
+    </mat-list>
+
+    <h4>* Upload only scanned image of these documents</h4>
+</section>

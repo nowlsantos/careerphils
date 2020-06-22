@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { HomeMenuService } from '@services/home-menu.service';
 import { Observable } from 'rxjs';
+import { HomeMenuService } from '@services/common/home-menu.service';
 import { HomeMenu } from '@models/homemenu.model';
 
 @Component({

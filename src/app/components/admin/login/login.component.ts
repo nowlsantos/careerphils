@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { User, ViewPort } from '@models/index';
@@ -7,21 +7,25 @@ import { ApiService,
          ViewPortService,
          LoginService,
          MessageService,
-         UserService
-        } from '@services/index';
-import { timer } from 'rxjs';
+         UserService,
+         ToasterService
+        } from '@services/common/index';
+import { SubSink } from 'subsink';
 
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
 
     viewPort = new ViewPort();
     submitted = false;
     loginForm: FormGroup;
     hide = true;
+    private sender = 'LOGIN';
+    private user: User;
+    private subs = new SubSink();
 
     constructor(private router: Router,
                 private viewportService: ViewPortService,
@@ -30,7 +34,8 @@ export class LoginComponent implements OnInit {
                 private authService: AuthService,
                 private loginService: LoginService,
                 private userService: UserService,
-                private messageService: MessageService) { }
+                private messageService: MessageService,
+                private toastService: ToasterService) { }
 
     ngOnInit() {
         this.viewportService.viewportLayout$.subscribe(viewport => {
@@ -41,6 +46,18 @@ export class LoginComponent implements OnInit {
             email: ['', [Validators.required, Validators.email]],
             password: ['', [Validators.required, Validators.minLength(6)]],
         });
+
+        this.subs.add(
+            this.toastService.toast$.subscribe(sender => {
+                if ( sender === this.sender ) {
+                    this.router.navigate([`../users/${this.user.id}`]);
+                }
+            })
+        );
+    }
+
+    ngOnDestroy() {
+        this.subs.unsubscribe();
     }
 
     getErrorMessage() {
@@ -67,19 +84,16 @@ export class LoginComponent implements OnInit {
         this.apiService.login(user)
             .subscribe(res => {
                 /* tslint:disable:no-string-literal */
-                const newUser = res['data'];
-                this.userService.broadcastUser(newUser);
+                this.user = res['data'];
+                this.userService.broadcastUser(this.user);
                 this.messageService.sendMessage({
                     message: 'Login Successful',
-                    error: false
+                    error: false,
+                    sender: this.sender
                 });
+
                 this.authService.setToken(res['token']);
                 this.loginService.broadcastLogin(true);
-
-                const source = timer(2000);
-                source.subscribe( (_) => {
-                    this.router.navigate([`../users/${newUser.id}`]);
-                });
             }
         );
     }

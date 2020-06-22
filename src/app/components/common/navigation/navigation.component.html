@@ -23,30 +23,27 @@
             <li routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                 <a [routerLink]="['./location']" >Location</a>
             </li>
-            <li routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+            <!-- <li routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                 <a [routerLink]="['./users']" >User Profile</a>
-            </li>
+            </li> -->
     
-            <ng-container *ngIf="!isHandset">
-                <span class="nav-spacer"></span>
-                <ng-container *ngIf="!user; else logout">
-                    <li routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-                        <a [routerLink]="['../admin/register']">Register</a>
-                    </li>
+            <span class="nav-spacer"></span>
+            <ng-container *ngIf="!user; else logout">
+                <li routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                    <a [routerLink]="['../admin/register']">Register</a>
+                </li>
 
-                    <li routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-                        <a [routerLink]="['../admin/login']">Login</a>
-                    </li>
-                </ng-container>
-    
-                <ng-template #logout>
-                    <div class="image-avatar" (click)="onUserClick()">
-                        <img [src]="userPhoto" alt="User avatar">
-                    </div>
-                    <button mat-button (click)="onLogout()">LOGOUT</button>
-                </ng-template>
+                <li routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                    <a [routerLink]="['../admin/login']">Login</a>
+                </li>
             </ng-container>
-        </ul>
 
+            <ng-template #logout>
+                <div class="image-avatar" (click)="onUserClick()">
+                    <img [src]="userPhoto" alt="User avatar">
+                </div>
+                <button mat-button (click)="onLogout()">LOGOUT</button>
+            </ng-template>
+        </ul>
     </mat-toolbar>
 </nav>

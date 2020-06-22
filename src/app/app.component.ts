@@ -9,7 +9,7 @@ import { ViewPort } from '@models/index';
 import { ApiService,
          AuthService,
          ViewPortService,
-         LoginService } from '@services/index';
+         LoginService } from '@services/common/';
 
 @Component({
     selector: 'app-root',

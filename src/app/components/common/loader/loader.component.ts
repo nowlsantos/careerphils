@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { LoaderService } from '@services/loader.service';
+import { LoaderService } from '@services/common/loader.service';
 import { BehaviorSubject } from 'rxjs';
 
 @Component({

@@ -6,8 +6,8 @@ const apiFeatures = require('../middleware/apiFeatures');
 
 const router = express.Router({ mergeParams: true });
 
-//router.use(protect);
-//router.use(authorize('user'));
+router.use(protect);
+// router.use(authorize('user'));
 
 router.route('/')
     .get(apiFeatures(Profile, {

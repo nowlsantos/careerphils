@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { QuicklinkStrategy } from 'ngx-quicklink';
+import { UserResolver } from '@services/resolvers';
 
 const routes: Routes = [
     { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -66,6 +67,9 @@ const routes: Routes = [
         data: {
             preload: true,
             state: 'users'
+        },
+        resolve: {
+            user: UserResolver
         }
     },
     // otherwise redirect to home

@@ -1,8 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ApiService } from '@services/api.service';
 import { HttpResponse } from '@angular/common/http';
-import { UserService } from '@services/user.service';
+import { ActivatedRoute } from '@angular/router';
+import { ApiService, ProfileService } from '@services/common/index';
 import { SubSink } from 'subsink';
+import { User } from '@models/user.model';
 
 @Component({
     selector: 'app-user',
@@ -10,23 +11,37 @@ import { SubSink } from 'subsink';
     styleUrls: ['./user.component.css']
 })
 export class UserComponent implements OnInit, OnDestroy {
-    subs = new SubSink();
+    private subs = new SubSink();
     hasProfile = false;
+    hasPhoto = false;
     selectedFile: File;
     userPhoto: string;
+    fullname: string;
 
     // tslint:disable-next-line:object-literal-key-quotes
-    uploadDisplay = { 'display': 'none'};
+    uploadDisplay = { 'display': 'none' };
 
-    constructor(private apiService: ApiService,
-                private userService: UserService) {}
+    constructor(private route: ActivatedRoute,
+                private apiService: ApiService,
+                private profileService: ProfileService) {}
 
     ngOnInit() {
-        this.subs.add( this.userService.user$.subscribe(user => {
-            if ( user ) {
+        this.subs.add(
+            this.route.data.subscribe(result => {
+                // tslint:disable-next-line:no-string-literal
+                const user = result['user'].data as User;
                 this.userPhoto = `../../../assets/users/${user.photo}`;
-            }
-        }));
+            })
+        );
+
+        this.subs.add(
+            this.profileService.profile$.subscribe(profile => {
+                if ( profile ) {
+                    this.hasProfile = profile.hasProfile;
+                    this.fullname = `${profile.firstname} ${profile.lastname}`.toUpperCase();
+                }
+            })
+        );
     }
 
     ngOnDestroy() {
@@ -41,10 +56,11 @@ export class UserComponent implements OnInit, OnDestroy {
 
         this.apiService.uploadPhoto(fd).subscribe(response => {
             if ( response instanceof HttpResponse ) {
+                this.hasPhoto = true;
+
                 // tslint:disable-next-line:no-string-literal
                 const user = response.body['data'];
                 this.userPhoto = `/assets/users/${user.photo}`;
-                this.userService.broadcastUser(user);
             }
         });
     }

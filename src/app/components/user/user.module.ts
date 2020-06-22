@@ -10,22 +10,19 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule, MatRippleModule } from '@angular/material/core';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatListModule } from '@angular/material/list';
 
 import { UserRoutingModule } from './user-routing.module';
-import { UserComponent } from './user.component';
-import { ChangePasswordComponent } from './change-password/change-password.component';
-import { UploadComponent } from './upload/upload.component';
-import { ProfileComponent } from './profile/profile.component';
-import { CreateEditComponent } from './create-edit/create-edit.component';
-import { DocumentComponent } from './document/document.component';
+import { UserComponent,
+         ProfileComponent,
+         ChangePasswordComponent,
+         DocumentComponent} from './index';
 
 @NgModule({
     declarations: [
         UserComponent,
-        ChangePasswordComponent,
-        UploadComponent,
         ProfileComponent,
-        CreateEditComponent,
+        ChangePasswordComponent,
         DocumentComponent
     ],
     imports: [
@@ -40,6 +37,7 @@ import { DocumentComponent } from './document/document.component';
         MatRippleModule,
         MatRadioModule,
         MatDividerModule,
+        MatListModule,
         UserRoutingModule
     ]
 })

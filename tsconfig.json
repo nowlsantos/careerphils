@@ -16,12 +16,11 @@
         "paths":{
             "@shared/*": ["src/app/shared/*"],
             "@components/*": ["src/app/components/*"],
-            "@core/*":["src/app/core"],
-            "@services/*": ["src/app/core/services/*"],
-            "@models/*": ["src/app/core/models/*"],
-            "@interceptors/*": ["src/app/core/interceptors/*"],
-            "@resolvers/*": ["src/app/core/resolvers/*"],
-            "@guards/*": ["src/app/core/guards/*"],
+            "@services/*": ["src/app/services/*"],
+            "@models/*": ["src/app/models/*"],
+            "@interceptors/*": ["src/app/services/core/interceptors/*"],
+            "@resolvers/*": ["src/app/services/core/resolvers/*"],
+            "@guards/*": ["src/app/services/core/guards/*"],
             "@common/*": ["src/app/components/common/*"]
         }
     },

@@ -4,8 +4,8 @@
 :root {
     --primary: #55a6ee;
     --secondary: #F9A603;
-    --darkblue: #1754d3;
-    --lightblue: rgb(175, 235, 255);
+    --warn: #f44336;
+    --formbg: ghostwhite;
 }
 
 html, body {

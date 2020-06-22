@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { ApiService,
          AuthService,
          LoginService,
-         UserService} from '@services/index';
+         UserService} from '@services/common/';
 import { SubSink } from 'subsink';
 import { User } from '@models/user.model';
 

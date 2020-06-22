@@ -46,7 +46,6 @@ exports.resizeUserPhoto = asyncHandler( async(req, res, next) => {
                 .resize(150, 150)
                 .toFormat('jpeg')
                 .jpeg({ quality: 75})
-                //.toFile(path.join(__dirname, `../../assets/users/${req.file.filename}`))
                 .toFile(`dist/careerphils/assets/users/${req.file.filename}`);
 
     next();
@@ -87,7 +86,6 @@ exports.updateMe = asyncHandler( async(req, res, next) => {
             data: user
         })
     }
-    
 });
 
 /*

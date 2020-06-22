@@ -3,23 +3,41 @@
         <div class="aside-box">
             <img src="{{ userPhoto }}" alt="Photo of User">
         </div>
-        <div class="file-upload">
+
+        <div *ngIf="hasProfile">
+            <h3>{{ fullname }}</h3>
+            <mat-divider></mat-divider>
+        </div>
+        
+        <div *ngIf="!hasPhoto">
             <input type="file"
                    #fileInput
                    accept="image/*" 
                    [ngStyle]="uploadDisplay"
                    (change)="onFileSelected($event)">
             <button mat-button (click)="fileInput.click()">Choose new photo</button>
-            <hr>
         </div>
-        <app-change-password></app-change-password>
+        
+        <hr>
+        
+        <div class="content-link">
+            <mat-nav-list>
+                <ng-container *ngIf="!hasProfile; else edit">
+                    <mat-list-item [routerLink]="['./profile']">Create Profile</mat-list-item>
+                </ng-container>
+                <ng-template #edit>
+                    <mat-list-item [routerLink]="['./profile']">Edit Profile</mat-list-item>
+                </ng-template>
+                
+                <mat-divider></mat-divider>
+                <mat-list-item [routerLink]="['./password']">Change Password</mat-list-item>
+                <mat-divider></mat-divider>
+                <mat-list-item [routerLink]="['./document']">Upload Document</mat-list-item>
+            </mat-nav-list>
+        </div>
     </aside>
 
-    <section class="section-profile">
-        <app-create-edit></app-create-edit>
-    </section>
-    
-    <section class="document">
-        <div class="upload"></div>
-    </section>
+    <div class="user-content">
+        <router-outlet></router-outlet>
+    </div>
 </div>

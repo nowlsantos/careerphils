@@ -70,3 +70,8 @@ div.mat-card-header-text {
     text-decoration: none;
     padding-left: 1em;
 }
+
+.mat-flat-button.mat-primary, 
+.mat-raised-button.mat-primary {
+    background-color: var(--primary);
+}

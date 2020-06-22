@@ -8,3 +8,5 @@ export * from './viewport.service';
 export * from './home-menu.service';
 export * from './user.service';
 export * from './message.service';
+export * from './profile.service';
+export * from './toaster.service';

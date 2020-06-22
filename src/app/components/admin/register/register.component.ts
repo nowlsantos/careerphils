@@ -1,27 +1,29 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ApiService,
          AuthService,
          ViewPortService,
          UserService,
-         MessageService
-        } from '@services/index';
+         MessageService,
+         ToasterService
+        } from '@services/common/index';
 import { User, ViewPort } from '@models/index';
-import { timer } from 'rxjs';
-import { _MatMenu } from '@angular/material/menu';
+import { SubSink } from 'subsink';
 
 @Component({
     selector: 'app-register',
     templateUrl: './register.component.html',
     styleUrls: ['./register.component.css']
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, OnDestroy {
     registerForm: FormGroup;
     submitted = false;
-    viewPort = new ViewPort();
     returnUrl: string;
     hide = true;
+    viewPort = new ViewPort();
+    private sender = 'REGISTER';
+    private subs = new SubSink();
 
     constructor(private route: ActivatedRoute,
                 private router: Router,
@@ -30,7 +32,8 @@ export class RegisterComponent implements OnInit {
                 private apiService: ApiService,
                 private authService: AuthService,
                 private userService: UserService,
-                private messageService: MessageService) { }
+                private messageService: MessageService,
+                private toastService: ToasterService) { }
 
     ngOnInit() {
         this.viewportService.viewportLayout$.subscribe(viewport => {
@@ -41,6 +44,18 @@ export class RegisterComponent implements OnInit {
             email: ['', [Validators.required, Validators.email, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+')]],
             password: ['', [Validators.required, Validators.minLength(6)]]
         });
+
+        this.subs.add(
+            this.toastService.toast$.subscribe(sender => {
+                if ( sender === this.sender ) {
+                    this.router.navigate(['../login'], { relativeTo: this.route });
+                }
+            })
+        );
+    }
+
+    ngOnDestroy() {
+        this.subs.unsubscribe();
     }
 
     validateEmail(email) {
@@ -78,14 +93,10 @@ export class RegisterComponent implements OnInit {
             this.userService.broadcastUser(user);
             this.messageService.sendMessage({
                 message: 'Registration successful',
-                error: false
+                error: false,
+                sender: this.sender
             });
             this.authService.setToken(res['token']);
-
-            const source = timer(3000);
-            source.subscribe( (_) => {
-                this.router.navigate(['../login'], { relativeTo: this.route });
-            });
         });
     }
 }
