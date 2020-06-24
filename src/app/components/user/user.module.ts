@@ -14,6 +14,7 @@ import { MatListModule } from '@angular/material/list';
 
 import { UserRoutingModule } from './user-routing.module';
 import { UserComponent,
+         UserDashboardComponent,
          ProfileComponent,
          ChangePasswordComponent,
          DocumentComponent} from './index';
@@ -21,6 +22,7 @@ import { UserComponent,
 @NgModule({
     declarations: [
         UserComponent,
+        UserDashboardComponent,
         ProfileComponent,
         ChangePasswordComponent,
         DocumentComponent

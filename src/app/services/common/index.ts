@@ -5,7 +5,6 @@ export * from './loader.service';
 export * from './login.service';
 export * from './register.service';
 export * from './viewport.service';
-export * from './home-menu.service';
 export * from './user.service';
 export * from './message.service';
 export * from './profile.service';

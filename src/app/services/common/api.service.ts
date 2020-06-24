@@ -47,24 +47,24 @@ export class ApiService {
     }
 
     /* PROFILES */
-    addProfile(profile: Profile) {
-        return this.http.post<Profile>(`${this.baseUrl}/users/${profile.userId}/profiles`, profile);
+    addProfile(profile: Profile, userId: string) {
+        return this.http.post<Profile>(`${this.baseUrl}/users/${userId}/profiles`, profile);
     }
 
     getAllProfiles() {
         return this.http.get<Profile[]>(`${this.baseUrl}/profiles/`);
     }
 
-    getProfile(id: string) {
-        return this.http.get<Profile>(`${this.baseUrl}/profiles/${id}`);
+    getProfile(profileId: string) {
+        return this.http.get<Profile>(`${this.baseUrl}/profiles/${profileId}`);
     }
 
     updateProfile(profile: Profile) {
         return this.http.put<Profile>(`${this.baseUrl}/profiles/${profile.id}`, profile);
     }
 
-    deleteProfile(id: string) {
-        return this.http.delete<Profile>(`${this.baseUrl}/profiles/${id}`);
+    deleteProfile(profileId: string) {
+        return this.http.delete<Profile>(`${this.baseUrl}/profiles/${profileId}`);
     }
 
     /* UPLOADS */

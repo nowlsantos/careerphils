@@ -22,13 +22,19 @@ const ProfileSchema = new mongoose.Schema({
         type: String,
         required: [20, 'Phone number can not be longer than 20 characters']
     },
-    birthdate: Date,
+    birthdate: {
+        type: Date,
+        required: [true, 'Please add a birth date']
+    },
     photo: String,
     location: {
         type: String,
         required: [true, 'Please add an address or location']
     },
-    position: String,
+    position: {
+        type: String,
+        required: [true, 'Please add a designation or position']
+    },
     createdAt: {
         type: Date,
         default: Date.now

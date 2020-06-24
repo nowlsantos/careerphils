@@ -13,6 +13,7 @@ export class UserResolver implements Resolve<User> {
 
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         const id = route.paramMap.get('id');
-        return this.apiService.getUser(id).pipe(first());
+        // console.log('ID resolver::', id);
+        return this.apiService.getUser(id);
     }
 }

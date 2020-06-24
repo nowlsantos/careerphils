@@ -4,11 +4,11 @@
     </div>
     <div class="home-grid">
         <div class="menu-grid">
-            <ng-container *ngFor="let menu of menu$ | async">
+            <ng-container *ngFor="let content of contents">
                 <div class="card">
-                    <img [src]="menu.image" alt="Photo of {{menu.image}}">
-                    <h2>{{ menu.title }}</h2>
-                    <button mat-button (click)="onMenuClick(menu.link)">Learn more</button>
+                    <img [src]="content.image" alt="Photo of {{content.image}}">
+                    <h2>{{ content.title }}</h2>
+                    <button mat-button (click)="onContentClick(content.link)">Learn more</button>
                 </div>
             </ng-container>
         </div>

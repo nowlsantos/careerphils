@@ -37,7 +37,7 @@ exports.addProfile = asyncHandler(async(req, res, next) => {
     }
 
     const profile = await Profile.create(req.body);
-   
+    
     res.status(201).json({
         status: 'success',
         data: profile
@@ -50,10 +50,7 @@ exports.addProfile = asyncHandler(async(req, res, next) => {
     @access     Public
 */ 
 exports.getProfile = asyncHandler( async(req, res, next) => {
-    const profile = await Profile.findById(req.params.id).populate({
-        path: 'user',
-        select: 'phone position'
-    })
+    const profile = await Profile.findById(req.params.id);
 
     if ( !profile ) {
         return next( new AppError(`No profile was found with an id of ${req.params.id}`) );

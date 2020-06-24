@@ -9,5 +9,4 @@ export interface Profile {
     birthdate: string;
     userId: string;
     createdAt?: Date;
-    hasProfile?: boolean;
 }

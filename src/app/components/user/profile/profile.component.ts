@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { SubSink } from 'subsink';
 import { User, Profile } from '@models/index';
-import { UserService, ApiService, MessageService, ProfileService, ToasterService } from '@services/common/index';
+import { ApiService, MessageService, ToasterService, UserService } from '@services/common/index';
 
 @Component({
     selector: 'app-profile',
@@ -15,15 +16,17 @@ export class ProfileComponent implements OnInit {
     submitted = false;
 
     private subs = new SubSink();
-    private user: User;
-    private profile: Profile;
     private sender = 'PROFILE';
+    private profile: Profile;
+    private user: User;
 
-    constructor(private fb: FormBuilder,
-                private userService: UserService,
+    /* tslint:disable:no-string-literal */
+    constructor(private router: Router,
+                private route: ActivatedRoute,
+                private fb: FormBuilder,
                 private apiService: ApiService,
+                private userService: UserService,
                 private messageService: MessageService,
-                private profileService: ProfileService,
                 private toastService: ToasterService) { }
 
     ngOnInit() {
@@ -36,29 +39,41 @@ export class ProfileComponent implements OnInit {
         );
 
         this.subs.add(
-            this.toastService.toast$.subscribe(sender => {
-                if ( sender === this.sender ) {
-                    this.onReset();
+            this.route.data.subscribe(result => {
+                if ( result['profile'] ) {
+                    this.profile = result['profile'].data as Profile;
+                    this.hasProfile = true;
+                    // console.log('Profile Route::', result['profile']);
                 }
             })
         );
 
-        this.initializeForm();
+        this.subs.add(
+            this.toastService.toast$.subscribe(sender => {
+                if ( sender === this.sender ) {
+                    this.router.navigate(['../profile'], { relativeTo: this.route });
+                }
+            })
+        );
+
+        this.initializeForm(this.profile);
     }
 
-    private initializeForm() {
+    private initializeForm(profile: Profile) {
+        console.log('InitForm::', this.hasProfile);
+
         if ( !this.hasProfile ) {
-            this.profile = this.resetProfile();
+            profile = this.resetProfile();
         }
 
         this.userForm = this.fb.group({
-            firstname: [this.profile.firstname, Validators.required],
-            lastname: [this.profile.lastname, Validators.required],
-            email: [this.profile.email, Validators.required],
-            phone: [this.profile.phone, Validators.required],
-            location: [this.profile.location, Validators.required],
-            position: [this.profile.position, Validators.required],
-            birthdate: [this.profile.birthdate, Validators.required]
+            firstname: [profile.firstname, Validators.required],
+            lastname: [profile.lastname, Validators.required],
+            email: [profile.email, Validators.required],
+            phone: [profile.phone, Validators.required],
+            location: [profile.location, Validators.required],
+            position: [profile.position, Validators.required],
+            birthdate: [profile.birthdate, Validators.required]
         });
     }
 
@@ -80,20 +95,18 @@ export class ProfileComponent implements OnInit {
             birthdate: fv.birthdate
         };
 
-        this.apiService.addProfile(profile).subscribe(response => {
+        this.apiService.addProfile(profile, this.user.id).subscribe(response => {
             if ( response ) {
                 this.messageService.sendMessage({
                     message: 'Profile successfully created',
                     error: false,
                     sender: this.sender
                 });
-                // tslint:disable-next-line:no-string-literal
+
                 this.profile = response['data'] as Profile;
-
-                response.hasProfile = true;
-                this.hasProfile = this.profile.hasProfile = response.hasProfile;
-
-                this.profileService.broadcastProfile(this.profile);
+                // this.user.profileId = response['data']._id;
+                // this.user.hasProfile = true;
+                console.log('AddProfile::', this.profile);
             }
         });
     }
@@ -114,6 +127,7 @@ export class ProfileComponent implements OnInit {
 
     onReset() {
         this.resetProfile();
+        this.router.navigate(['../dashboard'], { relativeTo: this.route });
         // this.userForm.reset();
     }
 }

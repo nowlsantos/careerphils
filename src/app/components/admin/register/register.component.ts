@@ -31,7 +31,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
                 private viewportService: ViewPortService,
                 private apiService: ApiService,
                 private authService: AuthService,
-                private userService: UserService,
+                // private userService: UserService,
                 private messageService: MessageService,
                 private toastService: ToasterService) { }
 
@@ -90,12 +90,13 @@ export class RegisterComponent implements OnInit, OnDestroy {
             user.photo = res['data'].photo;
             user.createdAt = res['data'].createdAt;
 
-            this.userService.broadcastUser(user);
             this.messageService.sendMessage({
                 message: 'Registration successful',
                 error: false,
                 sender: this.sender
             });
+
+            // this.userService.broadcastUser(user);
             this.authService.setToken(res['token']);
         });
     }

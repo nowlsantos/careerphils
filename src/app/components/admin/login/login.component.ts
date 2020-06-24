@@ -49,7 +49,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
         this.subs.add(
             this.toastService.toast$.subscribe(sender => {
-                if ( sender === this.sender ) {
+                if ( sender === this.sender && this.user ) {
                     this.router.navigate([`../users/${this.user.id}`]);
                 }
             })
@@ -85,13 +85,14 @@ export class LoginComponent implements OnInit, OnDestroy {
             .subscribe(res => {
                 /* tslint:disable:no-string-literal */
                 this.user = res['data'];
-                this.userService.broadcastUser(this.user);
+
                 this.messageService.sendMessage({
                     message: 'Login Successful',
                     error: false,
                     sender: this.sender
                 });
 
+                this.userService.broadcastUser(this.user);
                 this.authService.setToken(res['token']);
                 this.loginService.broadcastLogin(true);
             }

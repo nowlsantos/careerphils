@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { HomeMenuService } from '@services/common/home-menu.service';
-import { HomeMenu } from '@models/homemenu.model';
+import * as data from '../../../../assets/data/contents.json';
 
 @Component({
     selector: 'app-home',
@@ -10,16 +8,15 @@ import { HomeMenu } from '@models/homemenu.model';
     styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-    menu$: Observable<HomeMenu[]>;
+    contents: any;
 
-    constructor(private router: Router,
-                private homeMenuService: HomeMenuService) { }
+    constructor(private router: Router) { }
 
     ngOnInit() {
-        this.menu$ = this.homeMenuService.getHomeMenus();
+        this.contents = (data as any).default;
     }
 
-    onMenuClick(link: string) {
+    onContentClick(link: string) {
         this.router.navigate([`/${link}`]);
     }
 }

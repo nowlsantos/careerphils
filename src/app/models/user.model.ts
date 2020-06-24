@@ -5,4 +5,7 @@ export interface User {
     role?: string;
     photo?: string;
     createdAt?: Date;
+    hasPhoto?: boolean;
+    hasProfile?: boolean;
+    profileId?: string;
 }
