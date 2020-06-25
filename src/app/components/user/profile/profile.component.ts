@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { SubSink } from 'subsink';
@@ -46,14 +46,16 @@ export class ProfileComponent implements OnInit, OnDestroy {
         );
         
         if ( !this.user.hasProfile ) {
-            this.route.data.subscribe(result => {
-                if ( result && result['profile'] ) {
-                    this.user.profile = result['profile'].data as Profile;
-                    this.user.hasProfile = true;
-                } else {
-                    this.user.profile = this.resetProfile();
-                }
-            });
+            this.subs.add(
+                this.route.data.subscribe(result => {
+                    if ( result && result['profile'] ) {
+                        this.user.profile = result['profile'].data as Profile;
+                        this.user.hasProfile = true;
+                    } else {
+                        this.user.profile = this.resetProfile();
+                    }
+                })
+            )
         }
         
         this.initializeForm(this.user.profile);
