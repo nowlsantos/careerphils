@@ -10,24 +10,25 @@ import { ApiService, MessageService, ToasterService, UserService } from '@servic
     templateUrl: './profile.component.html',
     styleUrls: ['./profile.component.css']
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, OnDestroy {
+    // tslint:disable:no-trailing-whitespace
+    /* tslint:disable:no-string-literal */
+
     userForm: FormGroup;
-    hasProfile = false;
+    profile: Profile;
     submitted = false;
 
     private subs = new SubSink();
     private sender = 'PROFILE';
-    private profile: Profile;
     private user: User;
 
-    /* tslint:disable:no-string-literal */
     constructor(private router: Router,
                 private route: ActivatedRoute,
                 private fb: FormBuilder,
                 private apiService: ApiService,
                 private userService: UserService,
                 private messageService: MessageService,
-                private toastService: ToasterService) { }
+                private toastService: ToasterService) {}
 
     ngOnInit() {
         this.subs.add(
@@ -35,37 +36,34 @@ export class ProfileComponent implements OnInit {
                 if ( user ) {
                     this.user = user;
                 }
-            })
-        );
+            }),
 
-        this.subs.add(
-            this.route.data.subscribe(result => {
-                if ( result['profile'] ) {
-                    this.profile = result['profile'].data as Profile;
-                    this.hasProfile = true;
-                    // console.log('Profile Route::', result['profile']);
-                }
-            })
-        );
-
-        this.subs.add(
             this.toastService.toast$.subscribe(sender => {
                 if ( sender === this.sender ) {
                     this.router.navigate(['../profile'], { relativeTo: this.route });
                 }
-            })
+            }),
         );
-
-        this.initializeForm(this.profile);
+        
+        if ( !this.user.hasProfile ) {
+            this.route.data.subscribe(result => {
+                if ( result && result['profile'] ) {
+                    this.user.profile = result['profile'].data as Profile;
+                    this.user.hasProfile = true;
+                } else {
+                    this.user.profile = this.resetProfile();
+                }
+            });
+        }
+        
+        this.initializeForm(this.user.profile);
     }
 
+    ngOnDestroy() {
+        this.subs.unsubscribe();
+    }
+    
     private initializeForm(profile: Profile) {
-        console.log('InitForm::', this.hasProfile);
-
-        if ( !this.hasProfile ) {
-            profile = this.resetProfile();
-        }
-
         this.userForm = this.fb.group({
             firstname: [profile.firstname, Validators.required],
             lastname: [profile.lastname, Validators.required],
@@ -102,11 +100,6 @@ export class ProfileComponent implements OnInit {
                     error: false,
                     sender: this.sender
                 });
-
-                this.profile = response['data'] as Profile;
-                // this.user.profileId = response['data']._id;
-                // this.user.hasProfile = true;
-                console.log('AddProfile::', this.profile);
             }
         });
     }

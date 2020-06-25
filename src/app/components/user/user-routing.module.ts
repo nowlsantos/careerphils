@@ -14,7 +14,9 @@ const routes: Routes = [
             { path: 'dashboard', component: UserDashboardComponent },
             {
                 path: 'profile', component: ProfileComponent,
-                resolve: { profile: ProfileResolver }
+                resolve: {
+                    profile: ProfileResolver
+                }
             },
             { path: 'password', component: ChangePasswordComponent },
             { path: 'document', component: DocumentComponent },

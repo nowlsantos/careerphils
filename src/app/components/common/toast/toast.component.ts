@@ -33,7 +33,6 @@ export class ToastComponent implements OnInit, OnDestroy {
             this.messageService.message$.subscribe(result => {
                 if ( result ) {
                     this.sender = result.sender;
-                    console.log('TOAST SENDER::', this.sender);
                     this.openSnackbar(result.message, null, result.error);
                 }
             })
@@ -53,7 +52,7 @@ export class ToastComponent implements OnInit, OnDestroy {
         })
         .afterDismissed()
         .subscribe( () => {
-            console.log('Snackbar dismissed');
+            // console.log('Snackbar dismissed');
             if ( !error ) {
                 switch ( this.sender ) {
                     case Sender.Register:

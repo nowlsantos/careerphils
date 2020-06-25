@@ -22,7 +22,7 @@ router.patch('/updateMe',
     updateMe);
   
 router.route('/')
-    .get(apiFeatures(User, 'profiles'), getUsers)
+    .get(apiFeatures(User, 'user_profile'), getUsers)
     .post(createUser);
 
 router.route('/:id')

@@ -1,3 +1,5 @@
+import { Profile } from './profile.model';
+
 export interface User {
     id?: string;
     email: string;
@@ -7,5 +9,5 @@ export interface User {
     createdAt?: Date;
     hasPhoto?: boolean;
     hasProfile?: boolean;
-    profileId?: string;
+    profile?: Profile;
 }

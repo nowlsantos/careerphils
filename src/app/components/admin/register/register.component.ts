@@ -4,7 +4,6 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ApiService,
          AuthService,
          ViewPortService,
-         UserService,
          MessageService,
          ToasterService
         } from '@services/common/index';
@@ -31,21 +30,20 @@ export class RegisterComponent implements OnInit, OnDestroy {
                 private viewportService: ViewPortService,
                 private apiService: ApiService,
                 private authService: AuthService,
-                // private userService: UserService,
                 private messageService: MessageService,
                 private toastService: ToasterService) { }
 
     ngOnInit() {
-        this.viewportService.viewportLayout$.subscribe(viewport => {
-            this.viewPort = viewport;
-        });
-
         this.registerForm = this.fb.group({
             email: ['', [Validators.required, Validators.email, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+')]],
             password: ['', [Validators.required, Validators.minLength(6)]]
         });
 
         this.subs.add(
+            this.viewportService.viewportLayout$.subscribe(viewport => {
+                this.viewPort = viewport;
+            }),
+
             this.toastService.toast$.subscribe(sender => {
                 if ( sender === this.sender ) {
                     this.router.navigate(['../login'], { relativeTo: this.route });
@@ -96,7 +94,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
                 sender: this.sender
             });
 
-            // this.userService.broadcastUser(user);
             this.authService.setToken(res['token']);
         });
     }

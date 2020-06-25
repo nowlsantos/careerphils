@@ -1,6 +1,6 @@
 <section class="section-profile">
     <div class="user-header">
-        <ng-container *ngIf="!hasProfile; else editProfile">
+        <ng-container *ngIf="!profile; else editProfile">
             <h3>Create Profile</h3>
         </ng-container>
         <ng-template #editProfile>

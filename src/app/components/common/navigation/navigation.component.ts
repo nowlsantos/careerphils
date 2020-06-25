@@ -1,9 +1,6 @@
 import { Component, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { ApiService,
-         AuthService,
-         LoginService,
-         UserService} from '@services/common/';
+import { ApiService, AuthService, UserService} from '@services/common/';
 import { SubSink } from 'subsink';
 import { User } from '@models/user.model';
 
@@ -25,17 +22,9 @@ export class NavigationComponent implements OnInit, OnDestroy {
     constructor(private router: Router,
                 private apiService: ApiService,
                 private authService: AuthService,
-                private loginService: LoginService,
                 private userService: UserService) { }
 
     ngOnInit() {
-        this.subs.add(
-            this.loginService.login$.subscribe(login => {
-                if ( login ) {
-                    this.isLoggedIn = login;
-                }
-            }));
-
         this.subs.add(
             this.userService.user$.subscribe(user => {
                 if ( user ) {

@@ -13,7 +13,7 @@ const apiFeatures = (model, populate) => async (req, res, next) => {
     let query;
     
     // Finding resource
-    query = model.find(JSON.parse(queryStr));
+    query = model.find(JSON.parse(queryStr)).populate('profile');
 
     // Select fields
     if ( req.query.select ) {

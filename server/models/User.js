@@ -30,6 +30,11 @@ const UserSchema = new mongoose.Schema({
         type: String,
         default: 'default.jpg'
     },
+    profile: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Profile',
+        // required: true
+    },
     createdAt: {
         type: Date,
         default: Date.now
@@ -46,11 +51,11 @@ UserSchema.pre('remove', async function(next) {
 })
 
 // Reverse populate with virtuals
-UserSchema.virtual('profiles', {
+UserSchema.virtual('user_profile', {
     ref: 'Profile',
     localField: '_id',
     foreignField: 'user',
-    justOne: false
+    justOne: true
 })
 
 // Encrypts password using bcrypt

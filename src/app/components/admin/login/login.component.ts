@@ -11,6 +11,7 @@ import { ApiService,
          ToasterService
         } from '@services/common/index';
 import { SubSink } from 'subsink';
+import { switchMap, map, tap } from 'rxjs/operators';
 
 @Component({
     selector: 'app-login',
@@ -18,7 +19,7 @@ import { SubSink } from 'subsink';
     styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit, OnDestroy {
-
+    /* tslint:disable:no-string-literal */
     viewPort = new ViewPort();
     submitted = false;
     loginForm: FormGroup;
@@ -33,21 +34,21 @@ export class LoginComponent implements OnInit, OnDestroy {
                 private apiService: ApiService,
                 private authService: AuthService,
                 private loginService: LoginService,
-                private userService: UserService,
                 private messageService: MessageService,
+                private userService: UserService,
                 private toastService: ToasterService) { }
 
     ngOnInit() {
-        this.viewportService.viewportLayout$.subscribe(viewport => {
-            this.viewPort = viewport;
-        });
-
         this.loginForm = this.fb.group({
             email: ['', [Validators.required, Validators.email]],
             password: ['', [Validators.required, Validators.minLength(6)]],
         });
 
         this.subs.add(
+            this.viewportService.viewportLayout$.subscribe(viewport => {
+                this.viewPort = viewport;
+            }),
+
             this.toastService.toast$.subscribe(sender => {
                 if ( sender === this.sender && this.user ) {
                     this.router.navigate([`../users/${this.user.id}`]);
@@ -81,21 +82,23 @@ export class LoginComponent implements OnInit, OnDestroy {
             password: formvalue.password,
         };
 
-        this.apiService.login(user)
-            .subscribe(res => {
-                /* tslint:disable:no-string-literal */
-                this.user = res['data'];
+        this.subs.add(
+            this.apiService.login(user)
+                .subscribe(res => {
+                    this.user = res['data'];
 
-                this.messageService.sendMessage({
-                    message: 'Login Successful',
-                    error: false,
-                    sender: this.sender
-                });
+                    this.messageService.sendMessage({
+                        message: 'Login Successful',
+                        error: false,
+                        sender: this.sender
+                    });
 
-                this.userService.broadcastUser(this.user);
-                this.authService.setToken(res['token']);
-                this.loginService.broadcastLogin(true);
-            }
+                    this.authService.setToken(res['token']);
+                    this.loginService.broadcastLogin(true);
+                    this.userService.broadcastUser(this.user);
+                }
+            )
         );
+
     }
 }

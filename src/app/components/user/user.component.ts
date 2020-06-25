@@ -1,9 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
-import { ApiService } from '@services/common/api.service';
+import { ApiService } from '@services/common/index';
 import { SubSink } from 'subsink';
-import { User } from '@models/user.model';
+import { User, Profile } from '@models/index';
+import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'app-user',
@@ -12,12 +13,10 @@ import { User } from '@models/user.model';
 })
 export class UserComponent implements OnInit, OnDestroy {
     private subs = new SubSink();
-    // hasProfile = false;
-    // hasPhoto = false;
     selectedFile: File;
     userPhoto: string;
     fullname: string;
-    user: User;
+    profile: Profile;
 
     // tslint:disable-next-line:object-literal-key-quotes
     uploadDisplay = { 'display': 'none' };
@@ -27,25 +26,24 @@ export class UserComponent implements OnInit, OnDestroy {
                 private apiService: ApiService) {}
 
     ngOnInit() {
-        // console.log('ID Snapshot::', this.route.snapshot.paramMap.get('id'));
-
+        let user: User;
         this.subs.add(
             this.route.data.subscribe(result => {
-                this.user = result['user'].data as User;
-                this.userPhoto = `../../../assets/users/${this.user.photo}`;
-                // console.log('User hasProfile::', this.user.hasProfile);
-                // console.log('User ProfileID::', this.user.profileId);
+                user = result['user'].data as User;
+                this.userPhoto = `../../../assets/users/${user.photo}`;
             })
         );
 
-        /* this.subs.add(
-            this.profileService.profile$.subscribe(profile => {
-                if ( profile ) {
-                    this.hasProfile = profile.hasProfile;
-                    this.fullname = `${profile.firstname} ${profile.lastname}`.toUpperCase();
+        if ( !this.profile ) {
+            this.apiService.getUsers().pipe(
+                map(result => result['data'].filter(item => item.id === user.id))
+            ).subscribe(data => {
+                if ( data[0].user_profile ) {
+                    this.profile = data[0].user_profile as Profile;
+                    this.fullname = `${this.profile.firstname} ${this.profile.lastname}`.toUpperCase();
                 }
-            })
-        ); */
+            });
+        }
     }
 
     ngOnDestroy() {

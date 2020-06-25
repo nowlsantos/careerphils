@@ -112,7 +112,7 @@ exports.getUser = asyncHandler( async(req, res, next) => {
     res.status(200).json({
         status: 'success',
         data: user
-    })   
+    })
 });
 
 /* 
@@ -168,7 +168,7 @@ exports.deleteUser = asyncHandler( async(req, res, next) => {
     user.remove();
 
     res.status(204).json({
-        status: true,
+        status: 'success',
         data: {}
     })
 });
