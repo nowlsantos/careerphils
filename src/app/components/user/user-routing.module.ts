@@ -5,22 +5,16 @@ import { UserComponent,
          ProfileComponent,
          ChangePasswordComponent,
          DocumentComponent } from './index';
-import { ProfileResolver } from '@services/resolvers/profile.resolver';
 
 const routes: Routes = [
     {
         path: '', component: UserComponent,
         children: [
+            { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
             { path: 'dashboard', component: UserDashboardComponent },
-            {
-                path: 'profile', component: ProfileComponent,
-                resolve: {
-                    profile: ProfileResolver
-                }
-            },
+            { path: 'profile', component: ProfileComponent },
             { path: 'password', component: ChangePasswordComponent },
             { path: 'document', component: DocumentComponent },
-            { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
         ]
     }
 ];

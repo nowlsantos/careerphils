@@ -13,13 +13,17 @@ import { ApiService, MessageService, ToasterService, UserService } from '@servic
 export class ProfileComponent implements OnInit, OnDestroy {
     // tslint:disable:no-trailing-whitespace
     /* tslint:disable:no-string-literal */
+    positions: string[] = [ 'Master', 'Chief Mate', 'Second Mate', 'Third Mate',
+        'Deck Cadet', 'Chief Engineer', 'Second Engineer', 'Third Engineer', 'Fourth Engineer',
+        'Engine Cadet', 'Electrician', 'Deck Foreman', 'Pump Man', 'Quartermaster',
+        'Ordinary Seaman(OS)', 'Fitter', 'Oiler', 'Wiper', 'Chief Cook and Steward'
+    ];
 
     userForm: FormGroup;
     profile: Profile;
-    submitted = false;
-
+    
+    readonly sender = 'PROFILE';
     private subs = new SubSink();
-    private sender = 'PROFILE';
     private user: User;
 
     constructor(private router: Router,
@@ -35,30 +39,20 @@ export class ProfileComponent implements OnInit, OnDestroy {
             this.userService.user$.subscribe(user => {
                 if ( user ) {
                     this.user = user;
+                    this.profile = this.user.profile;
+                    this.user.hasProfile = true;
                 }
             }),
-
+            
             this.toastService.toast$.subscribe(sender => {
                 if ( sender === this.sender ) {
-                    this.router.navigate(['../profile'], { relativeTo: this.route });
+                    this.userService.broadcastUser(this.user);
+                    this.router.navigate(['../dashboard'], { relativeTo: this.route });
                 }
             }),
         );
-        
-        if ( !this.user.hasProfile ) {
-            this.subs.add(
-                this.route.data.subscribe(result => {
-                    if ( result && result['profile'] ) {
-                        this.user.profile = result['profile'].data as Profile;
-                        this.user.hasProfile = true;
-                    } else {
-                        this.user.profile = this.resetProfile();
-                    }
-                })
-            )
-        }
-        
-        this.initializeForm(this.user.profile);
+
+        this.initializeForm(this.profile);
     }
 
     ngOnDestroy() {
@@ -66,19 +60,22 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
     
     private initializeForm(profile: Profile) {
+        if ( !profile ) {
+            profile = this.resetProfile();
+        }
+
         this.userForm = this.fb.group({
             firstname: [profile.firstname, Validators.required],
             lastname: [profile.lastname, Validators.required],
             email: [profile.email, Validators.required],
             phone: [profile.phone, Validators.required],
             location: [profile.location, Validators.required],
-            position: [profile.position, Validators.required],
-            birthdate: [profile.birthdate, Validators.required]
+            birthdate: [profile.birthdate, Validators.required],
+            position: [profile.position, Validators.required]
         });
     }
 
     onSubmit() {
-        this.submitted = true;
         if ( this.userForm.invalid ) {
             return;
         }
@@ -91,8 +88,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
             email: fv.email,
             phone: fv.phone,
             location: fv.location,
-            position: fv.position,
-            birthdate: fv.birthdate
+            birthdate: fv.birthdate,
+            position: fv.position
         };
 
         this.apiService.addProfile(profile, this.user.id).subscribe(response => {
@@ -102,6 +99,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
                     error: false,
                     sender: this.sender
                 });
+
+                this.profile = this.user.profile = response['data'] as Profile; 
+                this.user.hasProfile = true;
+                // console.log('AddProfile::', this.profile);
             }
         });
     }

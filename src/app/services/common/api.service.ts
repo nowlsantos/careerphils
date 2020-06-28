@@ -74,4 +74,13 @@ export class ApiService {
             observe: 'events'
         });
     }
+
+    /* CHANGE / FORGOT / RESET PASSWORD  */
+    updatePassword(user: User) {
+        return this.http.patch<User>(`${this.baseUrl}/auth/updatepassword`, user);
+    }
+
+    forgotPassword(email: string) {
+        return this.http.post(`${this.baseUrl}/auth/forgotpassword`, email);
+    }
 }

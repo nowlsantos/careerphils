@@ -115,12 +115,14 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     closeSideNav() {
-        this.apiService.logout().subscribe( () => {
-            // console.log('SideNav Logout::');
-            this.authService.logout();
-            this.loginService.broadcastLogin(false);
-            // this.router.navigate(['/home']);
-            this.sidenav.close();
-        });
+        this.subs.add(
+            this.apiService.logout().subscribe( () => {
+                // console.log('SideNav Logout::');
+                this.authService.logout();
+                this.loginService.broadcastLogin(false);
+                // this.router.navigate(['/home']);
+                this.sidenav.close();
+            })
+        );
     }
 }

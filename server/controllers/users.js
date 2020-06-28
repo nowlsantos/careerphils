@@ -1,4 +1,3 @@
-const path = require("path");
 const asyncHandler = require('../middleware/async');
 const User = require('../models/User');
 const AppError = require('../utils/appError');
@@ -51,13 +50,13 @@ exports.resizeUserPhoto = asyncHandler( async(req, res, next) => {
     next();
 });
 
-const filterObj = (obj, ...allowedFields) => {
+/* const filterObj = (obj, ...allowedFields) => {
     const newObj = {};
     Object.keys(obj).forEach(el => {
         if (allowedFields.includes(el)) newObj[el] = obj[el];
     });
     return newObj;
-};
+}; */
 
 /* 
     @desc       Upload a user photo
@@ -65,7 +64,7 @@ const filterObj = (obj, ...allowedFields) => {
     @access     Private
 */ 
 exports.updateMe = asyncHandler( async(req, res, next) => {
-    const filteredBody = filterObj(req.body, 'name', 'email');
+    // const filteredBody = filterObj(req.body, 'name', 'email');
     // if (req.file) filteredBody.photo = req.file.filename;
     if ( req.file ) req.body.photo = req.file.filename;
 
@@ -91,7 +90,7 @@ exports.updateMe = asyncHandler( async(req, res, next) => {
 /*
     @desc       Get all users
     @route      GET api/users
-    @access     Public
+    @access     Private/Admin
 */ 
 exports.getUsers = asyncHandler(async (req, res, next) => {
     res.status(200).json(res.apiFeatures);
@@ -100,11 +99,11 @@ exports.getUsers = asyncHandler(async (req, res, next) => {
 /* 
     @desc       Get a single user
     @route      GET api/users/:id
-    @access     Public
+    @access     Private/Admin
 */ 
 exports.getUser = asyncHandler( async(req, res, next) => {
-    const user = await User.findById(req.params.id);
-
+    const user = await User.findById(req.params.id).populate('user_profile');
+    
     if ( !user ) {
         return next( new AppError(`No user was found with an id of ${req.params.id}`), 404 );
     }
@@ -118,7 +117,7 @@ exports.getUser = asyncHandler( async(req, res, next) => {
 /* 
     @desc       Create a new user
     @route      POST api/users
-    @access     Private
+    @access     Private/Admin
 */ 
 exports.createUser = asyncHandler(async(req, res, next) => {
     // Add profile to the req.body
@@ -135,7 +134,7 @@ exports.createUser = asyncHandler(async(req, res, next) => {
 /* 
     @desc       Update a user
     @route      PUT api/users/:id
-    @access     Private
+    @access     Private/Admin
 */ 
 exports.updateUser = asyncHandler( async(req, res, next) => {
     const user = await User.findByIdAndUpdate(req.params.id, req.body, {
@@ -156,7 +155,7 @@ exports.updateUser = asyncHandler( async(req, res, next) => {
 /* 
     @desc       Delete a single user
     @route      DELETE api/users/:id
-    @access     private
+    @access     Private/Admin
 */ 
 exports.deleteUser = asyncHandler( async(req, res, next) => {
     const user = await User.findById(req.params.id);

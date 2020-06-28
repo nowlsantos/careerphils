@@ -11,6 +11,7 @@ enum Sender {
     Register = 'REGISTER',
     Login = 'LOGIN',
     Profile = 'PROFILE',
+    ChangePassword = 'CHANGE_PASSWORD'
 }
 
 @Component({
@@ -65,6 +66,10 @@ export class ToastComponent implements OnInit, OnDestroy {
 
                     case Sender.Profile:
                         this.toastService.broadcastToast(Sender.Profile);
+                        break;
+
+                    case Sender.ChangePassword:
+                        this.toastService.broadcastToast(Sender.ChangePassword);
                         break;
                 }
             } else {

@@ -11,6 +11,7 @@ import { MatNativeDateModule, MatRippleModule } from '@angular/material/core';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
+import { MatSelectModule } from '@angular/material/select';
 
 import { UserRoutingModule } from './user-routing.module';
 import { UserComponent,
@@ -40,6 +41,7 @@ import { UserComponent,
         MatRadioModule,
         MatDividerModule,
         MatListModule,
+        MatSelectModule,
         UserRoutingModule
     ]
 })

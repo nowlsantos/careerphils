@@ -25,14 +25,9 @@
                 <mat-list-item [routerLink]="['./dashboard']">Dashboard</mat-list-item>
                 <mat-divider></mat-divider>
 
-                <ng-container *ngIf="!profile; else edit">
-                    <mat-list-item [routerLink]="['./profile']">Create Profile</mat-list-item>
-                </ng-container>
-                <ng-template #edit>
-                    <mat-list-item [routerLink]="['./profile']">Edit Profile</mat-list-item>
-                </ng-template>
-                
+                <mat-list-item [routerLink]="['./profile']">Profile</mat-list-item>
                 <mat-divider></mat-divider>
+
                 <mat-list-item [routerLink]="['./password']">Change Password</mat-list-item>
                 <mat-divider></mat-divider>
                 <mat-list-item [routerLink]="['./document']">Upload Document</mat-list-item>

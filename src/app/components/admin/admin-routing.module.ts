@@ -5,9 +5,8 @@ import { AdminComponent, RegisterComponent, LoginComponent } from './index';
 
 const routes: Routes = [
     {
-        path: '',
+        path: '', component: AdminComponent,
         children: [
-            { path: '', component: AdminComponent },
             { path: 'register', component: RegisterComponent },
             { path: 'login', component: LoginComponent }
         ]

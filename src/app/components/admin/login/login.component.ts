@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     submitted = false;
     loginForm: FormGroup;
     hide = true;
-    private sender = 'LOGIN';
+    readonly sender = 'LOGIN';
     private user: User;
     private subs = new SubSink();
 
@@ -99,6 +99,11 @@ export class LoginComponent implements OnInit, OnDestroy {
                 }
             )
         );
+    }
 
+    forgotPassHandler() {
+        this.apiService.forgotPassword(this.user.email).subscribe( _ => {
+            
+        })
     }
 }

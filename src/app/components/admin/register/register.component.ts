@@ -9,6 +9,7 @@ import { ApiService,
         } from '@services/common/index';
 import { User, ViewPort } from '@models/index';
 import { SubSink } from 'subsink';
+import { PasswordValidatorc } from '../password.validator';
 
 @Component({
     selector: 'app-register',
@@ -17,11 +18,10 @@ import { SubSink } from 'subsink';
 })
 export class RegisterComponent implements OnInit, OnDestroy {
     registerForm: FormGroup;
-    submitted = false;
     returnUrl: string;
     hide = true;
     viewPort = new ViewPort();
-    private sender = 'REGISTER';
+    readonly sender = 'REGISTER';
     private subs = new SubSink();
 
     constructor(private route: ActivatedRoute,
@@ -36,8 +36,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.registerForm = this.fb.group({
             email: ['', [Validators.required, Validators.email, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+')]],
-            password: ['', [Validators.required, Validators.minLength(6)]]
-        });
+            password: ['', [Validators.required, Validators.minLength(6)]],
+            confirmPassword: ['', [Validators.required, Validators.minLength(6)]]
+        }, {validator: PasswordValidatorc});
 
         this.subs.add(
             this.viewportService.viewportLayout$.subscribe(viewport => {
@@ -62,7 +63,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
         return re.test(email);
     }
 
-    getErrorMessage() {
+    getEmailErrorMessage() {
         const email = this.registerForm.get('email');
         if ( email.hasError('required') ) {
             return 'You must enter a value';
@@ -71,8 +72,16 @@ export class RegisterComponent implements OnInit, OnDestroy {
         return email.hasError('email') ? 'Not a valid email address' : '';
     }
 
+    getConfirmPasswordErrorMessage() {
+        const confirmPassword = this.registerForm.get('confirmPassword');
+        if ( confirmPassword.hasError('required') ) {
+            return 'You must enter a value';
+        }
+
+        return confirmPassword.hasError('confirmPassword') ? 'Password do not match' : '';
+    }
+
     onSubmit() {
-        this.submitted = true;
         if ( this.registerForm.invalid ) {
             return;
         }
@@ -81,19 +90,20 @@ export class RegisterComponent implements OnInit, OnDestroy {
         const user: User = {
             email: formvalue.email,
             password: formvalue.password,
+            confirmPassword: formvalue.confirmPassword
         };
 
         this.apiService.register(user).subscribe(res => {
-            /* tslint:disable:no-string-literal */
-            user.photo = res['data'].photo;
-            user.createdAt = res['data'].createdAt;
+            // user.photo = res['data'].photo;
+            // user.createdAt = res['data'].createdAt;
 
             this.messageService.sendMessage({
-                message: 'Registration successful',
+                message: 'Registration successful. Welcome to CareerPhils!',
                 error: false,
                 sender: this.sender
             });
 
+            /* tslint:disable:no-string-literal */
             this.authService.setToken(res['token']);
         });
     }

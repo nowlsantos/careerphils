@@ -1,10 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
-import { ApiService } from '@services/common/index';
+import { ApiService, UserService } from '@services/common/index';
 import { SubSink } from 'subsink';
 import { User, Profile } from '@models/index';
-import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'app-user',
@@ -23,27 +22,31 @@ export class UserComponent implements OnInit, OnDestroy {
 
     /* tslint:disable:no-string-literal */
     constructor(private route: ActivatedRoute,
-                private apiService: ApiService) {}
+                private apiService: ApiService,
+                private userService: UserService) {}
 
     ngOnInit() {
-        let user: User;
         this.subs.add(
+            /* this.userService.user$.subscribe(user => {
+                if ( user ) {
+                    if ( user.profile ) {
+                        this.fullname = `${user.profile.firstname} ${user.profile.lastname}`.toUpperCase();
+                    }
+                }
+            }), */
+
             this.route.data.subscribe(result => {
-                user = result['user'].data as User;
+                const user = result['user'].data as User;
                 this.userPhoto = `../../../assets/users/${user.photo}`;
+
+                user.profile = result['user'].data.user_profile;
+                if ( user.profile ) {
+                    this.profile = user.profile;
+                    this.fullname = `${this.profile.firstname} ${this.profile.lastname}`.toUpperCase();
+                    this.userService.broadcastUser(user);
+                }
             })
         );
-
-        if ( !this.profile ) {
-            this.apiService.getUsers().pipe(
-                map(result => result['data'].filter(item => item.id === user.id))
-            ).subscribe(data => {
-                if ( data[0].user_profile ) {
-                    this.profile = data[0].user_profile as Profile;
-                    this.fullname = `${this.profile.firstname} ${this.profile.lastname}`.toUpperCase();
-                }
-            });
-        }
     }
 
     ngOnDestroy() {

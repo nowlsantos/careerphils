@@ -11,18 +11,17 @@ const apiFeatures = require('../middleware/apiFeatures');
 const router = express.Router({ mergeParams: true });
 
 router.use(protect);
-// router.use(authorize('user'));
 
 router.route('/')
     .get(apiFeatures(Profile, {
         path: 'user',
         select: 'firstname lastname'
     }), getProfiles)
-    .post(addProfile);
+    .post(authorize('user'), addProfile);
 
 router.route('/:id')
     .get(getProfile)
-    .put(updateProfile)
-    .delete(deleteProfile);
+    .put(authorize('user'), updateProfile)
+    .delete(authorize('admin'), deleteProfile);
 
 module.exports = router;

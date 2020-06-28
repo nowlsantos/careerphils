@@ -3,18 +3,23 @@
 /* Variables */
 :root {
     --primary: #55a6ee;
-    --secondary: #F9A603;
+    --secondary: #f9a603;
     --warn: #f44336;
     --formbg: ghostwhite;
 }
 
-html, body {
+html,
+body {
     margin: 0;
     padding: 0;
 }
 
 /* Reset */
-body, p, a, ul, li {
+body,
+p,
+a,
+ul,
+li {
     margin: 0;
     padding: 0;
 }
@@ -23,7 +28,7 @@ body, p, a, ul, li {
 body {
     background-color: #93a5cf;
     /* background-image: linear-gradient(to top, #e4efe9 0%, #93a5cf 100%); */
-    font-family: 'Lato', sans-serif;
+    font-family: "Lato", sans-serif;
     font-weight: 300;
     line-height: 1.6;
     box-sizing: border-box;

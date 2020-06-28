@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { HttpResponse } from '@angular/common/http';
 import { ApiService } from '@services/common/api.service';
 import { SubSink } from 'subsink';
@@ -11,16 +12,20 @@ import { SubSink } from 'subsink';
 export class DocumentComponent implements OnInit, OnDestroy {
     private subs = new SubSink();
     documents = [ 'Transcript of Records',
+                  'NSO/Birth Certificate',
                   'Medical Certificate',
                   'Employment Certificate',
-                  'Passport / Seamans Book'
+                  'Passport / Seamans Book',
+                  'NBI/Police Clearance'
                 ];
 
     // tslint:disable-next-line:object-literal-key-quotes
     uploadDisplay = { 'display': 'none' };
     selectedFile: File;
 
-    constructor(private apiService: ApiService) { }
+    constructor(private apiService: ApiService,
+                private route: ActivatedRoute,
+                private router: Router) { }
 
     ngOnInit() {}
 
@@ -43,6 +48,10 @@ export class DocumentComponent implements OnInit, OnDestroy {
                     // this.userService.broadcastUser(user);
                 }
             })
-        )
+        );
+    }
+
+    testNavigation() {
+        this.router.navigate(['../dashboard'], { relativeTo: this.route });
     }
 }
