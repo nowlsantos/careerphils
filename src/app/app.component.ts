@@ -8,8 +8,7 @@ import { SubSink } from 'subsink';
 import { ViewPort } from '@models/index';
 import { ApiService,
          AuthService,
-         ViewPortService,
-         LoginService } from '@services/common/';
+         ViewPortService } from '@services/common/';
 
 @Component({
     selector: 'app-root',
@@ -40,21 +39,12 @@ export class AppComponent implements OnInit, OnDestroy {
 
     constructor(private breakpointObserver: BreakpointObserver,
                 private viewportService: ViewPortService,
-                private loginService: LoginService,
                 private apiService: ApiService,
                 private authService: AuthService) { }
 
     ngOnInit() {
         this.onLayoutChange();
-
-        this.subs.add(
-            this.loginService.login$.subscribe(loggedIn => {
-                if ( loggedIn ) {
-                    this.isLoggedIn = loggedIn;
-                    // console.log('LOGGEDIN::', this.isLoggedIn);
-                }
-            })
-        );
+        this.isLoggedIn = this.authService.isLoggedIn();
     }
 
     ngOnDestroy() {
@@ -119,9 +109,8 @@ export class AppComponent implements OnInit, OnDestroy {
             this.apiService.logout().subscribe( () => {
                 // console.log('SideNav Logout::');
                 this.authService.logout();
-                this.loginService.broadcastLogin(false);
-                // this.router.navigate(['/home']);
                 this.sidenav.close();
+                // this.router.navigate(['/home']);
             })
         );
     }

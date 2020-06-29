@@ -27,6 +27,8 @@ export class NavigationComponent implements OnInit, OnDestroy {
                 private profileService: ProfileService) { }
 
     ngOnInit() {
+        this.isLoggedIn = this.authService.isLoggedIn();
+
         this.subs.add(
             this.userService.user$.subscribe(user => {
                 if ( user ) {
@@ -55,7 +57,6 @@ export class NavigationComponent implements OnInit, OnDestroy {
     onLogout() {
         this.apiService.logout().subscribe( () => {
             this.authService.logout();
-            this.isLoggedIn = false;
             this.user = null;
             this.firstName = null;
             this.router.navigate(['/home']);

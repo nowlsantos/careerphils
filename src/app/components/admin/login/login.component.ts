@@ -6,7 +6,6 @@ import {
     ApiService,
     AuthService,
     ViewPortService,
-    LoginService,
     MessageService,
     UserService,
     ToasterService
@@ -33,7 +32,6 @@ export class LoginComponent implements OnInit, OnDestroy {
                 private fb: FormBuilder,
                 private apiService: ApiService,
                 private authService: AuthService,
-                private loginService: LoginService,
                 private messageService: MessageService,
                 private userService: UserService,
                 private toastService: ToasterService) { }
@@ -95,7 +93,6 @@ export class LoginComponent implements OnInit, OnDestroy {
                     });
 
                     this.authService.setToken(token);
-                    this.loginService.broadcastLogin(true);
                     this.userService.broadcastUser(this.user);
                 }
             )
