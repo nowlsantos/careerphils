@@ -14,41 +14,41 @@ export class ApiService {
     constructor(private http: HttpClient) { }
 
     /* USERS */
-    register(user: User) {
-        return this.http.post<User>(`${this.baseUrl}/auth/register`, user);
+    register(userOptions) {
+        return this.http.post(`${this.baseUrl}/auth/register`, userOptions);
     }
 
     login(user: User) {
-        return this.http.post<User>(`${this.baseUrl}/auth/login`, user);
+        return this.http.post(`${this.baseUrl}/auth/login`, user);
     }
 
     logout() {
-        return this.http.get<User>(`${this.baseUrl}/auth/logout`);
+        return this.http.get(`${this.baseUrl}/auth/logout`);
     }
 
     getMe() {
-        return this.http.get<User>(`${this.baseUrl}/auth/me`);
+        return this.http.get(`${this.baseUrl}/auth/me`);
     }
 
     getUser(id: string) {
-        return this.http.get<User>(`${this.baseUrl}/users/${id}`);
+        return this.http.get(`${this.baseUrl}/users/${id}`);
     }
 
     getUsers() {
-        return this.http.get<User[]>(`${this.baseUrl}/users`);
+        return this.http.get(`${this.baseUrl}/users`);
     }
 
     update(user: User) {
-        return this.http.put<User>(`${this.baseUrl}/users/${user.id}`, user);
+        return this.http.put(`${this.baseUrl}/users/${user.id}`, user);
     }
 
     delete(id: string) {
-        return this.http.delete<User>(`${this.baseUrl}/users/${id}`);
+        return this.http.delete(`${this.baseUrl}/users/${id}`);
     }
 
     /* PROFILES */
-    addProfile(profile: Profile, userId: string) {
-        return this.http.post<Profile>(`${this.baseUrl}/users/${userId}/profiles`, profile);
+    addProfile(profileOptions, userId: string) {
+        return this.http.post(`${this.baseUrl}/users/${userId}/profiles`, profileOptions);
     }
 
     getAllProfiles() {
@@ -56,15 +56,15 @@ export class ApiService {
     }
 
     getProfile(profileId: string) {
-        return this.http.get<Profile>(`${this.baseUrl}/profiles/${profileId}`);
+        return this.http.get(`${this.baseUrl}/profiles/${profileId}`);
     }
 
-    updateProfile(profile: Profile) {
-        return this.http.put<Profile>(`${this.baseUrl}/profiles/${profile.id}`, profile);
+    updateProfile(profile, profileId) {
+        return this.http.patch(`${this.baseUrl}/profiles/${profileId}`, profile);
     }
 
     deleteProfile(profileId: string) {
-        return this.http.delete<Profile>(`${this.baseUrl}/profiles/${profileId}`);
+        return this.http.delete(`${this.baseUrl}/profiles/${profileId}`);
     }
 
     /* UPLOADS */
@@ -76,8 +76,8 @@ export class ApiService {
     }
 
     /* CHANGE / FORGOT / RESET PASSWORD  */
-    updatePassword(user: User) {
-        return this.http.patch<User>(`${this.baseUrl}/auth/updatepassword`, user);
+    updatePassword(passwordOptions) {
+        return this.http.patch(`${this.baseUrl}/auth/updatepassword`, passwordOptions);
     }
 
     forgotPassword(email: string) {

@@ -21,7 +21,7 @@ router.route('/')
 
 router.route('/:id')
     .get(getProfile)
-    .put(authorize('user'), updateProfile)
+    .patch(authorize('user'), updateProfile)
     .delete(authorize('admin'), deleteProfile);
 
 module.exports = router;

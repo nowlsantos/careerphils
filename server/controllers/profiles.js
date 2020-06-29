@@ -65,19 +65,39 @@ exports.getProfile = asyncHandler( async(req, res, next) => {
     })   
 });
 
+const filterObj = (obj, ...allowedFields) => {
+    const newObj = {};
+    Object.keys(obj).forEach(el => {
+        if (allowedFields.includes(el)) newObj[el] = obj[el];
+    });
+    return newObj;
+};
+
 /* 
     @desc       Update profile
     @route      GET api/profiles/:id
     @access     Private
 */ 
 exports.updateProfile = asyncHandler( async(req, res, next) => {
+    // 1: Reference to the profile object
     let profile = await Profile.findById(req.params.id);
-
     if ( !profile ) {
         return next( new AppError(`No profile was found with an id of ${req.params.id}`) );
     }
 
-    profile = await Profile.findByIdAndUpdate(req.params.id, req.body, {
+    // 2: The field to update
+    const filteredBody = filterObj(req.body, 'firstname', 
+                                             'lastname',
+                                             'email',
+                                             'phone',
+                                             'location',
+                                             'birthdate',
+                                             'position');
+    
+    // const fieldsToUpdate = { firstname, lastname, email, phone, location, birthdate, position } = req.body;
+
+    // 3: Proceed to update
+    profile = await Profile.findByIdAndUpdate(req.params.id, filteredBody, {
         new: true,
         runValidators: true
     })

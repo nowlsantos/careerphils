@@ -2,16 +2,16 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { User, ViewPort } from '@models/index';
-import { ApiService,
-         AuthService,
-         ViewPortService,
-         LoginService,
-         MessageService,
-         UserService,
-         ToasterService
-        } from '@services/common/index';
+import {
+    ApiService,
+    AuthService,
+    ViewPortService,
+    LoginService,
+    MessageService,
+    UserService,
+    ToasterService
+} from '@services/common/index';
 import { SubSink } from 'subsink';
-import { switchMap, map, tap } from 'rxjs/operators';
 
 @Component({
     selector: 'app-login',
@@ -50,7 +50,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             }),
 
             this.toastService.toast$.subscribe(sender => {
-                if ( sender === this.sender && this.user ) {
+                if (sender === this.sender && this.user) {
                     this.router.navigate([`../users/${this.user.id}`]);
                 }
             })
@@ -72,20 +72,21 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     onSubmit() {
         this.submitted = true;
-        if ( this.loginForm.invalid ) {
+        if (this.loginForm.invalid) {
             return;
         }
 
         const formvalue = this.loginForm.value;
-        const user: User = {
+        const userOptions = {
             email: formvalue.email,
             password: formvalue.password,
         };
 
         this.subs.add(
-            this.apiService.login(user)
+            this.apiService.login(userOptions)
                 .subscribe(res => {
-                    this.user = res['data'];
+                    this.user = res['data'] as User;
+                    const token = res['token'];
 
                     this.messageService.sendMessage({
                         message: 'Login Successful',
@@ -93,7 +94,7 @@ export class LoginComponent implements OnInit, OnDestroy {
                         sender: this.sender
                     });
 
-                    this.authService.setToken(res['token']);
+                    this.authService.setToken(token);
                     this.loginService.broadcastLogin(true);
                     this.userService.broadcastUser(this.user);
                 }
@@ -102,8 +103,10 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
 
     forgotPassHandler() {
-        this.apiService.forgotPassword(this.user.email).subscribe( _ => {
-            
-        })
+        this.subs.add(
+            this.apiService.forgotPassword(this.user.email).subscribe(res => {
+                console.log(res);
+            })
+        );
     }
 }

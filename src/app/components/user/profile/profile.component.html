@@ -52,9 +52,14 @@
             </mat-select>
         </mat-form-field>
 
-        <span>
+        <button mat-flat-button 
+                type="submit" 
+                color="primary"
+                [disabled]="!userForm.valid">{{ buttonTitle }}
+        </button>
+        <!-- <span>
             <button mat-flat-button type="submit" color="primary" [disabled]="!userForm.valid">Save Profile</button>
             <button mat-flat-button type="button" color="warn" (click)="onReset()">Reset</button>
-        </span>
+        </span> -->
     </form>
 </section>

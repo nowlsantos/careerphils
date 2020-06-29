@@ -3,7 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { SubSink } from 'subsink';
 import { User, Profile } from '@models/index';
-import { ApiService, MessageService, ToasterService, UserService } from '@services/common/index';
+import { ApiService, MessageService, ToasterService, UserService, ProfileService } from '@services/common/index';
+import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'app-profile',
@@ -21,6 +22,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
     userForm: FormGroup;
     profile: Profile;
+    buttonTitle = 'Save Profile';
     
     readonly sender = 'PROFILE';
     private subs = new SubSink();
@@ -32,22 +34,33 @@ export class ProfileComponent implements OnInit, OnDestroy {
                 private apiService: ApiService,
                 private userService: UserService,
                 private messageService: MessageService,
-                private toastService: ToasterService) {}
+                private profileService: ProfileService,
+                private toastService: ToasterService) {
+                    this.userForm = this.fb.group({
+                        firstname: ['', Validators.required],
+                        lastname: ['', Validators.required],
+                        email: ['', Validators.required],
+                        phone: ['', Validators.required],
+                        location: ['', Validators.required],
+                        birthdate: ['', Validators.required],
+                        position: ['', Validators.required]
+                    });
+                }
 
     ngOnInit() {
         this.subs.add(
             this.userService.user$.subscribe(user => {
                 if ( user ) {
                     this.user = user;
-                    this.profile = this.user.profile;
+                    this.profile = this.user.user_profile;
                     this.user.hasProfile = true;
+                    this.buttonTitle = 'Edit Profile';
                 }
             }),
             
             this.toastService.toast$.subscribe(sender => {
                 if ( sender === this.sender ) {
                     this.userService.broadcastUser(this.user);
-                    this.router.navigate(['../dashboard'], { relativeTo: this.route });
                 }
             }),
         );
@@ -64,14 +77,14 @@ export class ProfileComponent implements OnInit, OnDestroy {
             profile = this.resetProfile();
         }
 
-        this.userForm = this.fb.group({
-            firstname: [profile.firstname, Validators.required],
-            lastname: [profile.lastname, Validators.required],
-            email: [profile.email, Validators.required],
-            phone: [profile.phone, Validators.required],
-            location: [profile.location, Validators.required],
-            birthdate: [profile.birthdate, Validators.required],
-            position: [profile.position, Validators.required]
+        this.userForm.patchValue({
+            firstname: profile.firstname,
+            lastname: profile.lastname,
+            email: profile.email,
+            phone: profile.phone,
+            location: profile.location,
+            birthdate: profile.birthdate,
+            position: profile.position
         });
     }
 
@@ -81,7 +94,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
         }
 
         const fv = this.userForm.value;
-        const profile: Profile = {
+        const profileOptions = {
+            profileId: this.profile._id,
             userId: this.user.id,
             firstname: fv.firstname,
             lastname: fv.lastname,
@@ -92,19 +106,46 @@ export class ProfileComponent implements OnInit, OnDestroy {
             position: fv.position
         };
 
-        this.apiService.addProfile(profile, this.user.id).subscribe(response => {
-            if ( response ) {
-                this.messageService.sendMessage({
-                    message: 'Profile successfully created',
-                    error: false,
-                    sender: this.sender
-                });
+        !this.profile ? this.saveProfile(profileOptions) : this.editProfile(profileOptions, this.profile._id);
+    }
 
-                this.profile = this.user.profile = response['data'] as Profile; 
-                this.user.hasProfile = true;
-                // console.log('AddProfile::', this.profile);
-            }
-        });
+    private saveProfile(option) {
+        this.subs.add(
+            this.apiService.addProfile(option, this.user.id)
+                .pipe(map(response => response['data'] as Profile))
+                .subscribe(profile => {
+                    this.messageService.sendMessage({
+                        message: 'Profile successfully created',
+                        error: false,
+                        sender: this.sender
+                    });
+
+                    this.profile = this.user.user_profile = profile;
+                    this.profileService.broadcastProfile(this.profile);
+                    this.router.navigate(['../dashboard'], { relativeTo: this.route });
+                    // console.log('AddProfile::', this.profile);
+                }
+            )
+        );
+    }
+
+    private editProfile(options, id) {
+        this.subs.add(
+            this.apiService.updateProfile(options, id)
+                .pipe(map(result => result['data'] as Profile))
+                .subscribe( profile => {
+                    // console.log('Profile Edit::', profile);
+                    this.profile = this.user.user_profile = profile;
+                    
+                    this.messageService.sendMessage({
+                        message: 'Profile successfully edited',
+                        error: false,
+                        sender: this.sender
+                    });
+
+                    this.router.navigate(['../dashboard'], { relativeTo: this.route });
+                })
+        );
     }
 
     private resetProfile(): Profile {

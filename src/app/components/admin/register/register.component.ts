@@ -1,13 +1,14 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ApiService,
-         AuthService,
-         ViewPortService,
-         MessageService,
-         ToasterService
-        } from '@services/common/index';
-import { User, ViewPort } from '@models/index';
+import {
+    ApiService,
+    AuthService,
+    ViewPortService,
+    MessageService,
+    ToasterService
+} from '@services/common/index';
+import { ViewPort } from '@models/index';
 import { SubSink } from 'subsink';
 import { PasswordValidatorc } from '../password.validator';
 
@@ -38,7 +39,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
             email: ['', [Validators.required, Validators.email, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+')]],
             password: ['', [Validators.required, Validators.minLength(6)]],
             confirmPassword: ['', [Validators.required, Validators.minLength(6)]]
-        }, {validator: PasswordValidatorc});
+        }, { validator: PasswordValidatorc });
 
         this.subs.add(
             this.viewportService.viewportLayout$.subscribe(viewport => {
@@ -46,7 +47,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
             }),
 
             this.toastService.toast$.subscribe(sender => {
-                if ( sender === this.sender ) {
+                if (sender === this.sender) {
                     this.router.navigate(['../login'], { relativeTo: this.route });
                 }
             })
@@ -65,7 +66,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
     getEmailErrorMessage() {
         const email = this.registerForm.get('email');
-        if ( email.hasError('required') ) {
+        if (email.hasError('required')) {
             return 'You must enter a value';
         }
 
@@ -74,7 +75,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
     getConfirmPasswordErrorMessage() {
         const confirmPassword = this.registerForm.get('confirmPassword');
-        if ( confirmPassword.hasError('required') ) {
+        if (confirmPassword.hasError('required')) {
             return 'You must enter a value';
         }
 
@@ -82,21 +83,18 @@ export class RegisterComponent implements OnInit, OnDestroy {
     }
 
     onSubmit() {
-        if ( this.registerForm.invalid ) {
+        if (this.registerForm.invalid) {
             return;
         }
 
         const formvalue = this.registerForm.value;
-        const user: User = {
+        const options = {
             email: formvalue.email,
             password: formvalue.password,
             confirmPassword: formvalue.confirmPassword
         };
 
-        this.apiService.register(user).subscribe(res => {
-            // user.photo = res['data'].photo;
-            // user.createdAt = res['data'].createdAt;
-
+        this.apiService.register(options).subscribe(res => {
             this.messageService.sendMessage({
                 message: 'Registration successful. Welcome to CareerPhils!',
                 error: false,

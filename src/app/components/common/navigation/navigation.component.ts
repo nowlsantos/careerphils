@@ -1,6 +1,6 @@
 import { Component, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { ApiService, AuthService, UserService} from '@services/common/';
+import { ApiService, AuthService, UserService, ProfileService} from '@services/common/index';
 import { SubSink } from 'subsink';
 import { User } from '@models/user.model';
 
@@ -18,11 +18,13 @@ export class NavigationComponent implements OnInit, OnDestroy {
     isLoggedIn = false;
     cpLogo = '../../../../assets/logo/cplogo.png';
     userPhoto: string;
+    firstName: string;
 
     constructor(private router: Router,
                 private apiService: ApiService,
                 private authService: AuthService,
-                private userService: UserService) { }
+                private userService: UserService,
+                private profileService: ProfileService) { }
 
     ngOnInit() {
         this.subs.add(
@@ -31,6 +33,12 @@ export class NavigationComponent implements OnInit, OnDestroy {
                     this.user = user;
                     !this.isLoggedIn ? this.userPhoto = `../../../assets/users/${user.photo}`
                                      : this.userPhoto = `/assets/users/${user.photo}`;
+                }
+            }),
+
+            this.profileService.profile$.subscribe(profile => {
+                if ( profile ) {
+                    this.firstName = profile.firstname.toUpperCase();
                 }
             })
         );
@@ -47,8 +55,9 @@ export class NavigationComponent implements OnInit, OnDestroy {
     onLogout() {
         this.apiService.logout().subscribe( () => {
             this.authService.logout();
-            this.user = null;
             this.isLoggedIn = false;
+            this.user = null;
+            this.firstName = null;
             this.router.navigate(['/home']);
         });
     }

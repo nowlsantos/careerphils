@@ -50,22 +50,12 @@ exports.resizeUserPhoto = asyncHandler( async(req, res, next) => {
     next();
 });
 
-/* const filterObj = (obj, ...allowedFields) => {
-    const newObj = {};
-    Object.keys(obj).forEach(el => {
-        if (allowedFields.includes(el)) newObj[el] = obj[el];
-    });
-    return newObj;
-}; */
-
 /* 
     @desc       Upload a user photo
     @route      PUT api/users/:id/photo
     @access     Private
 */ 
 exports.updateMe = asyncHandler( async(req, res, next) => {
-    // const filteredBody = filterObj(req.body, 'name', 'email');
-    // if (req.file) filteredBody.photo = req.file.filename;
     if ( req.file ) req.body.photo = req.file.filename;
 
     const user = await User.findByIdAndUpdate(req.user.id, req.body, {

@@ -1,9 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
-import { ApiService, UserService } from '@services/common/index';
+import { ApiService, UserService, ProfileService } from '@services/common/index';
 import { SubSink } from 'subsink';
 import { User, Profile } from '@models/index';
+import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'app-user',
@@ -23,26 +24,22 @@ export class UserComponent implements OnInit, OnDestroy {
     /* tslint:disable:no-string-literal */
     constructor(private route: ActivatedRoute,
                 private apiService: ApiService,
-                private userService: UserService) {}
+                private userService: UserService,
+                private profileService: ProfileService) {}
 
     ngOnInit() {
         this.subs.add(
-            /* this.userService.user$.subscribe(user => {
-                if ( user ) {
-                    if ( user.profile ) {
-                        this.fullname = `${user.profile.firstname} ${user.profile.lastname}`.toUpperCase();
-                    }
-                }
-            }), */
-
-            this.route.data.subscribe(result => {
-                const user = result['user'].data as User;
+            this.route.data
+                .pipe(
+                    map(response => response['user'].data as User)
+                )
+                .subscribe(user => {
                 this.userPhoto = `../../../assets/users/${user.photo}`;
-
-                user.profile = result['user'].data.user_profile;
-                if ( user.profile ) {
-                    this.profile = user.profile;
+                if ( user.user_profile ) {
+                    this.profile = user.user_profile;
                     this.fullname = `${this.profile.firstname} ${this.profile.lastname}`.toUpperCase();
+
+                    this.profileService.broadcastProfile(this.profile);
                     this.userService.broadcastUser(user);
                 }
             })

@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { User } from '@models/user.model';
 import { ApiService, MessageService, ToasterService } from '@services/common/';
 import { SubSink } from 'subsink/dist/subsink';
 
@@ -49,14 +48,15 @@ export class ChangePasswordComponent implements OnInit, OnDestroy {
         }
 
         const formvalue = this.passwordForm.value;
-        const user: User = {
+        const passOptions = {
             currentPassword: formvalue.currentpass,
             password: formvalue.newpass,
             confirmPassword: formvalue.confirmpass
         };
 
         this.subs.add(
-            this.apiService.updatePassword(user).subscribe( _ => {
+            this.apiService.updatePassword(passOptions).subscribe( _ => {
+                // console.log('ChangePass::', res);
                 this.messageService.sendMessage({
                     message: 'Password has been changed',
                     error: false,
