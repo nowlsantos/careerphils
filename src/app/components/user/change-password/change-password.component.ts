@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ApiService, MessageService, ToasterService } from '@services/common/';
-import { SubSink } from 'subsink/dist/subsink';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-change-password',
@@ -13,7 +13,7 @@ export class ChangePasswordComponent implements OnInit, OnDestroy {
     passwordForm: FormGroup;
     hide = true;
     readonly sender = 'CHANGE_PASSWORD';
-    private subs = new SubSink();
+    private subscription = new Subscription();
 
     constructor(private fb: FormBuilder,
                 private route: ActivatedRoute,
@@ -29,7 +29,7 @@ export class ChangePasswordComponent implements OnInit, OnDestroy {
             confirmpass: ['', Validators.required]
         });
 
-        this.subs.add(
+        this.subscription.add(
             this.toastService.toast$.subscribe(sender => {
                 if ( sender === this.sender ) {
                     this.router.navigate(['../dashboard'], { relativeTo: this.route });
@@ -39,7 +39,7 @@ export class ChangePasswordComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.subs.unsubscribe();
+        this.subscription.unsubscribe();
     }
 
     onSubmit() {
@@ -54,7 +54,7 @@ export class ChangePasswordComponent implements OnInit, OnDestroy {
             confirmPassword: formvalue.confirmpass
         };
 
-        this.subs.add(
+        this.subscription.add(
             this.apiService.updatePassword(passOptions).subscribe( _ => {
                 // console.log('ChangePass::', res);
                 this.messageService.sendMessage({

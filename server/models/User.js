@@ -45,6 +45,10 @@ const UserSchema = new mongoose.Schema(
             type: String,
             default: "default.jpg",
         },
+        documents: {
+            type: Array,
+            default: []
+        },
         profile: {
             type: mongoose.Schema.ObjectId,
             ref: "Profile",
@@ -88,12 +92,12 @@ UserSchema.pre("save", async function (next) {
     next();
 });
 
-UserSchema.pre("save", async function (next) {
+/* UserSchema.pre("save", async function (next) {
     if (!this.isModified("password") || this.isNew) return next();
 
     this.passwordChangedAt = Date.now() - 1000;
     next();
-});
+}); */
 
 // Sign JWT and return
 UserSchema.methods.getSignJwtToken = function () {

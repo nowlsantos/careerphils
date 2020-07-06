@@ -8,8 +8,8 @@ import * as data from '../../../../assets/data/story.json';
 })
 export class StoryComponent implements OnInit {
 
-    story2Photo = '../../../../assets/story/story2.jpg';
-    story3Photo = '../../../../assets/story/story2.jpg';
+    story2Photo = './assets/story/story2.jpg';
+    story3Photo = './assets/story/story3.jpg';
 
     text1: string;
     text2: string;

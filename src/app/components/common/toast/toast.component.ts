@@ -5,13 +5,14 @@ import {
     MatSnackBarVerticalPosition
 } from '@angular/material/snack-bar';
 import { MessageService, ToasterService } from '@services/common/index';
-import { SubSink } from 'subsink';
+import { Subscription } from 'rxjs';
 
 enum Sender {
     Register = 'REGISTER',
     Login = 'LOGIN',
     Profile = 'PROFILE',
-    ChangePassword = 'CHANGE_PASSWORD'
+    ChangePassword = 'CHANGE_PASSWORD',
+    FileService = 'FILE_SERVICE'
 }
 
 @Component({
@@ -22,7 +23,7 @@ enum Sender {
 export class ToastComponent implements OnInit, OnDestroy {
     private hposition: MatSnackBarHorizontalPosition = 'center';
     private vposition: MatSnackBarVerticalPosition = 'top';
-    private subs = new SubSink();
+    private subscription = new Subscription();
     private sender: string;
 
     constructor(private messageService: MessageService,
@@ -30,7 +31,7 @@ export class ToastComponent implements OnInit, OnDestroy {
                 private snackBar: MatSnackBar) { }
 
     ngOnInit() {
-        this.subs.add(
+        this.subscription.add(
             this.messageService.message$.subscribe(result => {
                 if ( result ) {
                     this.sender = result.sender;
@@ -41,7 +42,7 @@ export class ToastComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.subs.unsubscribe();
+        this.subscription.unsubscribe();
     }
 
     openSnackbar(message: string, action: string, error: boolean) {
@@ -70,6 +71,10 @@ export class ToastComponent implements OnInit, OnDestroy {
 
                     case Sender.ChangePassword:
                         this.toastService.broadcastToast(Sender.ChangePassword);
+                        break;
+
+                    case Sender.FileService:
+                        this.toastService.broadcastToast(Sender.FileService);
                         break;
                 }
             } else {

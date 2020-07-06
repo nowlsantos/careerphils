@@ -6,26 +6,11 @@ const sharp = require('sharp');
 
 const multerStorage = multer.memoryStorage();
 const multerFilter = (req, file, cb) => {
-    const ext = file.mimetype.split('/')[1];
-    
-    // Image mimetype - image/jpg | jpeg | png
     if ( file.mimetype.startsWith('image') ) {
-        if ( ext === 'jpg' || ext === 'jpeg' || ext === 'png' ) cb(null, true);
-        else cb( new AppError('Please upload only images', 400), false);
+        cb(null, true);
     }
-    // PDF mimetype - application/pdf
-    else if ( file.mimetype.startsWith('application') ) {
-        if ( ext === 'pdf' ) cb(null, true);
-        else cb( new AppError('You need to upload a pdf'), 400, false);
-    }
-    
-    // CSV mimetype - text/csv
-    // else if ( file.mimetype.startsWith('text') ) {
-    //     if ( ext === 'msword' ) cb(null, true);
-    //     else cb( new AppError('You need to upload a word document'), 400, false);
-    // }
     else {
-        cb(new AppError('File format is not supported for upload'), 400, false);
+        cb(new AppError('Please upload only images'), 400, false);
     }
 }
 
@@ -42,10 +27,10 @@ exports.resizeUserPhoto = asyncHandler( async(req, res, next) => {
     req.file.filename = `user_${req.user.id}.jpeg`;
 
     await sharp(req.file.buffer)
-                .resize(150, 150)
-                .toFormat('jpeg')
-                .jpeg({ quality: 75})
-                .toFile(`dist/careerphils/assets/users/${req.file.filename}`);
+        .resize(150, 150)
+        .toFormat('jpeg')
+        .jpeg({ quality: 75})
+        .toFile(`public/profiles/${req.file.filename}`);
 
     next();
 });
@@ -56,12 +41,16 @@ exports.resizeUserPhoto = asyncHandler( async(req, res, next) => {
     @access     Private
 */ 
 exports.updateMe = asyncHandler( async(req, res, next) => {
-    if ( req.file ) req.body.photo = req.file.filename;
+    if ( req.file ) {
+        const url = `${req.protocol}://${req.get('host')}`;
+        req.body.photo = `${url}/public/profiles/${req.file.filename}`;
+        // req.body.documents = 
+    }
 
     const user = await User.findByIdAndUpdate(req.user.id, req.body, {
         new: true,
         runValidators: true
-    })
+    });
     
     if ( !user ) {
         return next( new AppError(`No user was found with an id of ${req.params.id}`), 404 );

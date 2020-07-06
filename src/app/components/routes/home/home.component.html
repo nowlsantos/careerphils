@@ -6,7 +6,7 @@
         <div class="menu-grid">
             <ng-container *ngFor="let content of contents">
                 <div class="card">
-                    <img [src]="content.image" alt="Photo of {{content.image}}">
+                    <img [src]="content.image" alt="Photo of {{ content.image }}">
                     <h2>{{ content.title }}</h2>
                     <button mat-button (click)="onContentClick(content.link)">Learn more</button>
                 </div>

@@ -17,19 +17,9 @@ export class ProfileResolver implements Resolve<Profile> {
         /* tslint:disable:no-string-literal */
         const user = this.userService.getUser();
 
-        if ( user ) {
-            /* return this.apiService.getUsers().pipe(
-                map( users => users['data'].filter(item => item.id === user.id)),
-                switchMap(result => {
-                    // console.log('Resolve Profile::', result[0].user_profile);
-                    if ( result[0].user_profile ) {
-                        const profileId = (result[0].user_profile)._id;
-                        return this.apiService.getProfile(profileId).pipe(first());
-                    }
-                    return of(null);
-                })
-            ); */
-            return this.apiService.getUser(user.id).pipe(first());
+        if ( user.user_profile ) {
+            const profileId = user.user_profile._id;
+            return this.apiService.getProfile(profileId).pipe(first());
         }
 
         return of(null);

@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpResponse } from '@angular/common/http';
 import { ApiService } from '@services/common/api.service';
-import { SubSink } from 'subsink';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-document',
@@ -10,7 +10,7 @@ import { SubSink } from 'subsink';
     styleUrls: ['./document.component.css']
 })
 export class DocumentComponent implements OnInit, OnDestroy {
-    private subs = new SubSink();
+    private subscription = new Subscription();
     documents = [ 'Transcript of Records',
                   'NSO/Birth Certificate',
                   'Medical Certificate',
@@ -30,7 +30,7 @@ export class DocumentComponent implements OnInit, OnDestroy {
     ngOnInit() {}
 
     ngOnDestroy() {
-        this.subs.unsubscribe();
+        this.subscription.unsubscribe();
     }
 
     onFileSelected($event) {
@@ -39,7 +39,7 @@ export class DocumentComponent implements OnInit, OnDestroy {
         const fd = new FormData();
         fd.append('fileItem', this.selectedFile);
 
-        this.subs.add(
+        this.subscription.add(
             this.apiService.uploadPhoto(fd).subscribe(response => {
                 if ( response instanceof HttpResponse ) {
                     // tslint:disable-next-line:no-string-literal

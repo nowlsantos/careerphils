@@ -5,6 +5,7 @@
 export const environment = {
     production: false,
     apiUrl: '/api',
+    publicUrl: '/public',
     googleMapsApiKey: 'AIzaSyByCqeBgItamkfxAVQ3SXUp1MRJnOSVP58'
 };
 

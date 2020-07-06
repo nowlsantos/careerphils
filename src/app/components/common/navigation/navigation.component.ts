@@ -1,8 +1,8 @@
 import { Component, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { ApiService, AuthService, UserService, ProfileService} from '@services/common/index';
-import { SubSink } from 'subsink';
+import { ApiService, AuthService, UserService} from '@services/common/index';
 import { User } from '@models/user.model';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-navigation',
@@ -10,7 +10,7 @@ import { User } from '@models/user.model';
     styleUrls: ['./navigation.component.css']
 })
 export class NavigationComponent implements OnInit, OnDestroy {
-    private subs = new SubSink();
+    private subscription = new Subscription();
 
     @Output() opened = new EventEmitter<boolean>();
     user: User;
@@ -23,24 +23,22 @@ export class NavigationComponent implements OnInit, OnDestroy {
     constructor(private router: Router,
                 private apiService: ApiService,
                 private authService: AuthService,
-                private userService: UserService,
-                private profileService: ProfileService) { }
+                private userService: UserService) { }
 
     ngOnInit() {
         this.isLoggedIn = this.authService.isLoggedIn();
 
-        this.subs.add(
+        this.subscription.add(
             this.userService.user$.subscribe(user => {
                 if ( user ) {
                     this.user = user;
-                    !this.isLoggedIn ? this.userPhoto = `../../../assets/users/${user.photo}`
-                                     : this.userPhoto = `/assets/users/${user.photo}`;
-                }
-            }),
+                    user.photo.startsWith('default') ? user.photo = `./assets/users/${user.photo}`
+                                                     : user.photo = `${user.photo}`;
 
-            this.profileService.profile$.subscribe(profile => {
-                if ( profile ) {
-                    this.firstName = profile.firstname.toUpperCase();
+                    if ( this.user.user_profile ) {
+                        const profile = this.user.user_profile;
+                        this.firstName = profile.firstname.toUpperCase();
+                    }
                 }
             })
         );
@@ -57,6 +55,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
     onLogout() {
         this.apiService.logout().subscribe( () => {
             this.authService.logout();
+            this.isLoggedIn = this.authService.isLoggedIn();
             this.user = null;
             this.firstName = null;
             this.router.navigate(['/home']);
@@ -64,7 +63,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.subs.unsubscribe();
+        this.subscription.unsubscribe();
     }
 
     open(flag: boolean) {

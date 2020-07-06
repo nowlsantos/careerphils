@@ -10,7 +10,7 @@ import {
     UserService,
     ToasterService
 } from '@services/common/index';
-import { SubSink } from 'subsink';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-login',
@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     hide = true;
     readonly sender = 'LOGIN';
     private user: User;
-    private subs = new SubSink();
+    private subscription = new Subscription();
 
     constructor(private router: Router,
                 private viewportService: ViewPortService,
@@ -42,11 +42,13 @@ export class LoginComponent implements OnInit, OnDestroy {
             password: ['', [Validators.required, Validators.minLength(6)]],
         });
 
-        this.subs.add(
+        this.subscription.add(
             this.viewportService.viewportLayout$.subscribe(viewport => {
                 this.viewPort = viewport;
-            }),
+            })
+        );
 
+        this.subscription.add(
             this.toastService.toast$.subscribe(sender => {
                 if (sender === this.sender && this.user) {
                     this.router.navigate([`../users/${this.user.id}`]);
@@ -56,7 +58,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.subs.unsubscribe();
+        this.subscription.unsubscribe();
     }
 
     getErrorMessage() {
@@ -80,7 +82,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             password: formvalue.password,
         };
 
-        this.subs.add(
+        this.subscription.add(
             this.apiService.login(userOptions)
                 .subscribe(res => {
                     this.user = res['data'] as User;
@@ -100,7 +102,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
 
     forgotPassHandler() {
-        this.subs.add(
+        this.subscription.add(
             this.apiService.forgotPassword(this.user.email).subscribe(res => {
                 console.log(res);
             })

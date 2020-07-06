@@ -4,11 +4,11 @@ import { routeAnimation } from './app.animation';
 import { map, share, tap } from 'rxjs/operators';
 import { MatSidenavContainer, MatSidenav } from '@angular/material/sidenav';
 import { RouterOutlet } from '@angular/router';
-import { SubSink } from 'subsink';
 import { ViewPort } from '@models/index';
 import { ApiService,
          AuthService,
          ViewPortService } from '@services/common/';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-root',
@@ -23,7 +23,7 @@ export class AppComponent implements OnInit, OnDestroy {
     @ViewChild(MatSidenavContainer, { static: false }) sidenavContainer: MatSidenavContainer;
     @ViewChild('sidenav', { static: false }) sidenav: MatSidenav;
 
-    private subs = new SubSink();
+    private subscription = new Subscription();
     private viewPort = new ViewPort();
     private layoutChanges$ = this.breakpointObserver.observe(
         [
@@ -48,11 +48,11 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.subs.unsubscribe();
+        this.subscription.unsubscribe();
     }
 
     private onLayoutChange() {
-        this.subs.add(
+        this.subscription.add(
             this.layoutChanges$.subscribe(result => {
                 switch (result) {
                     case this.breakpointObserver.isMatched('(max-width: 599.99px) and (orientation: portrait)'):
@@ -105,7 +105,7 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     closeSideNav() {
-        this.subs.add(
+        this.subscription.add(
             this.apiService.logout().subscribe( () => {
                 // console.log('SideNav Logout::');
                 this.authService.logout();

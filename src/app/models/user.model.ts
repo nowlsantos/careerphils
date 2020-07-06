@@ -7,7 +7,6 @@ export interface User {
     role?: string;
     photo?: string;
     createdAt?: Date;
-    hasPhoto?: boolean;
     hasProfile?: boolean;
     user_profile?: Profile;
 }

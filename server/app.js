@@ -1,32 +1,32 @@
-const path = require("path");
-const express = require("express");
-const morgan = require("morgan");
-const helmet = require("helmet");
-const xss = require("xss-clean");
-const rateLimit = require("express-rate-limit");
-const hpp = require("hpp");
-const cors = require("cors");
-const cookieParser = require("cookie-parser");
-const compression = require("compression");
-const users = require("./routes/users");
-const profiles = require("./routes/profiles");
-const auth = require("./routes/auth");
-const AppError = require("./utils/appError");
-const errorHandler = require("./middleware/error");
-const mongoSanitize = require("express-mongo-sanitize");
+const path = require('path');
+const express = require('express');
+const morgan = require('morgan');
+const helmet = require('helmet');
+const xss = require('xss-clean');
+const rateLimit = require('express-rate-limit');
+const hpp = require('hpp');
+const cors = require('cors');
+const cookieParser = require('cookie-parser');
+const compression = require('compression');
+const users = require('./routes/users');
+const profiles = require('./routes/profiles');
+const auth = require('./routes/auth');
+const AppError = require('./utils/appError');
+const errorHandler = require('./middleware/error');
+const mongoSanitize = require('express-mongo-sanitize');
 
 // Express app
 const app = express();
 
 // Development logging
-if (process.env.NODE_ENV === "development") {
-    app.use(morgan("dev"));
-    console.log("Morgan enabled");
+if (process.env.NODE_ENV === 'development') {
+    app.use(morgan('dev'));
+    console.log('Morgan enabled');
 }
 
-
 // Serve static files
-app.use(express.static(path.join(__dirname, "../dist/careerphils")));
+app.use('/public', express.static('public'));
+app.use(express.static(path.join(__dirname, '../dist')));
 
 // Security Http headers
 app.use(helmet());
@@ -60,17 +60,17 @@ app.use(mongoSanitize());
 app.use(compression());
 
 // Mount routers
-app.use("/api/auth", auth);
-app.use("/api/users", users);
-app.use("/api/profiles", profiles);
+app.use('/api/auth', auth);
+app.use('/api/users', users);
+app.use('/api/profiles', profiles);
 
 app.use(errorHandler);
 
 app.get('*', (req, res) => {
-    return res.sendFile(path.join(__dirname, '../dist/careerphils/index.html'));
+    return res.sendFile(path.resolve(__dirname, '../dist/index.html'));
 })
 
-app.all("*", (req, res, next) => {
+app.all('*', (req, res, next) => {
     next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });
 

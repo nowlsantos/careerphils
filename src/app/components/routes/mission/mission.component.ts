@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
     styleUrls: ['./mission.component.css']
 })
 export class MissionComponent implements OnInit {
-    missionPhoto = '../../../../assets/mission/mission1.jpg';
+    missionPhoto = './assets/mission/mission1.jpg';
 
     constructor() { }
 

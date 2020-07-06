@@ -9,8 +9,8 @@ import {
     ToasterService
 } from '@services/common/index';
 import { ViewPort } from '@models/index';
-import { SubSink } from 'subsink';
 import { PasswordValidatorc } from '../password.validator';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-register',
@@ -23,7 +23,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     hide = true;
     viewPort = new ViewPort();
     readonly sender = 'REGISTER';
-    private subs = new SubSink();
+    private subscription = new Subscription();
 
     constructor(private route: ActivatedRoute,
                 private router: Router,
@@ -41,11 +41,13 @@ export class RegisterComponent implements OnInit, OnDestroy {
             confirmPassword: ['', [Validators.required, Validators.minLength(6)]]
         }, { validator: PasswordValidatorc });
 
-        this.subs.add(
+        this.subscription.add(
             this.viewportService.viewportLayout$.subscribe(viewport => {
                 this.viewPort = viewport;
-            }),
+            })
+        );
 
+        this.subscription.add(
             this.toastService.toast$.subscribe(sender => {
                 if (sender === this.sender) {
                     this.router.navigate(['../login'], { relativeTo: this.route });
@@ -55,7 +57,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.subs.unsubscribe();
+        this.subscription.unsubscribe();
     }
 
     validateEmail(email) {
@@ -94,15 +96,17 @@ export class RegisterComponent implements OnInit, OnDestroy {
             confirmPassword: formvalue.confirmPassword
         };
 
-        this.apiService.register(options).subscribe(res => {
-            this.messageService.sendMessage({
-                message: 'Registration successful. Welcome to CareerPhils!',
-                error: false,
-                sender: this.sender
-            });
+        this.subscription.add(
+            this.apiService.register(options).subscribe(res => {
+                this.messageService.sendMessage({
+                    message: 'Registration successful. Welcome to CareerPhils!',
+                    error: false,
+                    sender: this.sender
+                });
 
-            /* tslint:disable:no-string-literal */
-            this.authService.setToken(res['token']);
-        });
+                /* tslint:disable:no-string-literal */
+                this.authService.setToken(res['token']);
+            })
+        );
     }
 }

@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
     styleUrls: ['./people.component.css']
 })
 export class PeopleComponent implements OnInit {
-    peoplePhoto = '../../../../assets/people/people1.jpg';
+    peoplePhoto = './assets/people/people1.jpg';
 
     constructor() { }
 

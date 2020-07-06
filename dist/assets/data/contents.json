@@ -1,0 +1,22 @@
+[
+    {
+        "title": "Our Story",
+        "image": "../../../../assets/home/menu_story.jpg",
+        "link": "story"
+    },
+    {
+        "title": "Our Mission",
+        "image": "../../../../assets/home/menu_mission.jpg",
+        "link": "mission"
+    },
+    {
+        "title": "Our People",
+        "image": "../../../../assets/home/menu_people.jpg",
+        "link": "people"
+    },
+    {
+        "title": "Our Location",
+        "image": "../../../../assets/home/menu_location.jpg",
+        "link": "location"
+    }
+]

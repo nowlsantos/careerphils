@@ -40,7 +40,7 @@
 
             <ng-template #logout>
                 <div class="image-avatar" (click)="onUserClick()">
-                    <img [src]="userPhoto" alt="User avatar">
+                    <img [src]="user.photo" alt="User avatar">
                     <p *ngIf="firstName">{{ firstName }}</p>
                 </div>
                 <button mat-button (click)="onLogout()">LOGOUT</button>

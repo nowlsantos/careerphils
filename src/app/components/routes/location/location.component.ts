@@ -7,7 +7,7 @@ import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 })
 export class LocationComponent implements AfterViewInit {
     @ViewChild('mapContainer', {static: false}) gmap: ElementRef;
-    locationPhoto = '../../../../assets/location/location.jpg';
+    locationPhoto = './assets/location/location.jpg';
 
     ngAfterViewInit() {
         const latitude = 14.539521;

@@ -19,6 +19,7 @@ import { UserComponent,
          ProfileComponent,
          ChangePasswordComponent,
          DocumentComponent} from './index';
+import { SafeHtmlPipe } from '@services/pipes/safe-html.pipe';
 
 @NgModule({
     declarations: [
@@ -26,7 +27,8 @@ import { UserComponent,
         UserDashboardComponent,
         ProfileComponent,
         ChangePasswordComponent,
-        DocumentComponent
+        DocumentComponent,
+        SafeHtmlPipe
     ],
     imports: [
         CommonModule,

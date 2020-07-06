@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { SubSink } from 'subsink';
 import { User, Profile } from '@models/index';
-import { ApiService, MessageService, ToasterService, UserService, ProfileService } from '@services/common/index';
+import { ApiService, MessageService, ToasterService, UserService } from '@services/common/index';
 import { map } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-profile',
@@ -14,18 +14,18 @@ import { map } from 'rxjs/operators';
 export class ProfileComponent implements OnInit, OnDestroy {
     // tslint:disable:no-trailing-whitespace
     /* tslint:disable:no-string-literal */
-    positions: string[] = [ 'Master', 'Chief Mate', 'Second Mate', 'Third Mate',
-        'Deck Cadet', 'Chief Engineer', 'Second Engineer', 'Third Engineer', 'Fourth Engineer',
-        'Engine Cadet', 'Electrician', 'Deck Foreman', 'Pump Man', 'Quartermaster',
-        'Ordinary Seaman(OS)', 'Fitter', 'Oiler', 'Wiper', 'Chief Cook and Steward'
+    positions: string[] = [ 'Master', 'Chief Mate', 'Second Mate', 'Third Mate', 'Deck Cadet',
+                            'Chief Engineer', 'Second Engineer', 'Third Engineer', 'Fourth Engineer',
+                            'Engine Cadet', 'Electrician', 'Deck Foreman', 'Pump Man', 'Quartermaster',
+                            'Ordinary Seaman(OS)', 'Fitter', 'Oiler', 'Wiper', 'Chief Cook and Steward'
     ];
 
     userForm: FormGroup;
     profile: Profile;
     buttonTitle = 'Save Profile';
     
+    private subscription = new Subscription();
     readonly sender = 'PROFILE';
-    private subs = new SubSink();
     private user: User;
 
     constructor(private router: Router,
@@ -34,7 +34,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
                 private apiService: ApiService,
                 private userService: UserService,
                 private messageService: MessageService,
-                private profileService: ProfileService,
                 private toastService: ToasterService) {
                     this.userForm = this.fb.group({
                         firstname: ['', Validators.required],
@@ -48,28 +47,30 @@ export class ProfileComponent implements OnInit, OnDestroy {
                 }
 
     ngOnInit() {
-        this.subs.add(
+        this.subscription.add(
             this.userService.user$.subscribe(user => {
-                if ( user ) {
-                    this.user = user;
-                    this.profile = this.user.user_profile;
+                this.user = user;
+                if ( user.user_profile ) {
+                    this.profile = user.user_profile;
                     this.user.hasProfile = true;
                     this.buttonTitle = 'Edit Profile';
                 }
-            }),
-            
+            })
+        );
+        
+        this.subscription.add(
             this.toastService.toast$.subscribe(sender => {
                 if ( sender === this.sender ) {
                     this.userService.broadcastUser(this.user);
                 }
-            }),
+            })
         );
 
         this.initializeForm(this.profile);
     }
 
     ngOnDestroy() {
-        this.subs.unsubscribe();
+        this.subscription.unsubscribe();
     }
     
     private initializeForm(profile: Profile) {
@@ -95,7 +96,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
         const fv = this.userForm.value;
         const profileOptions = {
-            profileId: this.profile._id,
+            // profileId: this.profile._id,
             userId: this.user.id,
             firstname: fv.firstname,
             lastname: fv.lastname,
@@ -110,31 +111,27 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
 
     private saveProfile(option) {
-        this.subs.add(
+        this.subscription.add(
             this.apiService.addProfile(option, this.user.id)
                 .pipe(map(response => response['data'] as Profile))
-                .subscribe(profile => {
+                .subscribe( _ => {
                     this.messageService.sendMessage({
                         message: 'Profile successfully created',
                         error: false,
                         sender: this.sender
                     });
 
-                    this.profile = this.user.user_profile = profile;
-                    this.profileService.broadcastProfile(this.profile);
                     this.router.navigate(['../dashboard'], { relativeTo: this.route });
-                    // console.log('AddProfile::', this.profile);
                 }
             )
         );
     }
 
     private editProfile(options, id) {
-        this.subs.add(
+        this.subscription.add(
             this.apiService.updateProfile(options, id)
                 .pipe(map(result => result['data'] as Profile))
                 .subscribe( profile => {
-                    // console.log('Profile Edit::', profile);
                     this.profile = this.user.user_profile = profile;
                     
                     this.messageService.sendMessage({

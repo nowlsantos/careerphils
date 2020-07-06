@@ -23,7 +23,6 @@ export class CacheInterceptor implements HttpInterceptor {
 
         const cacheService = this.injector.get(CacheService);
         const cacheResponse = cacheService.get(request);
-
         return cacheResponse ? of(cacheResponse) : this.sendRequest(request, next, cacheService);
     }
 
