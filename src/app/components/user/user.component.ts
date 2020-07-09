@@ -1,7 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
-import { ApiService, UserService } from '@services/common/index';
+import { UserService } from '@services/common/index';
+import { ApiService } from '@services/core';
 import { User, Profile } from '@models/index';
 import { map } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
@@ -52,14 +53,14 @@ export class UserComponent implements OnInit, OnDestroy {
     onFileSelected($event) {
         this.selectedFile = ($event.target as HTMLInputElement).files[0];
 
-        const fd = new FormData();
-        fd.append('fileItem', this.selectedFile);
+        const formdata = new FormData();
+        formdata.append('photo', this.selectedFile);
 
         // --- Populate the filelist for checking loaded files---
         // const filename = this.selectedFile.name.split('.')[0];
 
         this.subscription.add(
-            this.apiService.uploadPhoto(fd).subscribe(response => {
+            this.apiService.uploadPhoto(formdata).subscribe(response => {
                 if (response instanceof HttpResponse) {
                     const user = response.body['data'] as User;
                     this.user = user;

@@ -5,9 +5,8 @@ import { map, share, tap } from 'rxjs/operators';
 import { MatSidenavContainer, MatSidenav } from '@angular/material/sidenav';
 import { RouterOutlet } from '@angular/router';
 import { ViewPort } from '@models/index';
-import { ApiService,
-         AuthService,
-         ViewPortService } from '@services/common/';
+import { ViewPortService } from '@services/common/';
+import { ApiService, AuthService } from '@services/core/';
 import { Subscription } from 'rxjs';
 
 @Component({

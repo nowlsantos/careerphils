@@ -1,6 +1,7 @@
 import { Component, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { ApiService, AuthService, UserService} from '@services/common/index';
+import { ApiService, AuthService} from '@services/core';
+import { UserService } from '@services/common/user.service';
 import { User } from '@models/user.model';
 import { Subscription } from 'rxjs';
 

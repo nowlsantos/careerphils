@@ -9,4 +9,5 @@ export interface User {
     createdAt?: Date;
     hasProfile?: boolean;
     user_profile?: Profile;
+    documents?: string[];
 }

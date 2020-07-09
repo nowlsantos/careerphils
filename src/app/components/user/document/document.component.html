@@ -6,20 +6,23 @@
 
     <mat-list>
         <mat-list-item *ngFor="let doc of documents">
-            {{ doc }}
+            {{ doc.title }}
             <span class="list-spacer"></span>
-            <!-- <button mat-stroked-button color="primary">Upload</button> -->
             <input type="file"
                #fileInput
                accept="image/*" 
                [ngStyle]="uploadDisplay"
-               (change)="onFileSelected(fileInput.value)">
-            <button mat-stroked-button (click)="fileInput.click()">Upload</button>
+               (change)="onFileSelected($event, doc)">
+            <ng-container *ngIf="!doc.uploaded; else uploaded">
+                <button mat-stroked-button (click)="fileInput.click()">Upload</button>
+            </ng-container>
+            <ng-template #uploaded>
+                <mat-icon aria-hidden="false" aria-label="check icon">check_circle</mat-icon>
+            </ng-template>
             <mat-divider></mat-divider>
         </mat-list-item>
     </mat-list>
 
     <h4>* Upload only scanned image of these documents</h4>
-
-    <button mat-flat-button type="button" color="primary" (click)="testNavigation()">TEST</button>
+    <h4>* Sample file naming convention: 'Transcript_Records.jpg'</h4>
 </section>

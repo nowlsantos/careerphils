@@ -64,12 +64,6 @@ const UserSchema = new mongoose.Schema(
     }
 );
 
-// Cascade delete profiles when user is deleted
-UserSchema.pre("remove", async function (next) {
-    await this.model("Profile").deleteOne({ user: this._id });
-    next();
-});
-
 // Reverse populate with virtuals
 UserSchema.virtual("user_profile", {
     ref: "Profile",
@@ -89,6 +83,12 @@ UserSchema.pre("save", async function (next) {
 
     // Delete confirmPassword field
     this.confirmPassword = undefined;
+    next();
+});
+
+// Cascade delete profiles when user is deleted
+UserSchema.pre("remove", async function (next) {
+    await this.model("Profile").deleteOne({ user: this._id });
     next();
 });
 

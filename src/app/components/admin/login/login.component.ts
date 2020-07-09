@@ -2,14 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { User, ViewPort } from '@models/index';
-import {
-    ApiService,
-    AuthService,
-    ViewPortService,
-    MessageService,
-    UserService,
-    ToasterService
-} from '@services/common/index';
+import { ApiService, AuthService, MessageService, ToasterService } from '@services/core';
+import { ViewPortService, UserService } from '@services/common/index';
 import { Subscription } from 'rxjs';
 
 @Component({

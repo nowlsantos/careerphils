@@ -1,10 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import {
-    MatSnackBar,
-    MatSnackBarHorizontalPosition,
-    MatSnackBarVerticalPosition
-} from '@angular/material/snack-bar';
-import { MessageService, ToasterService } from '@services/common/index';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { MessageService, ToasterService } from '@services/core';
 import { Subscription } from 'rxjs';
 
 enum Sender {
@@ -12,7 +8,8 @@ enum Sender {
     Login = 'LOGIN',
     Profile = 'PROFILE',
     ChangePassword = 'CHANGE_PASSWORD',
-    FileService = 'FILE_SERVICE'
+    FileService = 'FILE_SERVICE',
+    Document = 'DOCUMENT'
 }
 
 @Component({
@@ -35,7 +32,7 @@ export class ToastComponent implements OnInit, OnDestroy {
             this.messageService.message$.subscribe(result => {
                 if ( result ) {
                     this.sender = result.sender;
-                    this.openSnackbar(result.message, null, result.error);
+                    this.openSnackbar(result.message, null, result.duration, result.error);
                 }
             })
         );
@@ -45,9 +42,9 @@ export class ToastComponent implements OnInit, OnDestroy {
         this.subscription.unsubscribe();
     }
 
-    openSnackbar(message: string, action: string, error: boolean) {
+    openSnackbar(message: string, action: string, duration: number = 2000, error: boolean) {
         this.snackBar.open(message, action, {
-            duration: 2000,
+            duration,
             horizontalPosition: this.hposition,
             verticalPosition: this.vposition,
             panelClass: [error ? 'snackbar-red-bg' : 'snackbar-green-bg']
@@ -71,6 +68,10 @@ export class ToastComponent implements OnInit, OnDestroy {
 
                     case Sender.ChangePassword:
                         this.toastService.broadcastToast(Sender.ChangePassword);
+                        break;
+
+                    case Sender.Document:
+                        this.toastService.broadcastToast(Sender.Document);
                         break;
 
                     case Sender.FileService:

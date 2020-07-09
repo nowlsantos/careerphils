@@ -3,8 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { User } from '@models/user.model';
 import { Profile } from '@models/profile.model';
-import { UserModule } from '@components/user/user.module';
-import { Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -78,13 +76,12 @@ export class ApiService {
         });
     }
 
-    /* getUserPhoto(id: string) {
-        return this.http.get(`${this.baseUrl}/users/${id}/photo`);
+    uploadDocument(formdata, id: string) {
+        return this.http.patch(`${this.baseUrl}/users/${id}/updateDoc`, formdata, {
+            reportProgress: true,
+            observe: 'events',
+        });
     }
-
-    getImage(url: string) {
-        return this.http.get(url, { responseType: 'blob' as 'json'});
-    } */
 
     /* CHANGE / FORGOT / RESET PASSWORD  */
     updatePassword(passwordOptions) {

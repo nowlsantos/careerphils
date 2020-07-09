@@ -5,9 +5,12 @@ const {
     createUser,
     updateUser,
     deleteUser,
-    updateMe,
-    uploadUserFile,
-    resizeUserPhoto
+    updatePhoto,
+    uploadUserPhoto,
+    resizePhoto,
+    uploadUserDocument,
+    resizeDocuments,
+    updateDocs
 } = require('../controllers/users');
 const { protect, authorize } = require('../middleware/auth');
 const User = require('../models/User');
@@ -24,7 +27,8 @@ router.use('/:userId/profiles', profileRouter);
 router.use(protect);
 // router.use(authorize('admin'));
 
-router.patch('/updateMe', uploadUserFile, resizeUserPhoto, updateMe);
+router.patch('/:id/updatePhoto', uploadUserPhoto, resizePhoto, updatePhoto);
+router.patch('/:id/updateDoc', uploadUserDocument, resizeDocuments, updateDocs)
 
 router
     .route('/')

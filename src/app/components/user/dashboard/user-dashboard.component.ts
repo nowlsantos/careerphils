@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ApiService } from '@services/common';
+import { ApiService } from '@services/core';
 import { User } from '@models/user.model';
 import { map, filter } from 'rxjs/operators';
 import { Subscription, Observable } from 'rxjs';

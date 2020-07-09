@@ -6,28 +6,25 @@ const sharp = require('sharp');
 
 const multerStorage = multer.memoryStorage();
 const multerFilter = (req, file, cb) => {
-    if ( file.mimetype.startsWith('image') ) {
-        cb(null, true);
-    }
-    else {
-        cb(new AppError('Please upload only images'), 400, false);
-    }
+    file.mimetype.startsWith('image') ? cb(null, true) : cb(new AppError('Please upload only images'), 400, false);
 }
 
 const upload = multer({
     storage: multerStorage,
+    limits: { fileSize: 1024 * 1024 * 5 },
     fileFilter: multerFilter
 });
 
-exports.uploadUserFile = upload.single('fileItem');
+exports.uploadUserPhoto = upload.single('photo');
+exports.uploadUserDocument = upload.single('documents');
 
-exports.resizeUserPhoto = asyncHandler( async(req, res, next) => {
+exports.resizePhoto = asyncHandler( async(req, res, next) => {
     if ( !req.file ) return next();
 
-    req.file.filename = `user_${req.user.id}.jpeg`;
+    req.file.filename = `user_${req.user.id}_photo.jpeg`;
 
     await sharp(req.file.buffer)
-        .resize(150, 150)
+        .resize(100, 100)
         .toFormat('jpeg')
         .jpeg({ quality: 75})
         .toFile(`public/profiles/${req.file.filename}`);
@@ -37,14 +34,13 @@ exports.resizeUserPhoto = asyncHandler( async(req, res, next) => {
 
 /* 
     @desc       Upload a user photo
-    @route      PUT api/users/:id/photo
+    @route      PUT api/users/photo
     @access     Private
 */ 
-exports.updateMe = asyncHandler( async(req, res, next) => {
+exports.updatePhoto = asyncHandler( async(req, res, next) => {
     if ( req.file ) {
         const url = `${req.protocol}://${req.get('host')}`;
         req.body.photo = `${url}/public/profiles/${req.file.filename}`;
-        // req.body.documents = 
     }
 
     const user = await User.findByIdAndUpdate(req.user.id, req.body, {
@@ -65,6 +61,58 @@ exports.updateMe = asyncHandler( async(req, res, next) => {
         })
     }
 });
+
+exports.resizeDocuments = asyncHandler(async(req, res, next) => {
+    if ( !req.file ) return next();
+
+    const user = await User.findById(req.params.id);
+    const originalname = req.file.originalname.split('.')[0];
+    
+    /* Create an array reference to the body */
+    req.body.documents = user.documents;
+    const url = `${req.protocol}://${req.get('host')}`;
+    const filename = `user_${req.user.id}-${originalname}.jpeg`;
+
+    await sharp(req.file.buffer)
+        .resize(612, 792)
+        .toFormat('jpeg')
+        .jpeg({ quality: 75})
+        .toFile(`public/documents/${filename}`);
+
+    req.body.documents.push(`${url}/public/documents/${filename}`);
+
+    next();
+})
+
+/* 
+    @desc       Upload a user document
+    @route      PUT api/users/updateDoc
+    @access     Private
+*/ 
+exports.updateDocs = asyncHandler(async(req, res, next) => {
+    /* if ( req.file ) {
+        const url = `${req.protocol}://${req.get('host')}`;
+        req.body.documents.forEach(doc => `${url}/public/documents/${doc}`);
+    } */
+
+    const user = await User.findByIdAndUpdate(req.user.id, req.body, {
+        new: true,
+        runValidators: true
+    });
+    
+    if ( !user ) {
+        return next( new AppError(`No user was found with an id of ${req.params.id}`), 404 );
+    }
+    else if ( !req.file ) {
+        return next( new AppError('Please upload a file'), 400 );
+    }
+    else {
+        res.status(200).json({
+            status: 'success',
+            data: user
+        })
+    }
+})
 
 /*
     @desc       Get all users

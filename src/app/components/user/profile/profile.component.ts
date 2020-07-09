@@ -2,7 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { User, Profile } from '@models/index';
-import { ApiService, MessageService, ToasterService, UserService } from '@services/common/index';
+import { ApiService, MessageService, ToasterService } from '@services/core';
+import { UserService } from '@services/common/user.service';
 import { map } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 
