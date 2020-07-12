@@ -2,13 +2,16 @@
     <aside class="aside">
         <div class="content-link">
             <mat-nav-list>
-                <mat-list-item [routerLink]="['./dashboard']">Dashboard</mat-list-item>
+                <!-- <mat-list-item [routerLink]="['./dashboard']">Dashboard</mat-list-item> -->
+                <mat-list-item>
+                    <button mat-button (click)="showAllUsers()">All Users</button>
+                </mat-list-item>
                 <mat-divider></mat-divider>
             </mat-nav-list>
         </div>
     </aside>
 
     <div class="admin-content">
-        <router-outlet></router-outlet>
+        <app-dashboard [users]=users></app-dashboard>
     </div>
 </div>

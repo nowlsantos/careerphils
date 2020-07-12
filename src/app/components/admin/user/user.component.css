@@ -1,0 +1,56 @@
+:host {
+    display: block;
+}
+
+.card {
+    max-width: 300px;
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    text-align: center;
+    background-color: var(--formbg);
+    box-shadow: 0 1px 1px rgba(0,0,0,0.11), 
+                0 2px 2px rgba(0,0,0,0.11), 
+                0 4px 4px rgba(0,0,0,0.11), 
+                0 6px 8px rgba(0,0,0,0.11),
+                0 8px 16px rgba(0,0,0,0.11);
+}
+
+img {
+    transform: scale(0.9);
+    max-width: 150px;
+    width: 150px;
+    height: 150px;
+}
+
+.title {
+    font-family: 'Lato', sans-serif;
+    font-size: 1rem;
+    /* font-weight: bold; */
+    color: orangered;
+}
+
+.subtitle {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.8rem;
+}
+
+button {
+    font-family: 'Lato', sans-serif;
+    color: var(--primary);
+}
+
+.cancel {
+    font-weight: 500;
+    color: blueviolet;
+    cursor: pointer;
+    text-decoration: none;
+    padding-left: 1em;
+}
+
+.mat-flat-button.mat-primary, 
+.mat-raised-button.mat-primary {
+    background-color: var(--primary);
+}

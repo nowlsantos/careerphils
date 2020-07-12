@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { QuicklinkStrategy } from 'ngx-quicklink';
-import { UserResolver } from '@services/resolvers';
+import { UserResolver, DashboardResolver } from '@services/resolvers';
 import { AuthGuard } from '@services/guards';
 
 const routes: Routes = [
@@ -61,6 +61,9 @@ const routes: Routes = [
         data: {
             preload: true,
             state: 'admin'
+        },
+        resolve: {
+            users: DashboardResolver
         }
     },
     {
