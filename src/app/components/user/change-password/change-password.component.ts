@@ -65,4 +65,12 @@ export class ChangePasswordComponent implements OnInit, OnDestroy {
             })
         );
     }
+
+    isDirty() {
+        return this.passwordForm.dirty;
+    }
+
+    onReset() {
+        this.passwordForm.reset();
+    }
 }

@@ -5,13 +5,13 @@ import { BehaviorSubject } from 'rxjs';
     providedIn: 'root'
 })
 export class RegisterService {
-
-    private registerSource$ = new BehaviorSubject<boolean>(false);
-    register$ = this.registerSource$.asObservable();
+    // tslint:disable:variable-name
+    private _registerSource$ = new BehaviorSubject<boolean>(false);
+    register$ = this._registerSource$.asObservable();
 
     constructor() { }
 
     broadcastRegister(flag: boolean) {
-        this.registerSource$.next(flag);
+        this._registerSource$.next(flag);
     }
 }

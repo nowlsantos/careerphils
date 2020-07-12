@@ -6,13 +6,13 @@ import { Profile } from '@models/profile.model';
     providedIn: 'root'
 })
 export class ProfileService {
-
-    private profileSource$ = new BehaviorSubject<Profile>(null);
-    profile$ = this.profileSource$.asObservable();
+    // tslint:disable:variable-name
+    private _profileSource$ = new BehaviorSubject<Profile>(null);
+    profile$ = this._profileSource$.asObservable();
 
     constructor() { }
 
     broadcastProfile(profile: Profile) {
-        this.profileSource$.next(profile);
+        this._profileSource$.next(profile);
     }
 }

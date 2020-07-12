@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { AdminComponent, RegisterComponent, LoginComponent } from './index';
+import { AdminComponent, DashboardComponent } from './index';
 
 const routes: Routes = [
     {
         path: '', component: AdminComponent,
         children: [
-            { path: 'register', component: RegisterComponent },
-            { path: 'login', component: LoginComponent }
+            { path: '', redirectTo: 'dashboard', pathMatch: 'full'},
+            { path: 'dashboard', component: DashboardComponent }
         ]
     }
 ];

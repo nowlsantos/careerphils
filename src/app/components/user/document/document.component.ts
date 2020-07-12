@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
 import { HttpResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 import { UserService, DocumentService } from '@services/common';
 import { ApiService, MessageService } from '@services/core';
 import { User, DocumentModel } from '@models/index';
+import { Utilities } from 'src/app/utils/utilities';
 
 @Component({
     selector: 'app-document',
@@ -14,7 +14,7 @@ import { User, DocumentModel } from '@models/index';
 export class DocumentComponent implements OnInit, OnDestroy {
     private subscription = new Subscription();
     readonly sender = 'DOCUMENT';
-    private user: User;
+    user: User;
     documents: DocumentModel[];
 
     // tslint:disable-next-line:object-literal-key-quotes
@@ -22,9 +22,7 @@ export class DocumentComponent implements OnInit, OnDestroy {
     selectedFile: File;
 
     /* tslint:disable:no-string-literal */
-    constructor(private route: ActivatedRoute,
-                private router: Router,
-                private apiService: ApiService,
+    constructor(private apiService: ApiService,
                 private documentService: DocumentService,
                 private userService: UserService,
                 private messageService: MessageService) {}
@@ -32,14 +30,21 @@ export class DocumentComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.subscription.add(
             this.userService.user$.subscribe(user => {
-                this.user = user;
-                if ( !user.documents.length ) {
-                    return;
+                if ( user ) {
+                    this.user = user;
+                    if ( !user.documents.length || !user.user_profile ) {
+                        return;
+                    }
                 }
             })
         );
+
         this.documentService.getDocuments().subscribe(docs => {
             this.documents = docs;
+            /* if ( !this.user ) {
+                return;
+            } */
+
             this.documents.forEach(doc => {
                 this.user.documents.forEach(item => {
                     const str = item.split('-')[1].split('.')[0].split('_')[0];
@@ -49,7 +54,6 @@ export class DocumentComponent implements OnInit, OnDestroy {
                         doc.uploaded = true;
                     }
                 });
-                console.log(doc);
             });
         });
     }
@@ -65,12 +69,10 @@ export class DocumentComponent implements OnInit, OnDestroy {
         formdata.append('documents', this.selectedFile);
 
         const filename = this.selectedFile.name.split('.')[0];
-        console.log('FILE::', filename);
-        console.log('FLAG::', this.hasSpecialCharacters(this.selectedFile.name));
 
-        if ( this.hasSpecialCharacters(filename) ) {
+        if ( Utilities.hasSpecialCharacters(filename) ) {
             this.messageService.sendMessage({
-                message: 'Special characters are found in file name.\nRename the file and remove the unnecessary characters',
+                message: 'Special characters are found in file name. Rename the file and remove the unnecessary characters',
                 error: true,
                 sender: this.sender,
                 duration: 6000
@@ -83,14 +85,12 @@ export class DocumentComponent implements OnInit, OnDestroy {
                 if ( response instanceof HttpResponse ) {
                     const user = response.body['data'] as User;
                     user.documents.forEach(item => {
-                        // const str = item.split('-')[1].split('.')[0].split('_')[0];
                         const str = item.split('-')[1].split('.')[0];
-                        const newStr = this.hasSpaceOrUnderscore(str);
+                        const newStr = Utilities.hasSpaceOrUnderscore(str);
                         const docStr = doc.title.toLocaleLowerCase();
 
                         // If match set the upload property to true
                         if ( docStr.includes(newStr) ) {
-                            console.log('STR::', newStr, 'MATCH::', docStr.includes(newStr));
                             doc.uploaded = true;
                             return;
                         }
@@ -98,40 +98,5 @@ export class DocumentComponent implements OnInit, OnDestroy {
                 }
             })
         );
-    }
-
-    private hasSpaceOrUnderscore(str: string) {
-        if ( str.includes('_') ) {
-            str = str.split('_')[0];
-        } else if ( str.includes(' ') ) {
-            str = str.split(' ')[0];
-        }
-        return str;
-    }
-
-    private hasSpecialCharacters(str: string): boolean {
-        const regex = /[!$%^&*()+|~=`{}[:;<>?,@#\]0-9]/g;
-        // const regex = /[-!$%^&*()_+|~=`{}[:;<>?,.@#\]0-9]/g;
-        // /\W|_/g
-        if ( str.match(regex) ) {
-            console.log('MATCH::', str.match(regex));
-            return true;
-        }
-        return false;
-    }
-
-    private removeSpecialCharacters(str: string) {
-        if ( str.indexOf(' ') ) {
-            str = String(str).split(' ').join('_');
-        }
-        return str.replace(/[^a-z]/gi, '').toLowerCase();
-    }
-
-    private capitalizeFirstLetter(str) {
-        str = str.split(' ');
-        for ( let n = 0; n < str.length; n++ ) {
-            str[n] = str[n][0].toUpperCase() + str[n].substr(1);
-        }
-        return str.join(' ');
     }
 }

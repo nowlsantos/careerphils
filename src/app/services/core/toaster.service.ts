@@ -5,12 +5,13 @@ import { BehaviorSubject } from 'rxjs';
     providedIn: 'root'
 })
 export class ToasterService {
-    private toastSource$ = new BehaviorSubject<string>(null);
-    toast$ = this.toastSource$.asObservable();
+    // tslint:disable:variable-name
+    private _toastSource$ = new BehaviorSubject<string>(null);
+    toast$ = this._toastSource$.asObservable();
 
     constructor() { }
 
     broadcastToast(sender: string) {
-        this.toastSource$.next(sender);
+        this._toastSource$.next(sender);
     }
 }

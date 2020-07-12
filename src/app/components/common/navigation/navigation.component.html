@@ -30,11 +30,11 @@
             <span class="nav-spacer"></span>
             <ng-container *ngIf="!user; else logout">
                 <li routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-                    <a [routerLink]="['../admin/register']">Register</a>
+                    <a [routerLink]="['../auth/register']">Register</a>
                 </li>
 
                 <li routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-                    <a [routerLink]="['../admin/login']">Login</a>
+                    <a [routerLink]="['../auth/login']">Login</a>
                 </li>
             </ng-container>
 

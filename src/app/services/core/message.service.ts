@@ -6,12 +6,13 @@ import { Message } from '@models/message.model';
     providedIn: 'root'
 })
 export class MessageService {
-    private messageSource$ = new BehaviorSubject<Message>(null);
-    message$ = this.messageSource$.asObservable();
+    // tslint:disable:variable-name
+    private _messageSource$ = new BehaviorSubject<Message>(null);
+    message$ = this._messageSource$.asObservable();
 
     constructor() { }
 
     sendMessage(value: Message) {
-        this.messageSource$.next(value);
+        this._messageSource$.next(value);
     }
 }

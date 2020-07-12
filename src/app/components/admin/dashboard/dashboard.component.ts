@@ -5,11 +5,11 @@ import { map, filter } from 'rxjs/operators';
 import { Subscription, Observable } from 'rxjs';
 
 @Component({
-    selector: 'app-user-dashboard',
-    templateUrl: './user-dashboard.component.html',
-    styleUrls: ['./user-dashboard.component.css']
+    selector: 'app-dashboard',
+    templateUrl: './dashboard.component.html',
+    styleUrls: ['./dashboard.component.css']
 })
-export class UserDashboardComponent implements OnInit, OnDestroy {
+export class DashboardComponent implements OnInit, OnDestroy {
     private subscription = new Subscription();
     users: User[] = [];
     photoUrl: string;

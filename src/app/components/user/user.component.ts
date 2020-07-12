@@ -13,7 +13,8 @@ import { Subscription } from 'rxjs';
     styleUrls: ['./user.component.css']
 })
 export class UserComponent implements OnInit, OnDestroy {
-    private subscription = new Subscription();
+    // tslint:disable:variable-name
+    private _subscription = new Subscription();
     user: User;
     selectedFile: File;
     fullname: string;
@@ -26,14 +27,15 @@ export class UserComponent implements OnInit, OnDestroy {
     /* tslint:disable:no-string-literal */
     constructor(private route: ActivatedRoute,
                 private apiService: ApiService,
-                private userService: UserService) { }
+                private userService: UserService) {}
 
     ngOnInit() {
-        this.subscription.add(
+        this._subscription.add(
             this.route.data
                 .pipe( map(response => response['user'].data as User))
                 .subscribe(user => {
                     this.user = user;
+
                     user.photo.startsWith('default') ? user.photo = `./assets/users/${user.photo}`
                                                      : user.photo = `${user.photo}`;
                     if ( user.user_profile ) {
@@ -47,7 +49,7 @@ export class UserComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.subscription.unsubscribe();
+        this._subscription.unsubscribe();
     }
 
     onFileSelected($event) {
@@ -59,7 +61,7 @@ export class UserComponent implements OnInit, OnDestroy {
         // --- Populate the filelist for checking loaded files---
         // const filename = this.selectedFile.name.split('.')[0];
 
-        this.subscription.add(
+        this._subscription.add(
             this.apiService.uploadPhoto(formdata).subscribe(response => {
                 if (response instanceof HttpResponse) {
                     const user = response.body['data'] as User;

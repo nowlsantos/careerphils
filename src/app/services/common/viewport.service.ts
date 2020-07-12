@@ -6,13 +6,13 @@ import { ViewPort } from '@models/viewport.model';
     providedIn: 'root'
 })
 export class ViewPortService {
-
-    private viewportSource$ = new BehaviorSubject<ViewPort>(null);
-    viewportLayout$ = this.viewportSource$.asObservable();
+    // tslint:disable:variable-name
+    private _viewportSource$ = new BehaviorSubject<ViewPort>(null);
+    viewportLayout$ = this._viewportSource$.asObservable();
 
     constructor() { }
 
     broadcastLayout(viewport: ViewPort) {
-        this.viewportSource$.next(viewport);
+        this._viewportSource$.next(viewport);
     }
 }

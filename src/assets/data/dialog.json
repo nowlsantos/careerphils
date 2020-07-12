@@ -1,0 +1,12 @@
+{
+    "Document": {
+        "title": "Document Alert",
+        "content": "You need to create your profile first before you can upload a document",
+        "confirm": "No"
+    },
+    "Profile": {
+        "title": "Profile Alert",
+        "content": "You have unsaved changes. Navigate away and lose all the changes to Profile",
+        "confirm": "Yes"
+    }
+}

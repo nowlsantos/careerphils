@@ -10,6 +10,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { SharedModule } from '@shared/shared.module';
 import { InterceptorProviders } from '@services/interceptors/index';
@@ -17,13 +18,15 @@ import { InterceptorProviders } from '@services/interceptors/index';
 import { AppComponent } from './app.component';
 import { NavigationComponent, LoaderComponent } from '@components/common/';
 import { ToastComponent } from '@common/toast/toast.component';
+import { DialogComponent } from '@components/dialog/dialog.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         NavigationComponent,
         LoaderComponent,
-        ToastComponent
+        ToastComponent,
+        DialogComponent
     ],
     imports: [
         BrowserModule,
@@ -36,6 +39,7 @@ import { ToastComponent } from '@common/toast/toast.component';
         MatProgressSpinnerModule,
         MatSnackBarModule,
         MatButtonModule,
+        MatDialogModule,
         AppRoutingModule
     ],
     providers: [ InterceptorProviders ],

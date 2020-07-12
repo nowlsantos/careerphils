@@ -12,14 +12,15 @@ import { Subscription } from 'rxjs';
     styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit, OnDestroy {
+    // tslint:disable:variable-name
     /* tslint:disable:no-string-literal */
     viewPort = new ViewPort();
     submitted = false;
     loginForm: FormGroup;
     hide = true;
+    private _user: User;
+    private _subscription = new Subscription();
     readonly sender = 'LOGIN';
-    private user: User;
-    private subscription = new Subscription();
 
     constructor(private router: Router,
                 private viewportService: ViewPortService,
@@ -36,23 +37,28 @@ export class LoginComponent implements OnInit, OnDestroy {
             password: ['', [Validators.required, Validators.minLength(6)]],
         });
 
-        this.subscription.add(
+        this._subscription.add(
             this.viewportService.viewportLayout$.subscribe(viewport => {
                 this.viewPort = viewport;
             })
         );
 
-        this.subscription.add(
+        this._subscription.add(
             this.toastService.toast$.subscribe(sender => {
-                if (sender === this.sender && this.user) {
-                    this.router.navigate([`../users/${this.user.id}`]);
+                if (sender === this.sender && this._user) {
+                    if ( this._user.role === 'user' ) {
+                        this.router.navigate([`../users/${this._user.id}`]);
+                    }
+                    else if ( this._user.role === 'admin' ) {
+                        this.router.navigate([`../admin/${this._user.id}`]);
+                    }
                 }
             })
         );
     }
 
     ngOnDestroy() {
-        this.subscription.unsubscribe();
+        this._subscription.unsubscribe();
     }
 
     getErrorMessage() {
@@ -76,10 +82,10 @@ export class LoginComponent implements OnInit, OnDestroy {
             password: formvalue.password,
         };
 
-        this.subscription.add(
+        this._subscription.add(
             this.apiService.login(userOptions)
                 .subscribe(res => {
-                    this.user = res['data'] as User;
+                    this._user = res['data'] as User;
                     const token = res['token'];
 
                     this.messageService.sendMessage({
@@ -89,15 +95,16 @@ export class LoginComponent implements OnInit, OnDestroy {
                     });
 
                     this.authService.setToken(token);
-                    this.userService.broadcastUser(this.user);
+                    this.userService.broadcastUser(this._user);
+                    this.userService.setRole(this._user.role);
                 }
             )
         );
     }
 
     forgotPassHandler() {
-        this.subscription.add(
-            this.apiService.forgotPassword(this.user.email).subscribe(res => {
+        this._subscription.add(
+            this.apiService.forgotPassword(this._user.email).subscribe(res => {
                 console.log(res);
             })
         );

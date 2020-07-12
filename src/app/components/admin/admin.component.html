@@ -1,1 +1,14 @@
-<router-outlet></router-outlet>
+<div class="admin-container">
+    <aside class="aside">
+        <div class="content-link">
+            <mat-nav-list>
+                <mat-list-item [routerLink]="['./dashboard']">Dashboard</mat-list-item>
+                <mat-divider></mat-divider>
+            </mat-nav-list>
+        </div>
+    </aside>
+
+    <div class="admin-content">
+        <router-outlet></router-outlet>
+    </div>
+</div>

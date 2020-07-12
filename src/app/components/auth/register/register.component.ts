@@ -14,12 +14,14 @@ import { Subscription } from 'rxjs';
     styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit, OnDestroy {
+    // tslint:disable:variable-name
+    private _subscription = new Subscription();
+    readonly sender = 'REGISTER';
+
     registerForm: FormGroup;
     returnUrl: string;
     hide = true;
     viewPort = new ViewPort();
-    readonly sender = 'REGISTER';
-    private subscription = new Subscription();
 
     constructor(private route: ActivatedRoute,
                 private router: Router,
@@ -37,13 +39,13 @@ export class RegisterComponent implements OnInit, OnDestroy {
             confirmPassword: ['', [Validators.required, Validators.minLength(6)]]
         }, { validator: PasswordValidatorc });
 
-        this.subscription.add(
+        this._subscription.add(
             this.viewportService.viewportLayout$.subscribe(viewport => {
                 this.viewPort = viewport;
             })
         );
 
-        this.subscription.add(
+        this._subscription.add(
             this.toastService.toast$.subscribe(sender => {
                 if (sender === this.sender) {
                     this.router.navigate(['../login'], { relativeTo: this.route });
@@ -53,7 +55,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.subscription.unsubscribe();
+        this._subscription.unsubscribe();
     }
 
     validateEmail(email) {
@@ -92,7 +94,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
             confirmPassword: formvalue.confirmPassword
         };
 
-        this.subscription.add(
+        this._subscription.add(
             this.apiService.register(options).subscribe(res => {
                 this.messageService.sendMessage({
                     message: 'Registration successful. Welcome to CareerPhils!',

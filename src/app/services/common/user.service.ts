@@ -4,19 +4,29 @@ import { User } from '@models/user.model';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
-
-    private userSource$ = new BehaviorSubject<User>(null);
-    user$ = this.userSource$.asObservable();
-    private user: User;
-
-    constructor() { }
+    // tslint:disable:variable-name
+    private _userSource$ = new BehaviorSubject<User>(null);
+    private _user: User;
+    user$ = this._userSource$.asObservable();
 
     broadcastUser(user: User) {
-        this.user = user;
-        this.userSource$.next(user);
+        this._user = user;
+        this._userSource$.next(user);
     }
 
     getUser() {
-        return this.user;
+        return this._user;
+    }
+
+    setRole(role: string) {
+        localStorage.setItem('role', role);
+    }
+
+    getRole() {
+        return localStorage.getItem('role');
+    }
+
+    removeRole() {
+        localStorage.removeItem('role');
     }
 }

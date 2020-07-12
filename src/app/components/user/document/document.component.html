@@ -14,10 +14,11 @@
                [ngStyle]="uploadDisplay"
                (change)="onFileSelected($event, doc)">
             <ng-container *ngIf="!doc.uploaded; else uploaded">
-                <button mat-stroked-button (click)="fileInput.click()">Upload</button>
+                <button mat-stroked-button (click)="fileInput.click()" [disabled]="user && !user.hasProfile">Upload</button>
             </ng-container>
             <ng-template #uploaded>
-                <mat-icon aria-hidden="false" aria-label="check icon">check_circle</mat-icon>
+                <!-- <mat-icon aria-hidden="false" aria-label="check icon">check_circle</mat-icon> -->
+                <mat-icon aria-hidden="false" aria-label="check icon">done_outline</mat-icon>
             </ng-template>
             <mat-divider></mat-divider>
         </mat-list-item>

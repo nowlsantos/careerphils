@@ -15,20 +15,16 @@ import { MatSelectModule } from '@angular/material/select';
 
 import { UserRoutingModule } from './user-routing.module';
 import { UserComponent,
-         UserDashboardComponent,
          ProfileComponent,
          ChangePasswordComponent,
          DocumentComponent} from './index';
-import { SafeHtmlPipe } from '@services/pipes/safe-html.pipe';
 
 @NgModule({
     declarations: [
         UserComponent,
-        UserDashboardComponent,
         ProfileComponent,
         ChangePasswordComponent,
-        DocumentComponent,
-        SafeHtmlPipe
+        DocumentComponent
     ],
     imports: [
         CommonModule,
@@ -47,4 +43,4 @@ import { SafeHtmlPipe } from '@services/pipes/safe-html.pipe';
         UserRoutingModule
     ]
 })
-export class UserModule { }
+export class UserModule {}

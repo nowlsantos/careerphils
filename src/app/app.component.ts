@@ -5,7 +5,7 @@ import { map, share, tap } from 'rxjs/operators';
 import { MatSidenavContainer, MatSidenav } from '@angular/material/sidenav';
 import { RouterOutlet } from '@angular/router';
 import { ViewPort } from '@models/index';
-import { ViewPortService } from '@services/common/';
+import { ViewPortService, UserService } from '@services/common/';
 import { ApiService, AuthService } from '@services/core/';
 import { Subscription } from 'rxjs';
 
@@ -39,6 +39,7 @@ export class AppComponent implements OnInit, OnDestroy {
     constructor(private breakpointObserver: BreakpointObserver,
                 private viewportService: ViewPortService,
                 private apiService: ApiService,
+                private userService: UserService,
                 private authService: AuthService) { }
 
     ngOnInit() {
@@ -108,6 +109,7 @@ export class AppComponent implements OnInit, OnDestroy {
             this.apiService.logout().subscribe( () => {
                 // console.log('SideNav Logout::');
                 this.authService.logout();
+                this.userService.removeRole();
                 this.sidenav.close();
                 // this.router.navigate(['/home']);
             })

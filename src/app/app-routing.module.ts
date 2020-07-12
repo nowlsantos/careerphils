@@ -2,23 +2,16 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { QuicklinkStrategy } from 'ngx-quicklink';
 import { UserResolver } from '@services/resolvers';
+import { AuthGuard } from '@services/guards';
 
 const routes: Routes = [
-    { path: '', redirectTo: '/home', pathMatch: 'full' },
+    { path: '', redirectTo: 'home', pathMatch: 'full' },
     {
         path: 'home',
         loadChildren: () => import('@components/routes/home/home.module').then( m => m.HomeModule ),
         data: {
             preload: true,
             state: 'home'
-        }
-    },
-    {
-        path: 'admin',
-        loadChildren: () => import('@components/admin/admin.module').then( m => m.AdminModule ),
-        data: {
-            preload: true,
-            state: 'admin'
         }
     },
     {
@@ -53,17 +46,27 @@ const routes: Routes = [
             state: 'location'
         }
     },
-    /* {
-        path: 'users',
-        loadChildren: () => import('./components/user/user.module').then(m => m.UserModule),
+    {
+        path: 'auth',
+        loadChildren: () => import('@components/auth/auth.module').then( m => m.AuthModule ),
         data: {
             preload: true,
-            state: 'users'
+            state: 'auth'
         }
-    }, */
+    },
+    {
+        path: 'admin/:id',
+        loadChildren: () => import('@components/admin/admin.module').then( m => m.AdminModule ),
+        canLoad: [ AuthGuard ],
+        data: {
+            preload: true,
+            state: 'admin'
+        }
+    },
     {
         path: 'users/:id',
         loadChildren: () => import('./components/user/user.module').then(m => m.UserModule),
+        canActivate: [ AuthGuard ],
         data: {
             preload: true,
             state: 'users'

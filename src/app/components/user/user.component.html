@@ -1,13 +1,14 @@
 <div class="user-container">
+    
     <aside class="aside">
         <div class="aside-box">
             <img [src]="user.photo" alt="Photo of User">
         </div>
 
-        <ng-container *ngIf="profile">
+        <div *ngIf="profile">
             <h3>{{ fullname }}</h3>
             <mat-divider></mat-divider>
-        </ng-container>
+        </div>
         
         <div>
             <input type="file"
@@ -17,13 +18,14 @@
                    (change)="onFileSelected($event)">
             <button mat-button (click)="fileInput.click()">Choose new photo</button>
         </div>
-        
         <hr>
         
         <div class="content-link">
             <mat-nav-list>
-                <mat-list-item [routerLink]="['./dashboard']">Dashboard</mat-list-item>
-                <mat-divider></mat-divider>
+                <!-- <ng-container *ngIf="isAdmin; else member">
+                    <mat-list-item [routerLink]="['./dashboard']">Dashboard</mat-list-item>
+                    <mat-divider></mat-divider>
+                </ng-container> -->
 
                 <mat-list-item [routerLink]="['./profile']">Profile</mat-list-item>
                 <mat-divider></mat-divider>

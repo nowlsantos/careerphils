@@ -20,6 +20,7 @@
             "@components/*": ["src/app/components/*"],
             "@services/*": ["src/app/services/*"],
             "@models/*": ["src/app/models/*"],
+            "@utils/*": ["src/app/utils/*"],
             "@interceptors/*": ["src/app/services/core/interceptors/*"],
             "@resolvers/*": ["src/app/services/core/resolvers/*"],
             "@guards/*": ["src/app/services/core/guards/*"],

@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
+import { Component, Output, EventEmitter, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService, AuthService} from '@services/core';
 import { UserService } from '@services/common/user.service';
@@ -11,13 +11,14 @@ import { Subscription } from 'rxjs';
     styleUrls: ['./navigation.component.css']
 })
 export class NavigationComponent implements OnInit, OnDestroy {
-    private subscription = new Subscription();
-
+    // tslint:disable:variable-name
+    private _subscription = new Subscription();
     @Output() opened = new EventEmitter<boolean>();
+
     user: User;
     isHandset = false;
     isLoggedIn = false;
-    cpLogo = '../../../../assets/logo/cplogo.png';
+    cpLogo = './assets/logo/cplogo.png';
     userPhoto: string;
     firstName: string;
 
@@ -29,7 +30,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.isLoggedIn = this.authService.isLoggedIn();
 
-        this.subscription.add(
+        this._subscription.add(
             this.userService.user$.subscribe(user => {
                 if ( user ) {
                     this.user = user;
@@ -56,6 +57,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
     onLogout() {
         this.apiService.logout().subscribe( () => {
             this.authService.logout();
+            this.userService.removeRole();
             this.isLoggedIn = this.authService.isLoggedIn();
             this.user = null;
             this.firstName = null;
@@ -64,7 +66,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.subscription.unsubscribe();
+        this._subscription.unsubscribe();
     }
 
     open(flag: boolean) {

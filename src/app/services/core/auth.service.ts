@@ -1,18 +1,20 @@
 import { Injectable } from '@angular/core';
+import { of } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService {
-
-    private storageKey = 'cp-jwt';
+    // tslint:disable:variable-name
+    private _storageKey = 'cp-jwt';
+    redirectUrl: string;
 
     setToken(token: string) {
-        localStorage.setItem(this.storageKey, token);
+        localStorage.setItem(this._storageKey, token);
     }
 
     getToken() {
-        return localStorage.getItem(this.storageKey);
+        return localStorage.getItem(this._storageKey);
     }
 
     isLoggedIn() {
@@ -20,6 +22,11 @@ export class AuthService {
     }
 
     logout() {
-        localStorage.removeItem(this.storageKey);
+        localStorage.removeItem(this._storageKey);
+    }
+
+    checkPermissions() {
+        const role = localStorage.getItem('role');
+        return of(role === 'admin');
     }
 }

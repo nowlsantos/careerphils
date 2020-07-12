@@ -160,9 +160,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
         return profile;
     }
 
+    isDirty() {
+        return this.userForm.dirty;
+    }
+
     onReset() {
-        this.resetProfile();
-        this.router.navigate(['../dashboard'], { relativeTo: this.route });
-        // this.userForm.reset();
+        this.userForm.reset();
     }
 }
