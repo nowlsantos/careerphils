@@ -19,7 +19,7 @@ export class AdminGuard implements CanLoad, CanActivateChild {
         /* const user = this.userService.getUser();
 
         if ( next.component === DocumentComponent ) {
-            if ( user && user.user_profile ) {
+            if ( user && user.profile ) {
                 return true;
             }
 

@@ -62,6 +62,7 @@ app.use(compression());
 // Mount routers
 app.use('/api/auth', auth);
 app.use('/api/users', users);
+app.use('/api/admin', users);
 app.use('/api/profiles', profiles);
 
 app.use(errorHandler);

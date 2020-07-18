@@ -47,7 +47,7 @@ h3 {
 }
 
 button {
-    font-family: 'Lato', sans-serif;
+    font: 'Lato', sans-serif;
     font-weight: 300;
     color: white;
 }
@@ -58,7 +58,7 @@ button {
 }
 
 .mat-list-item {
-    font-family: "Lato", sans-serif;
+    font: "Lato", sans-serif;
     color: white;
     font-size: 0.86rem;
     font-weight: 300;

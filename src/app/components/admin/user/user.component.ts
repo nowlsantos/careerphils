@@ -1,26 +1,70 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { User } from '@models/user.model';
+import { Component, OnInit, Input, ChangeDetectionStrategy, OnChanges, SimpleChanges } from '@angular/core';
+import { User, Profile } from '@models/index';
+import { DialogService, UserService } from '@services/common/';
 
 @Component({
-    selector: 'app-user',
+    selector: 'app-user-dashboard',
     templateUrl: './user.component.html',
-    styleUrls: ['./user.component.css']
+    styleUrls: ['./user.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UserComponent implements OnInit {
+export class UserComponent implements OnInit, OnChanges {
+    // tslint:disable:variable-name
     @Input() user: User;
+    @Input() profile: Profile;
     fullname: string;
+    position: string;
+    userPhoto: string;
 
-    constructor() { }
+    /* tslint:disable:no-string-literal */
+    constructor(private dialogService: DialogService,
+                private userService: UserService) { }
 
-    ngOnInit() {
-        this.user.photo.startsWith('default') ? this.user.photo = `./assets/users/${this.user.photo}`
-                                              : this.user.photo = `${this.user.photo}`;
+    ngOnInit() {}
 
-        if ( this.user.user_profile ) {
-            this.fullname = `${this.user.user_profile.firstname} ${this.user.user_profile.lastname}`.toUpperCase();
-        } else {
-            this.fullname = '__BLANK__';
+    ngOnChanges(changes: SimpleChanges) {
+        if ( changes['user'] ) {
+            this.user = changes['user'].currentValue as User;
+            this.processUser();
+        }
+        else if ( changes['profile'] ) {
+            this.profile = changes['profile'].currentValue as Profile;
+            this.processProfile();
         }
     }
 
+    private processUser() {
+        if ( !this.user.profile ) {
+            this.fullname = '__NO PROFILE__';
+            this.position = '---';
+        } else {
+            this.fullname = `${this.user.profile.firstname} ${this.user.profile.lastname}`.toUpperCase();
+            this.position = this.user.profile.position;
+        }
+
+        this.getUserPhoto(this.user);
+    }
+
+    private processProfile() {
+        const users = this.userService.getAllUsers();
+        for ( const user of users ) {
+            if ( this.profile.user === user.id ) {
+                this.user = user;
+                this.fullname = `${this.profile.firstname} ${this.profile.lastname}`.toUpperCase();
+                this.position = this.profile.position;
+                this.getUserPhoto(user);
+            }
+        }
+    }
+
+    getUserPhoto(user: User) {
+        user.photo.startsWith('default') ? user.photo = `./assets/users/${user.photo}`
+                                         : user.photo = `${user.photo}`;
+
+        return this.userPhoto = user.photo;
+    }
+
+    viewDetails() {
+        this.dialogService.openUserDialog(this.user);
+    }
 }

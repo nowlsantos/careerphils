@@ -8,6 +8,6 @@ export interface User {
     photo?: string;
     createdAt?: Date;
     hasProfile?: boolean;
-    user_profile?: Profile;
+    profile?: Profile;
     documents?: string[];
 }

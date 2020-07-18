@@ -1,5 +1,22 @@
-<section class="dashboard-container">
-    <div *ngFor="let user of users">
-        <app-user [user]=user></app-user>
+<section class="container">
+    <ng-container *ngIf="isActiveUser; else isActiveProfile">
+        <div *ngFor="let user of users">
+            <app-user-dashboard [user]="user"></app-user-dashboard>
+        </div>
+    </ng-container>
+    
+    <ng-template #isActiveProfile>
+        <div *ngFor="let profile of profiles">
+            <app-user-dashboard [profile]=profile></app-user-dashboard>
+        </div>
+    </ng-template>
+    
+    <div class="pagination">
+        <mat-paginator 
+            [length]="pageLength" 
+            [pageSize]="pageSize" 
+            (page)="pageChangeEvent($event)">
+            <!-- [pageSizeOptions]="pageSizeOptions" -->
+        </mat-paginator>
     </div>
 </section>

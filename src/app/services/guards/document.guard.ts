@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivateChild, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { UserService } from '@services/common';
+import { UserService, DialogService } from '@services/common/index';
 import { DocumentComponent } from '@components/user';
-import { DialogService } from '@services/core/dialog.service';
 
 @Injectable({
     providedIn: 'root'
@@ -14,13 +13,14 @@ export class DocumentGuard implements CanActivateChild {
     canActivateChild(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         const user = this.userService.getUser();
 
-        if ( user && user.user_profile ) {
+        if ( user && user.profile ) {
             return true;
         }
 
         if ( next.component === DocumentComponent ) {
-            return this.dialogService.openDialog('DOCUMENT');
+            return this.dialogService.openGuardDialog('DOCUMENT');
         }
+
         return true;
     }
 }

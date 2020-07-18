@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { QuicklinkStrategy } from 'ngx-quicklink';
-import { UserResolver, DashboardResolver } from '@services/resolvers';
+import { UserResolver } from '@services/resolvers';
 import { AuthGuard } from '@services/guards';
 
 const routes: Routes = [
@@ -55,18 +55,6 @@ const routes: Routes = [
         }
     },
     {
-        path: 'admin/:id',
-        loadChildren: () => import('@components/admin/admin.module').then( m => m.AdminModule ),
-        canLoad: [ AuthGuard ],
-        data: {
-            preload: true,
-            state: 'admin'
-        },
-        resolve: {
-            users: DashboardResolver
-        }
-    },
-    {
         path: 'users/:id',
         loadChildren: () => import('./components/user/user.module').then(m => m.UserModule),
         canActivate: [ AuthGuard ],
@@ -78,12 +66,25 @@ const routes: Routes = [
             user: UserResolver
         }
     },
+    {
+        path: 'admin',
+        loadChildren: () => import('@components/admin/admin.module').then( m => m.AdminModule ),
+        canLoad: [ AuthGuard ],
+        data: {
+            preload: true,
+            state: 'admin'
+        }
+    },
     // otherwise redirect to home
     { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes, { preloadingStrategy: QuicklinkStrategy})],
+    imports: [RouterModule.forRoot(routes, {
+            preloadingStrategy: QuicklinkStrategy,
+            onSameUrlNavigation: 'reload'
+        })
+    ],
     exports: [RouterModule]
 })
 export class AppRoutingModule { }

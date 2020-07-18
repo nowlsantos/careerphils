@@ -1,27 +1,20 @@
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { ApiService, UserService } from '@services/common/';
-import { map, switchMap, first } from 'rxjs/operators';
+import { ApiService } from '@services/common/';
+import { first } from 'rxjs/operators';
 import { Profile } from '@models/index';
-import { of } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
 })
-export class ProfileResolver implements Resolve<Profile> {
+export class ProfileResolver implements Resolve<Profile[]> {
 
-    constructor(private apiService: ApiService,
-                private userService: UserService) { }
+    constructor(private apiService: ApiService) { }
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        /* tslint:disable:no-string-literal */
-        const user = this.userService.getUser();
-
-        if ( user.user_profile ) {
-            const profileId = user.user_profile._id;
-            return this.apiService.getProfile(profileId).pipe(first());
-        }
-
-        return of(null);
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any | Profile[]> {
+        const searchterm = route.queryParamMap.get('search');
+        // console.log('PROFILE RESOLVE::', searchterm);
+        return this.apiService.getProfiles(searchterm).pipe(first());
     }
 }

@@ -16,9 +16,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
     // tslint:disable:no-trailing-whitespace
     /* tslint:disable:no-string-literal */
     positions: string[] = [ 'Master', 'Chief Mate', 'Second Mate', 'Third Mate', 'Deck Cadet',
-                            'Chief Engineer', 'Second Engineer', 'Third Engineer', 'Fourth Engineer',
-                            'Engine Cadet', 'Electrician', 'Deck Foreman', 'Pump Man', 'Quartermaster',
-                            'Ordinary Seaman(OS)', 'Fitter', 'Oiler', 'Wiper', 'Chief Cook and Steward'
+                            'Chief Engineer', 'Second Engineer', 'Third Engineer', 'Engine Cadet', 
+                            'Electrician', 'Deck Foreman', 'Pump Man', 'Quartermaster', 'Fitter', 'Oiler'
     ];
 
     userForm: FormGroup;
@@ -51,8 +50,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
         this.subscription.add(
             this.userService.user$.subscribe(user => {
                 this.user = user;
-                if ( user.user_profile ) {
-                    this.profile = user.user_profile;
+                if ( user.profile ) {
+                    this.profile = user.profile;
                     this.user.hasProfile = true;
                     this.buttonTitle = 'Edit Profile';
                 }
@@ -133,7 +132,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
             this.apiService.updateProfile(options, id)
                 .pipe(map(result => result['data'] as Profile))
                 .subscribe( profile => {
-                    this.profile = this.user.user_profile = profile;
+                    this.profile = this.user.profile = profile;
                     
                     this.messageService.sendMessage({
                         message: 'Profile successfully edited',

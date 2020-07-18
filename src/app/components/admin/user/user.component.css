@@ -1,5 +1,6 @@
 :host {
     display: block;
+    font-family: 'Lato', sans-serif;
 }
 
 .card {
@@ -26,19 +27,15 @@ img {
 }
 
 .title {
-    font-family: 'Lato', sans-serif;
     font-size: 1rem;
-    /* font-weight: bold; */
     color: orangered;
 }
 
 .subtitle {
-    font-family: 'Lato', sans-serif;
     font-size: 0.8rem;
 }
 
 button {
-    font-family: 'Lato', sans-serif;
     color: var(--primary);
 }
 
@@ -53,4 +50,9 @@ button {
 .mat-flat-button.mat-primary, 
 .mat-raised-button.mat-primary {
     background-color: var(--primary);
+}
+
+.mat-card>.mat-card-actions:last-child {
+    margin-bottom: -8px;
+    padding: 0;
 }

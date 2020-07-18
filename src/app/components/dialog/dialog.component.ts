@@ -15,7 +15,7 @@ export class DialogComponent {
 
     init() {
         // console.log('DATA::', this.data.confirm );
-        if ( this.data.confirm.toUpperCase() === 'YES' ) {
+        if ( this.data.confirm && this.data.confirm.toUpperCase() === 'YES' ) {
             this.confirmation = true;
         }
     }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanDeactivate } from '@angular/router';
 import { ProfileComponent } from '@components/user';
-import { DialogService } from '@services/core';
+import { DialogService } from '@services/common/dialog.service';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -12,7 +12,7 @@ export class ProfileGuard implements CanDeactivate<ProfileComponent> {
 
     canDeactivate(component: ProfileComponent): Observable<boolean> | Promise<boolean> | boolean {
         if ( component.isDirty() ) {
-            return this.dialogService.openDialog('PROFILE');
+            return this.dialogService.openGuardDialog('PROFILE');
         }
         return true;
     }

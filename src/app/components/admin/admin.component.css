@@ -62,3 +62,46 @@ hr {
     width: 50%;
     color: lightblue;
 }
+
+.pagination {
+    position: fixed;
+    text-align: center;
+    bottom: 10px;
+}
+
+.pagination .mat-paginator {
+    font-family: 'Lato', sans-serif;
+    color: var(--primary);
+    font-size: 0.8rem;
+}
+
+.search-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+}
+
+.search-full-width {
+    width: 100%;
+}
+
+:host ::ng-deep .mat-icon {
+    cursor: pointer;
+}
+
+:host ::ng-deep .mat-input-element {
+    caret-color: white;
+}
+
+:host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix {
+    /* padding: 0.8em 0 0.8em 0; */
+}
+
+:host ::ng-deep .mat-form-field-wrapper {
+    padding-bottom: 0;
+}
+
+:host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline-thick {
+    opacity: 0.5;
+    color: ghostwhite;
+}

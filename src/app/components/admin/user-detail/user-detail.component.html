@@ -1,0 +1,36 @@
+<section class="user-detail">
+    <div mat-dialog-content class="content">
+        <div class="image">
+            <img [src]="user.photo" alt="User Photo">
+        </div>
+        <mat-divider [vertical]="true"></mat-divider>
+        <div class="profile">
+            <h3 mat-dialog-title>User Profile</h3>
+            <mat-list-item>Full Name :  {{ profile.firstname | uppercase }} {{profile.lastname | uppercase }}</mat-list-item>
+            <mat-divider></mat-divider>
+            <mat-list-item>Email :  {{ profile.email }}</mat-list-item>
+            <mat-divider></mat-divider>
+            <mat-list-item>Phone :  {{ profile.phone }}</mat-list-item>
+            <mat-divider></mat-divider>
+            <mat-list-item>Location :  {{ profile.location }}</mat-list-item>
+            <mat-divider></mat-divider>
+            <mat-list-item>Position :  {{ profile.position }}</mat-list-item>
+            <mat-divider></mat-divider>
+        </div>
+        <mat-divider [vertical]="true"></mat-divider>
+        <div class="documents">
+            <h3 mat-dialog-title>Documents</h3>
+            <mat-list-item *ngFor="let doc of documents">
+                {{ doc.title }}
+                <span class="list-spacer"></span>
+                <ng-container *ngIf="doc.uploaded">
+                    <mat-icon aria-hidden="false" aria-label="check icon" class="yes-doc">done_outline</mat-icon> 
+                </ng-container>
+                <mat-divider></mat-divider>
+            </mat-list-item>
+        </div>
+    </div>
+    <div mat-dialog-actions align="start">
+        <button mat-button [mat-dialog-close]=true>Close</button>
+    </div>
+</section>

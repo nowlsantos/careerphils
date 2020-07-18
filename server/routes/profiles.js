@@ -9,14 +9,10 @@ const Profile = require('../models/Profile');
 const apiFeatures = require('../middleware/apiFeatures');
 
 const router = express.Router({ mergeParams: true });
-
 router.use(protect);
 
 router.route('/')
-    .get(apiFeatures(Profile, {
-        path: 'user',
-        select: 'firstname lastname'
-    }), getProfiles)
+    .get(apiFeatures(Profile), getProfiles)
     .post(authorize('user'), addProfile);
 
 router.route('/:id')

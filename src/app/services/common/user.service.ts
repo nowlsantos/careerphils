@@ -7,6 +7,8 @@ export class UserService {
     // tslint:disable:variable-name
     private _userSource$ = new BehaviorSubject<User>(null);
     private _user: User;
+    private _users: User[] = [];
+
     user$ = this._userSource$.asObservable();
 
     broadcastUser(user: User) {
@@ -28,5 +30,13 @@ export class UserService {
 
     removeRole() {
         localStorage.removeItem('role');
+    }
+
+    setAllUsers(users: User[]) {
+        this._users = users;
+    }
+
+    getAllUsers() {
+        return this._users;
     }
 }

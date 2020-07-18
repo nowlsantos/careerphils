@@ -1,40 +1,40 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Subscription, Observable } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ApiService } from '@services/core';
-import { map, filter } from 'rxjs/operators';
-import { User } from '@models/user.model';
 
 @Component({
     selector: 'app-admin',
     templateUrl: './admin.component.html',
     styleUrls: ['./admin.component.css']
 })
-export class AdminComponent implements OnInit, OnDestroy {
+export class AdminComponent implements OnInit {
     // tslint:disable:variable-name
-    private _subscription = new Subscription();
-
-    users: User[];
 
     /* tslint:disable:no-string-literal */
-    constructor(private route: ActivatedRoute,
-                private apiService: ApiService) {}
+    constructor(private router: Router,
+                private apiService: ApiService) { }
 
-    ngOnInit() {
-        this._subscription.add(
-            this.route.data
-                .pipe( map(response => response['users'].data as User[]) )
-                .subscribe(users => {
-                    this.users = users.filter(user => user.role !== 'admin');
-                }
-            )
-        );
+    ngOnInit() {}
+
+    // getUsers
+    getAllUsers() {
+        this.router.navigate(['/admin'], {
+            queryParams: { page: 1, limit: this.apiService.pageSize }
+        });
     }
 
-    ngOnDestroy() {
-        this._subscription.unsubscribe();
+    onEnterSearch(term: string) {
+        if ( !term || term === '' ) {
+            return;
+        }
+        this.router.navigate(['/admin/profiles'], {
+            queryParams: {
+                search: term
+            }
+        });
     }
 
-    showAllUsers() {
+    onUserSearch(value: string) {
+        this.onEnterSearch(value);
     }
 }
