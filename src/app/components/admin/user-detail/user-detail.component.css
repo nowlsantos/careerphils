@@ -1,0 +1,84 @@
+:host {
+    display: block;
+    font: 'Lato', sans-serif;
+}
+
+.user-detail {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.content {
+    position: relative;
+    display: flex;
+    width: 100%;
+}
+
+.mat-h3, .mat-subheading-2, .mat-typography h3 {
+    font-family: 'Lato', sans-serif;
+    letter-spacing: normal;
+    margin: 0 0 16px;
+    font-weight: 700;
+    color: orangered;
+}
+
+.image {
+    position: relative;
+    width: 150px;
+    margin: 0 10px;
+}
+
+.profile {
+    position: relative;
+    margin: 0 10px;
+}
+
+.documents {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    margin: 0 10px;
+}
+
+h3 {
+    color: orangered;
+}
+
+.mat-list-item {
+    margin: 0;
+    font-family: "Lato", sans-serif;
+    font-size: 0.9rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.mat-icon {
+    transform: scale(0.7);
+}
+.yes-doc {
+    color: green;
+}
+
+.no-doc {
+    color: red;
+}
+
+.list-spacer {
+    flex: 1 1 auto;
+}
+
+p {
+    font-family: 'Lato', sans-serif;
+    letter-spacing: normal;
+    margin: 0 0 16px;
+}
+
+.fullname {
+    color: orangered;
+}
+
+.mat-divider {
+    margin: 10px 0;
+}

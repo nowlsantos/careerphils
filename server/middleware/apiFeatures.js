@@ -1,75 +1,96 @@
-const apiFeatures = (model, populate) => async (req, res, next) => {
-    // FILTERING
-    const queryObj = { ...req.query };
-    const excludeFields = ['select', 'sort', 'page', 'limit'];
-    excludeFields.forEach( el => delete queryObj[el]);
+class ApiFeatures {
     
-    // Create a query string
-    let queryStr = JSON.stringify(queryObj);
-
-    // Create operatore
-    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`);
-
-    let query;
-    
-    // Finding resource
-    // query = model.find(JSON.parse(queryStr)).populate('profile');
-    query = model.find(JSON.parse(queryStr));
-
-    // Select fields
-    if ( req.query.select ) {
-        const fields = req.query.select.split(',').join(' ');
-        query = query.select(fields);
+    /* query is from mongoose and queryStr is from express coming from route */
+    constructor(query, queryStr, populate) {
+        this.query = query;
+        this.queryStr = queryStr;
+        this.populate = populate;
     }
 
-    // Sort fields
-    if ( req.query.sort ) {
-        const sortBy = req.query.sort.split(',').join(' ');
-        query = query.sort(sortBy);
-    }
-    else {
-        query = query.sort('-createdAt');
-    }
+    filter() {
+        // copy of the queryStr object
+        const queryObj = { ...this.queryStr };
 
-    // Pagination
-    const page = parseInt(req.query.page, 10) || 1;
-    const limit = parseInt(req.query.limit, 10) || 25;
-    const startIndex = (page - 1) * limit;
-    const lastIndex = page * limit;
-    const total = await model.countDocuments();
+        // exclude these fields when querying
+        const excludeFields = ['select', 'sort', 'page', 'limit'];
+        excludeFields.forEach( el => delete queryObj[el]);
 
-    query = query.skip(startIndex).limit(limit);
+        // Create a query string
+        let queryStr = JSON.stringify(queryObj);
 
-    // Populate when necessary
-    if ( populate ) {
-        query = query.populate(populate);
-    }
+        // Create operators
+        queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`);
+        
+        // Convert to json object
+        queryStr = JSON.parse(queryStr);
 
-    // EXECUTE query
-    const results = await query;
-
-    // Pagination result
-    const pagination = {};
-    
-    if ( lastIndex < total ) {
-        pagination.next = {
-            page: page + 1,
-            limit
+        // Search params
+        if ( queryStr.search ) {
+            queryStr = {
+                $text : {
+                    $search: this.queryStr.search,
+                    $caseSensitive: false
+                }
+            }
         }
-    }
 
-    if ( startIndex > 0 ) {
-        pagination.previous = {
-            page: page -1,
-            limit
+        // Find the queryString object(s)
+        this.query = this.query.find(queryStr);
+
+        // Populate when necessary
+        if ( this.populate ) {
+            this.query = this.query.populate(this.populate);
         }
+        return this;
     }
 
-    res.apiFeatures = {
-        status: 'success',
-        count: results.length,
-        pagination,
-        data: results
+    sort() {
+        if ( this.queryStr.sort ) {
+            const sortBy = this.queryStr.sort.split(',').join(' ');
+            this.query = this.query.sort(sortBy);
+        }
+        else {
+            this.query = this.query.sort('-createdAt');
+        }
+        return this;
+    }
+
+    select() {
+        if ( this.queryStr.select ) {
+            const fields = this.queryStr.select.split(',').join(' ');
+            this.query = this.query.select(fields);
+        } else {
+            this.query = this.query.select('-__v');
+        }
+        return this;
+    }
+
+    paginate() {
+        const page = this.queryStr.page * 1 || 1;
+        const limit = this.queryStr.limit * 1 || 100;
+        const startIndex = (page - 1) * limit;
+       
+        this.query = this.query.skip(startIndex).limit(limit);
+        return this;
+    }
+}
+
+const apiFeatures = (model, populate) => async(req, res, next) => {
+    try {
+        const apiFeatures = new ApiFeatures(model.find(), req.query, populate)
+            .filter()
+            .sort()
+            .select()
+            .paginate();
+        
+        const results = await apiFeatures.query;
+        res.apiFeatures = {
+            status: 'success',
+            count: results.length,
+            data: results
+        }
+    } catch (error) {
+        return next( new AppError('Bad request', 500) );
     }
 
     next();

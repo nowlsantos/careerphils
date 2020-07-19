@@ -37,7 +37,8 @@ const ProfileSchema = new mongoose.Schema({
     },
     createdAt: {
         type: Date,
-        default: Date.now
+        default: Date.now,
+        select: false
     },
     user: {
         type: mongoose.Schema.ObjectId,
@@ -45,5 +46,14 @@ const ProfileSchema = new mongoose.Schema({
         required: true
     }
 })
+
+ProfileSchema.index({
+    firstname: 'text',
+    lastname: 'text',
+    email: 'text',
+    phone: 'text',
+    location: 'text',
+    position: 'text'
+});
 
 module.exports = mongoose.model('Profile', ProfileSchema);

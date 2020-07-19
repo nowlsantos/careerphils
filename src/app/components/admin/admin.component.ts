@@ -1,25 +1,43 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ToasterService } from '@services/core';
-import { Subscription } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { ApiService } from '@services/common';
 
 @Component({
     selector: 'app-admin',
     templateUrl: './admin.component.html',
     styleUrls: ['./admin.component.css']
 })
-export class AdminComponent implements OnInit, OnDestroy {
+export class AdminComponent implements OnInit {
     // tslint:disable:variable-name
-    private _subscription = new Subscription();
+    /* tslint:disable:no-string-literal */
 
-    constructor() {}
+    constructor(private router: Router,
+                private apiService: ApiService) { }
 
-    ngOnInit() {
-        this._subscription.add(
+    ngOnInit() {}
 
-        );
+    // getUsers
+    getAllUsers() {
+        this.router.navigate(['/admin'], {
+            queryParams: {
+                page: 1,
+                limit: this.apiService.pageSize
+            }
+        });
     }
 
-    ngOnDestroy() {
-        this._subscription.unsubscribe();
+    onEnterSearch(term: string) {
+        if ( !term || term === '' ) {
+            return;
+        }
+        this.router.navigate(['/admin/profiles'], {
+            queryParams: {
+                search: term
+            }
+        });
+    }
+
+    onUserSearch(value: string) {
+        this.onEnterSearch(value);
     }
 }

@@ -1,14 +1,29 @@
-<div class="admin-container">
+<section class="admin-container">
     <aside class="aside">
         <div class="content-link">
             <mat-nav-list>
-                <mat-list-item [routerLink]="['./dashboard']">Dashboard</mat-list-item>
+                <mat-list-item>
+                    <button mat-button (click)="getAllUsers()">All Users</button>
+                </mat-list-item>
                 <mat-divider></mat-divider>
             </mat-nav-list>
+
+            <form class="search-form">
+                <mat-form-field appearance="outline">
+                    <mat-label>Search</mat-label>
+                    <input matInput placeholder="" #searchBox (keyup.enter)="onEnterSearch(searchBox.value)">
+                    <mat-icon
+                        matSuffix 
+                        aria-hidden="false" 
+                        aria-label="search icon"
+                        (click)="onUserSearch(searchBox.value)">search
+                    </mat-icon>
+                </mat-form-field>
+            </form>
         </div>
     </aside>
 
     <div class="admin-content">
         <router-outlet></router-outlet>
     </div>
-</div>
+</section>

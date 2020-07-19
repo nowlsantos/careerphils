@@ -30,21 +30,18 @@ export class UserComponent implements OnInit, OnDestroy {
                 private userService: UserService) {}
 
     ngOnInit() {
-        this._subscription.add(
-            this.route.data
-                .pipe( map(response => response['user'].data as User))
-                .subscribe(user => {
-                    this.user = user;
-
-                    user.photo.startsWith('default') ? user.photo = `./assets/users/${user.photo}`
-                                                     : user.photo = `${user.photo}`;
-                    if ( user.user_profile ) {
-                        this.profile = user.user_profile;
-                        this.fullname = `${this.profile.firstname} ${this.profile.lastname}`.toUpperCase();
-                        this.userService.broadcastUser(user);
-                    }
+        this.route.data
+            .pipe( map(response => response['user'].data as User))
+            .subscribe(user => {
+                this.user = user;
+                user.photo.startsWith('default') ? user.photo = `./assets/users/${user.photo}`
+                                                 : user.photo = `${user.photo}`;
+                if ( user.profile ) {
+                    this.profile = user.profile;
+                    this.fullname = `${this.profile.firstname} ${this.profile.lastname}`.toUpperCase();
+                    this.userService.broadcastUser(user);
                 }
-            )
+            }
         );
     }
 

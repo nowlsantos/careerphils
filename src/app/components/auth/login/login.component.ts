@@ -46,11 +46,19 @@ export class LoginComponent implements OnInit, OnDestroy {
         this._subscription.add(
             this.toastService.toast$.subscribe(sender => {
                 if (sender === this.sender && this._user) {
-                    if ( this._user.role === 'user' ) {
-                        this.router.navigate([`../users/${this._user.id}`]);
-                    }
-                    else if ( this._user.role === 'admin' ) {
-                        this.router.navigate([`../admin/${this._user.id}`]);
+                    switch ( this._user.role ) {
+                        case 'admin':
+                            this.router.navigate(['/admin'], {
+                                queryParams: {
+                                    page: 1,
+                                    limit: this.apiService.pageSize
+                                }
+                            });
+                            break;
+
+                        case 'user':
+                            this.router.navigate(['/users', `${this._user.id}`]);
+                            break;
                     }
                 }
             })

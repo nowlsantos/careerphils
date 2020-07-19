@@ -18,13 +18,15 @@ import { UserComponent,
          ProfileComponent,
          ChangePasswordComponent,
          DocumentComponent} from './index';
+import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
 
 @NgModule({
     declarations: [
         UserComponent,
         ProfileComponent,
         ChangePasswordComponent,
-        DocumentComponent
+        DocumentComponent,
+        UserDashboardComponent
     ],
     imports: [
         CommonModule,

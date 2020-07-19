@@ -90,11 +90,6 @@ exports.resizeDocuments = asyncHandler(async(req, res, next) => {
     @access     Private
 */ 
 exports.updateDocs = asyncHandler(async(req, res, next) => {
-    /* if ( req.file ) {
-        const url = `${req.protocol}://${req.get('host')}`;
-        req.body.documents.forEach(doc => `${url}/public/documents/${doc}`);
-    } */
-
     const user = await User.findByIdAndUpdate(req.user.id, req.body, {
         new: true,
         runValidators: true
@@ -129,7 +124,7 @@ exports.getUsers = asyncHandler(async (req, res, next) => {
     @access     Private/Admin
 */ 
 exports.getUser = asyncHandler( async(req, res, next) => {
-    const user = await User.findById(req.params.id).populate('user_profile');
+    const user = await User.findById(req.params.id).populate('profile');
     
     if ( !user ) {
         return next( new AppError(`No user was found with an id of ${req.params.id}`), 404 );

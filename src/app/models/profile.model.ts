@@ -1,3 +1,5 @@
+import { User } from './user.model';
+
 export interface Profile {
     _id?: string;
     firstname?: string;
@@ -9,4 +11,5 @@ export interface Profile {
     birthdate?: string;
     userId?: string;
     createdAt?: Date;
+    user?: User;
 }

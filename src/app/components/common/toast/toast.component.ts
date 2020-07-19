@@ -83,7 +83,6 @@ export class ToastComponent implements OnInit, OnDestroy {
                 }
             } else {
                 if ( this._sender === 'ERROR' ) {
-                    this.router.navigate(['']);
                     this._sender = null;
                 }
             }

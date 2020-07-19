@@ -32,7 +32,7 @@ export class DocumentComponent implements OnInit, OnDestroy {
             this.userService.user$.subscribe(user => {
                 if ( user ) {
                     this.user = user;
-                    if ( !user.documents.length || !user.user_profile ) {
+                    if ( !user.documents.length || !user.profile ) {
                         return;
                     }
                 }

@@ -18,21 +18,22 @@ const apiFeatures = require('../middleware/apiFeatures');
 
 const router = express.Router();
 
+router.use(protect);
+// router.use(authorize('admin'));
+
 // Include the profile router
 const profileRouter = require('./profiles');
 
 // Re-route into the profile router
 router.use('/:userId/profiles', profileRouter);
-
-router.use(protect);
-// router.use(authorize('admin'));
+router.use('/profiles', profileRouter);
 
 router.patch('/:id/updatePhoto', uploadUserPhoto, resizePhoto, updatePhoto);
 router.patch('/:id/updateDoc', uploadUserDocument, resizeDocuments, updateDocs)
 
 router
     .route('/')
-    .get(apiFeatures(User, 'user_profile'), getUsers)
+    .get(apiFeatures(User, 'profile'), getUsers)
     .post(createUser);
 
 router

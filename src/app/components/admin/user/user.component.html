@@ -1,0 +1,9 @@
+<mat-card class="card">
+    <img mat-card-image [src]="userPhoto" alt="Photo of User">
+    <mat-card-title class="title">{{ fullname }}</mat-card-title>
+    <mat-card-subtitle class="subtitle">{{ position }}</mat-card-subtitle>
+    <mat-card-actions>
+        <button mat-button (click)="viewDetails(user)" [disabled]="!user.profile">View</button>
+        <button mat-button (click)="deleteUser(user)" [disabled]="!user.profile">Delete</button>
+    </mat-card-actions>
+</mat-card>

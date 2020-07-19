@@ -1,40 +1,45 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule, MatRippleModule } from '@angular/material/core';
-import { MatRadioModule } from '@angular/material/radio';
-import { MatDividerModule } from '@angular/material/divider';
+import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
-import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatIconModule } from '@angular/material/icon';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { AdminRoutingModule } from './admin-routing.module';
-import { AdminComponent, DashboardComponent } from './index';
+
+import { AdminComponent,
+         UserComponent,
+         DashboardComponent,
+         UserDetailComponent } from './index';
 
 @NgModule({
     declarations: [
         AdminComponent,
-        DashboardComponent
+        DashboardComponent,
+        UserComponent,
+        UserDetailComponent
     ],
     imports: [
         CommonModule,
+        FormsModule,
         ReactiveFormsModule,
-        MatInputModule,
         MatFormFieldModule,
-        MatButtonModule,
-        MatIconModule,
-        MatDatepickerModule,
-        MatNativeDateModule,
-        MatRippleModule,
-        MatRadioModule,
-        MatDividerModule,
+        MatInputModule,
+        MatCardModule,
         MatListModule,
-        MatSelectModule,
+        MatButtonModule,
+        MatDividerModule,
+        MatIconModule,
+        MatPaginatorModule,
+        MatDialogModule,
         AdminRoutingModule,
     ]
 })

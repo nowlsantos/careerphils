@@ -31,7 +31,7 @@ const UserSchema = new mongoose.Schema(
                 },
                 message: "Passwords are not the same!",
             },
-            select: false,
+            select: false
         },
         resetPasswordToken: String,
         resetPasswordExpire: Date,
@@ -39,7 +39,7 @@ const UserSchema = new mongoose.Schema(
         role: {
             type: String,
             enum: ["user", "admin"],
-            default: "user",
+            default: "user"
         },
         photo: {
             type: String,
@@ -49,13 +49,14 @@ const UserSchema = new mongoose.Schema(
             type: Array,
             default: []
         },
-        profile: {
+        profiles: {
             type: mongoose.Schema.ObjectId,
-            ref: "Profile",
+            ref: "Profile"
         },
         createdAt: {
             type: Date,
             default: Date.now,
+            select: false
         },
     },
     {
@@ -65,7 +66,7 @@ const UserSchema = new mongoose.Schema(
 );
 
 // Reverse populate with virtuals
-UserSchema.virtual("user_profile", {
+UserSchema.virtual("profile", {
     ref: "Profile",
     localField: "_id",
     foreignField: "user",

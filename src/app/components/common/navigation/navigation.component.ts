@@ -37,8 +37,8 @@ export class NavigationComponent implements OnInit, OnDestroy {
                     user.photo.startsWith('default') ? user.photo = `./assets/users/${user.photo}`
                                                      : user.photo = `${user.photo}`;
 
-                    if ( this.user.user_profile ) {
-                        const profile = this.user.user_profile;
+                    if ( this.user.profile ) {
+                        const profile = this.user.profile;
                         this.firstName = profile.firstname.toUpperCase();
                     }
                 }

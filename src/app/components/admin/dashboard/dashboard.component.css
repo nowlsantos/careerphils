@@ -2,10 +2,29 @@
     display: block;
 }
 
-
-.dashboard-container {
+.container {
+    position: relative;
+    width: 100%;
+    height: 100%;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
+}
+
+.container > * {
+    margin: 15px;
+}
+
+.pagination {
+    position: fixed;
+    text-align: center;
+    bottom: 10px;
+}
+
+.pagination .mat-paginator {
+    font-family: 'Lato', sans-serif;
+    color: var(--primary);
+    font-size: 0.8rem;
 }
