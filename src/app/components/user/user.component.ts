@@ -34,7 +34,6 @@ export class UserComponent implements OnInit, OnDestroy {
             .pipe( map(response => response['user'].data as User))
             .subscribe(user => {
                 this.user = user;
-
                 user.photo.startsWith('default') ? user.photo = `./assets/users/${user.photo}`
                                                  : user.photo = `${user.photo}`;
                 if ( user.profile ) {

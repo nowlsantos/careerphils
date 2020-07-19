@@ -49,7 +49,10 @@ export class LoginComponent implements OnInit, OnDestroy {
                     switch ( this._user.role ) {
                         case 'admin':
                             this.router.navigate(['/admin'], {
-                                queryParams: { page: 1, limit: this.apiService.pageSize }
+                                queryParams: {
+                                    page: 1,
+                                    limit: this.apiService.pageSize
+                                }
                             });
                             break;
 

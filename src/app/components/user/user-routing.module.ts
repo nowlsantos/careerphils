@@ -6,13 +6,18 @@ import { UserComponent,
          DocumentComponent } from './index';
 
 import { ProfileGuard, DocumentGuard } from '@services/guards/';
+import { UserResolver } from '@services/resolvers';
+import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
 
 const routes: Routes = [
     {
         path: '', component: UserComponent,
         canActivateChild: [ DocumentGuard ],
         children: [
-            { path: '', redirectTo: 'profile', pathMatch: 'full' },
+            { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+            {
+                path: 'dashboard', component: UserDashboardComponent
+            },
             {
                 path: 'profile', component: ProfileComponent,
                 canDeactivate: [ ProfileGuard ]
@@ -22,7 +27,10 @@ const routes: Routes = [
                 canDeactivate: [ ProfileGuard ]
             },
             { path: 'document', component: DocumentComponent }
-        ]
+        ],
+        resolve: {
+            user: UserResolver
+        }
     },
 ];
 

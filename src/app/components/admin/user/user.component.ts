@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ChangeDetectionStrategy, OnChanges, SimpleChanges } from '@angular/core';
 import { User, Profile } from '@models/index';
-import { DialogService, UserService } from '@services/common/';
+import { DialogService, UserService, ApiService } from '@services/common/';
 
 @Component({
     selector: 'app-user-dashboard',
@@ -18,7 +18,8 @@ export class UserComponent implements OnInit, OnChanges {
 
     /* tslint:disable:no-string-literal */
     constructor(private dialogService: DialogService,
-                private userService: UserService) { }
+                private userService: UserService,
+                private apiService: ApiService) { }
 
     ngOnInit() {}
 
@@ -64,7 +65,16 @@ export class UserComponent implements OnInit, OnChanges {
         return this.userPhoto = user.photo;
     }
 
-    viewDetails() {
-        this.dialogService.openUserDialog(this.user);
+    viewDetails(user: User) {
+        this.dialogService.openUserDialog(user);
+    }
+
+    deleteUser(user: User) {
+        this.dialogService.openDeleteDialog().subscribe((result: boolean) => {
+            if ( result === true ) {
+                console.log('Confirm delete');
+                // this.apiService.deleteUser(user.id);
+            }
+        });
     }
 }

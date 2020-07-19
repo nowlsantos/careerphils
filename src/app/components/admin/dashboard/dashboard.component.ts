@@ -14,8 +14,8 @@ export class DashboardComponent implements OnInit {
     // tslint:disable:variable-name
     users: User[];
     profiles: Profile[];
-    pageLength: number;
-    pageSize = '2';
+    totalSize: number;
+    pageSize: string;
     isActiveUser: boolean;
 
     /* tslint:disable:no-string-literal */
@@ -24,11 +24,11 @@ export class DashboardComponent implements OnInit {
                 private apiService: ApiService) { }
 
     ngOnInit() {
-        // --- The total number of users ----
-        this.pageLength = this.apiService.pageLength;
-
         // ---The limit of users to be displayed ---
-        this.apiService.pageSize = this.pageSize;
+        this.pageSize = this.apiService.pageSize;
+
+        // --- The total number of users ----
+        this.totalSize = this.apiService.totalUsers;
 
         const url = this.router.routerState.snapshot.url.split('?')[0];
         this.isActiveUser = url.endsWith('/admin');
@@ -44,8 +44,8 @@ export class DashboardComponent implements OnInit {
             this.route.data
             .pipe( map(response => response['profiles'].data as Profile[]) )
             .subscribe(profiles => {
-                this.pageLength = profiles.length;
                 this.profiles = profiles;
+                this.totalSize = this.profiles.length;
             });
         }
     }

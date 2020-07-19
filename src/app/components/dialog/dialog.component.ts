@@ -7,16 +7,15 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
     styleUrls: ['./dialog.component.css']
 })
 export class DialogComponent {
-    confirmation = false;
-
+    isConfirm = false;
     constructor(@Inject(MAT_DIALOG_DATA) public data: any) {
         this.init();
     }
 
     init() {
-        // console.log('DATA::', this.data.confirm );
-        if ( this.data.confirm && this.data.confirm.toUpperCase() === 'YES' ) {
-            this.confirmation = true;
+        const confirm = this.data.confirm.toUpperCase();
+        if ( confirm === 'YES' ) {
+            this.isConfirm = true;
         }
     }
 }

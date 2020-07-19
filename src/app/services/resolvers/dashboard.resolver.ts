@@ -20,7 +20,7 @@ export class DashboardResolver implements Resolve<User[]> {
         return this.apiService.getAllUsers()
             .pipe(switchMap(users => {
                 this.userService.setAllUsers(users['data'] as User[]);
-                this.apiService.pageLength = +users['count'];
+                this.apiService.totalUsers = +users['count'];
                 return this.apiService.getUsers(pageIndex, ).pipe(first());
             })
         );

@@ -58,13 +58,13 @@ export class ProfileComponent implements OnInit, OnDestroy {
             })
         );
         
-        this.subscription.add(
+        /* this.subscription.add(
             this.toastService.toast$.subscribe(sender => {
                 if ( sender === this.sender ) {
                     this.userService.broadcastUser(this.user);
                 }
             })
-        );
+        ); */
 
         this.initializeForm(this.profile);
     }
@@ -114,7 +114,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
         this.subscription.add(
             this.apiService.addProfile(option, this.user.id)
                 .pipe(map(response => response['data'] as Profile))
-                .subscribe( _ => {
+                .subscribe( profile => {
+                    this.user.profile = profile;
+                    this.user.hasProfile = true;
+
                     this.messageService.sendMessage({
                         message: 'Profile successfully created',
                         error: false,
@@ -122,6 +125,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
                     });
 
                     this.router.navigate(['../dashboard'], { relativeTo: this.route });
+                    this.markFormPristine(this.userForm);
                 }
             )
         );
@@ -139,8 +143,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
                         error: false,
                         sender: this.sender
                     });
-
+                    
                     this.router.navigate(['../dashboard'], { relativeTo: this.route });
+                    this.markFormPristine(this.userForm);
                 })
         );
     }
@@ -165,5 +170,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
     onReset() {
         this.userForm.reset();
+    }
+
+    private markFormPristine(form: FormGroup) {
+        Object.keys(form.controls).forEach(control => {
+            form.controls[control].markAsPristine();
+        });
     }
 }

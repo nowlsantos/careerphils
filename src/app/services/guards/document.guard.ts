@@ -12,7 +12,6 @@ export class DocumentGuard implements CanActivateChild {
 
     canActivateChild(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         const user = this.userService.getUser();
-
         if ( user && user.profile ) {
             return true;
         }

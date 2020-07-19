@@ -10,8 +10,8 @@ import { Profile } from '@models/profile.model';
 export class ApiService {
 
     private baseUrl = environment.apiUrl;
-    pageSize = '2';
-    pageLength: number;
+    totalUsers: number;
+    pageSize = '8';
 
     constructor(private http: HttpClient) {}
 
@@ -49,11 +49,11 @@ export class ApiService {
         });
     }
 
-    update(user: User) {
+    updateUser(user: User) {
         return this.http.put(`${this.baseUrl}/users/${user.id}`, user);
     }
 
-    delete(id: string) {
+    deleteUser(id: string) {
         return this.http.delete(`${this.baseUrl}/users/${id}`);
     }
 

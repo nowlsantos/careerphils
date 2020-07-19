@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ApiService } from '@services/core';
+import { ApiService } from '@services/common';
 
 @Component({
     selector: 'app-admin',
@@ -9,8 +9,8 @@ import { ApiService } from '@services/core';
 })
 export class AdminComponent implements OnInit {
     // tslint:disable:variable-name
-
     /* tslint:disable:no-string-literal */
+
     constructor(private router: Router,
                 private apiService: ApiService) { }
 
@@ -19,7 +19,10 @@ export class AdminComponent implements OnInit {
     // getUsers
     getAllUsers() {
         this.router.navigate(['/admin'], {
-            queryParams: { page: 1, limit: this.apiService.pageSize }
+            queryParams: {
+                page: 1,
+                limit: this.apiService.pageSize
+            }
         });
     }
 

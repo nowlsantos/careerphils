@@ -1,16 +1,12 @@
 <h1 mat-dialog-title>{{ data.title }}</h1>
 <div mat-dialog-content>{{ data.content }}</div>
 <div mat-dialog-actions align="end">
-    <ng-container *ngIf="confirmation; then proceed; else none">
-        <button mat-button [mat-dialog-close]=false>Cancel</button>
-        <button mat-button [mat-dialog-close]=true>Yes</button>
+    <ng-container *ngIf="isConfirm; else cancel">
+        <button mat-button [mat-dialog-close]="false">Cancel</button>
+        <button mat-button [mat-dialog-close]="true">Yes</button>
     </ng-container>
     
-    <ng-template #proceed>
+    <ng-template #cancel>
         <button mat-button [mat-dialog-close]=false>OK</button>
-    </ng-template>
-
-    <ng-template #none>
-        <button mat-button [mat-dialog-close]=true>Close</button>
     </ng-template>
 </div>

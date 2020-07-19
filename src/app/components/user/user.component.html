@@ -22,16 +22,15 @@
         
         <div class="content-link">
             <mat-nav-list>
-                <!-- <ng-container *ngIf="isAdmin; else member">
-                    <mat-list-item [routerLink]="['./dashboard']">Dashboard</mat-list-item>
-                    <mat-divider></mat-divider>
-                </ng-container> -->
+                <mat-list-item [routerLink]="['./dashboard']">Dashboard</mat-list-item>
+                <mat-divider></mat-divider>
 
                 <mat-list-item [routerLink]="['./profile']">Profile</mat-list-item>
                 <mat-divider></mat-divider>
 
                 <mat-list-item [routerLink]="['./password']">Change Password</mat-list-item>
                 <mat-divider></mat-divider>
+
                 <mat-list-item [routerLink]="['./document']">Upload Document</mat-list-item>
             </mat-nav-list>
         </div>
