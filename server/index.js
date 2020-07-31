@@ -14,7 +14,7 @@ const app = require('./app');
 dbConnection();
 
 const PORT = process.env.PORT == 'production' ? process.env.PORT : 3000;
-const server = app.listen(PORT);
+const server = app.listen(PORT, '0.0.0.0');
 
 // Handle unhandled promise rejection
 process.on('unhandledRejection', (err, promise) => {
