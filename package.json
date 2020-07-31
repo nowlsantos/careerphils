@@ -6,7 +6,7 @@
         "build": "ng build --prod",
         "start:client": "ng serve",
         "start": "node server/index.js",
-        "postinstall": "ng build --prod",
+        "postinstall": "npm run build",
         "test": "ng test",
         "lint": "ng lint",
         "e2e": "ng e2e"
