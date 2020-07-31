@@ -4,7 +4,6 @@
     "scripts": {
         "ng": "ng",
         "build": "ng build --prod",
-        "start:client": "ng serve",
         "start": "node server/index.js",
         "postinstall": "npm run build",
         "test": "ng test",
