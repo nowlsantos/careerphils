@@ -54,7 +54,6 @@ export class ToastComponent implements OnInit, OnDestroy {
         })
         .afterDismissed()
         .subscribe( () => {
-            // console.log('Snackbar dismissed');
             if ( !error ) {
                 switch ( this._sender ) {
                     case Sender.Register:

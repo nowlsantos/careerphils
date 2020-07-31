@@ -113,7 +113,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     forgotPassHandler() {
         this._subscription.add(
             this.apiService.forgotPassword(this._user.email).subscribe(res => {
-                console.log(res);
+                // console.log(res);
             })
         );
     }

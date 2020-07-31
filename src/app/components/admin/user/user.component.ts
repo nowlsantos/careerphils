@@ -72,8 +72,8 @@ export class UserComponent implements OnInit, OnChanges {
     deleteUser(user: User) {
         this.dialogService.openDeleteDialog().subscribe((result: boolean) => {
             if ( result === true ) {
-                console.log('Confirm delete');
-                // this.apiService.deleteUser(user.id);
+                // console.log('Confirm delete');
+                this.apiService.deleteUser(user.id);
             }
         });
     }

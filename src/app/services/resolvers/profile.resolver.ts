@@ -14,7 +14,6 @@ export class ProfileResolver implements Resolve<Profile[]> {
 
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any | Profile[]> {
         const searchterm = route.queryParamMap.get('search');
-        // console.log('PROFILE RESOLVE::', searchterm);
         return this.apiService.getProfiles(searchterm).pipe(first());
     }
 }

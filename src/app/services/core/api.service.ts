@@ -64,7 +64,9 @@ export class ApiService {
 
     getProfiles(searchterm: string) {
         return this.http.get<Profile[]>(`${this.baseUrl}/profiles/`, {
-            params: { search: searchterm }
+            params: {
+                search: searchterm
+            }
         });
     }
 

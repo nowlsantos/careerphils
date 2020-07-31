@@ -50,7 +50,6 @@ export class DocumentComponent implements OnInit, OnDestroy {
                     const str = item.split('-')[1].split('.')[0].split('_')[0];
                     const docStr = doc.title.toLocaleLowerCase();
                     if ( docStr.includes(str) ) {
-                        console.log('STR::', str, 'MATCH::', docStr.includes(str));
                         doc.uploaded = true;
                     }
                 });
@@ -81,7 +80,8 @@ export class DocumentComponent implements OnInit, OnDestroy {
         }
 
         this.subscription.add(
-            this.apiService.uploadDocument(formdata, this.user.id).subscribe(response => {
+            this.apiService.uploadDocument(formdata, this.user.id)
+            .subscribe(response => {
                 if ( response instanceof HttpResponse ) {
                     const user = response.body['data'] as User;
                     user.documents.forEach(item => {

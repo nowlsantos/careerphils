@@ -16,7 +16,6 @@ export class AdminComponent implements OnInit {
 
     ngOnInit() {}
 
-    // getUsers
     getAllUsers() {
         this.router.navigate(['/admin'], {
             queryParams: {

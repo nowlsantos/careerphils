@@ -15,11 +15,6 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
     constructor(private userService: UserService) { }
 
     ngOnInit() {
-        /* this.subscription.add(
-            this.userService.user$.subscribe(user => {
-                console.log('DASHBOARD SUBS::', user);
-            })
-        ); */
     }
 
     ngOnDestroy() {

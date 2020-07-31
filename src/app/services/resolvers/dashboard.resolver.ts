@@ -16,7 +16,6 @@ export class DashboardResolver implements Resolve<User[]> {
     /* tslint:disable:no-string-literal */
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any | User[]> {
         const pageIndex = route.queryParamMap.get('page');
-        // console.log('USER RESOLVE::', pageIndex);
         return this.apiService.getAllUsers()
             .pipe(switchMap(users => {
                 this.userService.setAllUsers(users['data'] as User[]);

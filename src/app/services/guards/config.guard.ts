@@ -10,7 +10,6 @@ export class ConfigGuard implements CanActivate, CanDeactivate<unknown> {
 
     canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         this.userComponent.setRoute('');
-        console.log('canAactivate');
         const routes = next.routeConfig.children;
         if ( routes[0].path === '' ) {
             routes[0].redirectTo = this.userComponent.getRoute();
@@ -22,7 +21,6 @@ export class ConfigGuard implements CanActivate, CanDeactivate<unknown> {
     canDeactivate(component: unknown, currentRoute: ActivatedRouteSnapshot,
                   currentState: RouterStateSnapshot, nextState?: RouterStateSnapshot) {
 
-        console.log('canDeactivate');
         return true;
     }
 }

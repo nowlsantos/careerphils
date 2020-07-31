@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { MatPaginator } from '@angular/material/paginator';
 import { ApiService } from '@services/core';
+import { Observable } from 'rxjs';
 
 @Component({
     selector: 'app-dashboard',
@@ -12,11 +13,12 @@ import { ApiService } from '@services/core';
 })
 export class DashboardComponent implements OnInit {
     // tslint:disable:variable-name
-    users: User[];
-    profiles: Profile[];
     totalSize: number;
     pageSize: string;
     isActiveUser: boolean;
+
+    user$: Observable<User[]>;
+    profile$: Observable<Profile[]>;
 
     /* tslint:disable:no-string-literal */
     constructor(private route: ActivatedRoute,
@@ -33,21 +35,8 @@ export class DashboardComponent implements OnInit {
         const url = this.router.routerState.snapshot.url.split('?')[0];
         this.isActiveUser = url.endsWith('/admin');
 
-        if ( this.isActiveUser ) {
-            this.route.data
-                .pipe( map(response => response['users'].data as User[]) )
-                .subscribe(users => {
-                    this.users = users;
-                }
-            );
-        } else {
-            this.route.data
-            .pipe( map(response => response['profiles'].data as Profile[]) )
-            .subscribe(profiles => {
-                this.profiles = profiles;
-                this.totalSize = this.profiles.length;
-            });
-        }
+        this.isActiveUser ? this.user$ = this.route.data.pipe( map(response => response['users'].data as User[]) )
+                          : this.profile$ = this.route.data.pipe( map(response => response['profiles'].data as Profile[]) );
     }
 
     pageChangeEvent(paginator: MatPaginator) {

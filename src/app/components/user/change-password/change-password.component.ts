@@ -56,7 +56,6 @@ export class ChangePasswordComponent implements OnInit, OnDestroy {
 
         this.subscription.add(
             this.apiService.updatePassword(passOptions).subscribe( _ => {
-                // console.log('ChangePass::', res);
                 this.messageService.sendMessage({
                     message: 'Password has been changed',
                     error: false,

@@ -1,12 +1,12 @@
 <section class="container">
     <ng-container *ngIf="isActiveUser; else isActiveProfile">
-        <div *ngFor="let user of users">
+        <div *ngFor="let user of user$ | async">
             <app-user-dashboard [user]="user"></app-user-dashboard>
         </div>
     </ng-container>
     
     <ng-template #isActiveProfile>
-        <div *ngFor="let profile of profiles">
+        <div *ngFor="let profile of profile$ | async">
             <app-user-dashboard [profile]=profile></app-user-dashboard>
         </div>
     </ng-template>

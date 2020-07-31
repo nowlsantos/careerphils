@@ -107,11 +107,9 @@ export class AppComponent implements OnInit, OnDestroy {
     closeSideNav() {
         this.subscription.add(
             this.apiService.logout().subscribe( () => {
-                // console.log('SideNav Logout::');
                 this.authService.logout();
                 this.userService.removeRole();
                 this.sidenav.close();
-                // this.router.navigate(['/home']);
             })
         );
     }
