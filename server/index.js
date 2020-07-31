@@ -13,7 +13,7 @@ const app = require('./app');
 // Connect to database
 dbConnection();
 
-const PORT = process.env.PORT === 'production'? process.env.PORT : 8080;
+const PORT = process.env.PORT === 'production'? (process.env.PORT || 8080) : 3000;
 const server = app.listen(PORT, console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`.inverse));
 
 // Handle unhandled promise rejection
@@ -21,3 +21,10 @@ process.on('unhandledRejection', (err, promise) => {
     // Close server and process exit
     server.close( () => process.exit(1) );
 })
+
+process.on('SIGTERM', () => {
+    console.log('SIGTERM RECEIVED. Shutting down gracefully');
+    server.close(() => {
+      console.log('Process terminated!');
+    });
+});
